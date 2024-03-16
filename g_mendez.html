@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Medición y diseño de investigación</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gustavo Méndez Barbato" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.28/datatables.js"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="estilo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Medición y diseño de investigación
+]
+.subtitle[
+## Postulación a provisión interina de cargo Asistente G°2
+]
+.author[
+### Gustavo Méndez Barbato
+]
+.date[
+### Noviembre 13, 2023
+]
+
+---
+
+class: inverse, center, middle
+
+
+
+
+
+# Objetivo y Advertencia
+
+---
+## Objetivo
+
+- Esta presentación tiene el objetivo de demostrar el manejo de la elaboración de presentaciones html en Rmarkdown para utilizar en las clases de laboratorio del curso. 
+
+- El contenido de la presentación es una síntesis de la parte A de la prueba presentada en la postulación sobre los determinantes del apoyo a la democracia y la acompaña como anexo.
+
+- El enfoque es centrado en la utilidad y funcionalidad para la enseñanza y no en la robustez formal del análisis, que tiene una finalidad ilustrativa.
+
+
+## Advertencia
+
+- Toma como base las presentaciones del curso Medición y Diseño de Investigación 2023, disponible en [github de Martín Opertti](https://github.com/martinopertti/Laboratorio), docente del curso.
+
+
+---
+
+## Apoyo a la democracia en Uruguay 2007-2019
+
+- ¿Cuáles son los factores determinantes de apoyo a la democracia en Uruguay?
+
+- Literatura señala algunas claves: 
+  - evaluación del gobierno
+  - situación económica
+  - confianza interpersonal
+  - sufrimiento de delitos recientes
+  - variables socio demográficas (sexo, edad, ascendencia étnico-racial, nivel educativo)
+  
+- Intentaremos aproximarnos a responder estas preguntas
+
+---
+
+## Apoyo a la democracia en Uruguay 2007-2019
+
+- ¿Cuáles son los factores determinantes de apoyo a la democracia en Uruguay?
+
+- Literatura señala algunas claves: 
+  - evaluación del gobierno
+  - situación económica
+  - confianza interpersonal
+  - sufrimiento de delitos recientes
+  - variables socio demográficas (sexo, edad, ascendencia étnico-racial, nivel educativo)
+  
+- Intentaremos aproximarnos a responder estas preguntas
+
+---
+
+class: inverse, center, middle
+
+# Datos
+
+---
+
+## Datos
+
+- Los datos provienen de las olas de la encuesta LAPOP de Uruguay de los años 2007, 2008, 2010, 2012, 2014, 2017 y 2019.
+
+- Están libremente disponibles en [The Americas Barometer by the LAPOP Lab,  www.vanderbilt.edu/lapop](www.vanderbilt.edu/lapop)
+
+.codefont[
+
+```r
+# 0. LIBRERIAS ----
+
+library(tidyverse)
+library(haven)
+library(forcats)
+library(ggplot2)
+library(plotly)
+
+# 1. DATA ----
+
+## 1.1 bases olas lapop ----
+uru_2007 &lt;- haven::read_dta("data_lapop/uru/uru_2007.dta") 
+uru_2008 &lt;- haven::read_dta("data_lapop/uru/uru_2008.dta") 
+uru_2010 &lt;- haven::read_dta("data_lapop/uru/uru_2010.dta") 
+uru_2012 &lt;- haven::read_dta("data_lapop/uru/uru_2012.dta")
+uru_2014 &lt;- haven::read_dta("data_lapop/uru/uru_2014.dta") 
+uru_2017 &lt;- haven::read_dta("data_lapop/uru/uru_2017.dta") 
+uru_2019 &lt;- haven::read_dta("data_lapop/uru/uru_2019.dta") 
+```
+]
+
+---
+
+## Datos
+
+- Defino quedarme con las etiquetas de valores utilizando la función `as_factor`
+
+- En algunos casos debo hacer operaciones de compatibilización de nombres de variables, ejemplo con la ola 2007:
+
+.codefont[
+
+```r
+# 1.2 selección de variables ----
+# selecciono variables de interés como factores para quedarme con las etiquetas de los valores
+uru_07 &lt;- uru_2007 %&gt;% 
+          select(Q1, Q2, ED, IT1, ING4, ETID, VIC1, IDIO2, M1) %&gt;% # selecciono variables
+          drop_na () %&gt;% # dado que es un ejercicio, elimino filas con NA
+          rename_all(tolower) %&gt;% # paso a minúsculas las variables para coincidir con bases más recientes
+          rename("vic1ext" = vic1) %&gt;% # renombro variable para coincidir con bases más recientes
+          as_factor() %&gt;% # convierto a factor todas la variables
+          mutate(year = 2007)  # identifico año para unificación de base
+```
+]
+
+---
+
+## Variables
+
+- Cada variable de la base de LAPOP corresponde a una o más preguntas o items del cuestionario 
+  - [Cuestionario 2019]()
+  - [Códigos 2019]()
+  
+- Selecciono variables de interés para el ejercicio: 
+  - ing4 _(apoyo a la democracia)_
+  - q1 _(sexo)_
+  - q2 _(edad)_
+  - ed _(nivel educativo)_
+  - etid _(ascendencia étnico-racial)_
+  - it1 _(confianza interpersonal)_
+  - vic1ext _(victima de delito en el útimo año)_
+  - idio2 _(evolución de la situación económica personal en el último año)_
+  - m1 _(evaluación del gobierno)_
+  - year _(año)_
+
+---
+
+## Variables
+
+- **ING4.** puede que la democracia tenga problemas, pero es mejor que cualquier otra forma de gobierno. ¿Hasta qué punto está de acuerdo o en desacuerdo con esta frase? (Tarjeta con una escalera en donde el número 1 representa “muy en desacuerdo” y el número 7 representa “muy de acuerdo”)
+- **Q1**. Género [Anotar, NO pregunte]: (1) Hombre (2) Mujer
+- **Q2.** ¿Cuál es su edad en años cumplidos? 
+- **IT1.** ¿diría que la gente de su comunidad es muy confiable, algo confiable, poco confiable o nada confiable? (1) Muy confiable (2) Algo confiable (3) Poco confiable (4) Nada confiable 
+- **VIC1EXT.** ¿ha sido usted víctima de algún acto de delincuencia en los últimos 12 meses? Es decir, ¿ha sido usted víctima de un robo, hurto, agresión, fraude, chantaje, extorsión, amenazas o algún otro tipo de acto delincuencial en los últimos 12 meses? (1) Sí (2) No 
+- **IDIO2.** ¿Considera usted que su situación económica actual es mejor, igual o peor que la de hace doce meses? (1) Mejor (2) Igual (3) Peor
+- **M1.** Hablando en general acerca del gobierno actual, ¿diría usted que el trabajo que está realizando el Presidente Tabaré Vázquez es...?: [Leer alternativas] (1) Muy bueno (2) Bueno (3) Ni bueno, ni malo (regular) (4) Malo (5) Muy malo (pésimo) 
+
+
+---
+
+class: inverse, center, middle
+
+# Limpieza
+
+---
+
+## Limpieza de datos
+
+- Generalmente se requieren tareas adicionales de limpieza para ajustar a los objetivos del análsis
+
+- Esto es casi indispensable cuando trabajamos con datos de encuestas de diferentes años, ya que un pequeño cambio de nombre o codificación de una variable puede obstaculizar el análisis
+
+- Ejemplo 1:  eliminación de casos incompletos, recodificación de variable apoyo a la democracia
+
+.codefont[
+
+```r
+# 2. LIMPIEZA ----
+data_uru &lt;- droplevels(data_uru) # elimino niveles no usados
+
+### 2.1.1 variable ing4 (apoyo_democracia_fct) ----
+levels(data_uru$ing4) # niveles
+# recodifico x idioma
+data_uru$ing4 &lt;- fct_recode(data_uru$ing4, 
+                            `Muy en desacuerdo` = "1 Muy en desacuerdo", 
+                            `Muy en desacuerdo` = "Strongly Disagree", 
+                            "2" = "( 2 )",
+                            "3" = "( 3 )",
+                            "4" = "( 4 )",
+                            "5" = "( 5 )",
+                            "6" = "( 6 )",
+                            `Muy de acuerdo` = "7 Muy de acuerdo",
+                            `Muy de acuerdo` = "Strongly Agree") 
+
+count(data_uru, ing4) # chequeo con tidy
+```
+]
+
+---
+
+## Limpieza de datos
+
+- Además de la limpieza también es útil crear o modificar variables que nos puedan servir para el análisis
+
+- La variable dependiente "Apoyo a la democracia" defino calcularla de tres maneras:
+  - Como factor manteniendo las categorías iniciales de la base LAPOP (en este caso una variable ordinal) 
+  - Como numérica en una escala del 1 al 7
+  - Como variable binaria: apoyo (valores 5, 6 y 7 de la numérica) | no apoyo (valores 1 a 4 de la numérica)
+  
+- Estas operaciones nos permiten ampliar las posibilidades de análisis, simplificar, facilitar las visualizaciones y tener mayor flexibilidad a la hora de construir modelos.
+
+---
+
+## Renombro variables
+
+- A veces es útil renombrar las variables para que su identificación sea más sencilla
+
+- Ejemplo:
+
+.codefont[
+
+```r
+# 3. RENOMBRO VARIABLES ----
+
+data_uru &lt;- data_uru %&gt;% 
+            rename(
+             "sexo" = q1,
+             "edad" = q2,
+             "edad_grupos" = q2_grupos,
+             "nivel_educ" = ed,
+             "conf_interpersonal" = it1,
+             "apoyo_democracia_fct" = ing4,
+             "apoyo_democracia_num" = ing4_num,
+             "apoyo_democracia_bin" = ing4_bin,
+             "etnia_raza" = etid,
+             "victima_delito" = vic1ext,
+             "sit_economica" = idio2,
+             "eval_gobierno" = m1,
+             "año" = year)
+```
+]
+
+---
+
+## Base de datos
+
+- Luego de la limpieza, esta es la base de datos construida para el ejercicio:
+
+.codefont[
+
+```r
+glimpse(data_uru)
+```
+
+```
+## Rows: 9,022
+## Columns: 13
+## $ sexo                 &lt;fct&gt; Hombre, Mujer, Hombre, Mujer, Hombre, Mujer, Muje…
+## $ edad                 &lt;fct&gt; 44, 27, 47, 54, 47, 66, 57, 71, 38, 30, 18, 27, 5…
+## $ nivel_educ           &lt;fct&gt; Secundaria, Terciaria, Terciaria, Terciaria, Terc…
+## $ conf_interpersonal   &lt;fct&gt; Muy confiable, Algo confiable, Algo confiable, Al…
+## $ apoyo_democracia_fct &lt;fct&gt; 5, Muy de acuerdo, Muy de acuerdo, 6, Muy de acue…
+## $ etnia_raza           &lt;fct&gt; Blanca, Blanca, Blanca, Blanca, Blanca, Blanca, B…
+## $ victima_delito       &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, S…
+## $ sit_economica        &lt;fct&gt; Peor, Igual, Mejor, Igual, Igual, Igual, Mejor, I…
+## $ eval_gobierno        &lt;fct&gt; "Muy bueno", "Muy bueno", "Muy bueno", "Bueno", "…
+## $ año                  &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2…
+## $ apoyo_democracia_num &lt;dbl&gt; 5, 7, 7, 6, 7, 7, 7, 5, 7, 5, 7, 7, 5, 2, 7, 7, 7…
+## $ apoyo_democracia_bin &lt;fct&gt; No apoyo, Apoyo, Apoyo, Apoyo, Apoyo, Apoyo, Apoy…
+## $ edad_grupos          &lt;fct&gt; 36-45, 26-35, 46-55, 46-55, 46-55, 66 y más, 56-6…
+```
+]
+
+---
+
+## Base de datos: resumen
+
+.codefont[
+
+```
+##      sexo           edad           nivel_educ        conf_interpersonal
+##  Hombre:4377   18     : 190   Primaria  : 654   Muy confiable :2450    
+##  Mujer :4645   54     : 190   Secundaria:3912   Algo confiable:4324    
+##                22     : 189   Terciaria :4456   Poco confiable:1667    
+##                20     : 188                     Nada confiable: 581    
+##                29     : 186                                            
+##                23     : 184                                            
+##                (Other):7895                                            
+##         apoyo_democracia_fct                etnia_raza   victima_delito
+##  Muy en desacuerdo: 227      Blanca              :6537   Si:2143       
+##  2                : 143      Mestiza             :1721   No:6879       
+##  3                : 334      Indigena            : 145                 
+##  4                : 715      Negra (afrouruguaya): 229                 
+##  5                :1003      Mulata              : 258                 
+##  6                :1495      Otra                : 132                 
+##  Muy de acuerdo   :5105                                                
+##  sit_economica           eval_gobierno       año       apoyo_democracia_num
+##  Mejor:2677    Muy bueno        : 986   Min.   :2007   Min.   :1.000       
+##  Igual:4174    Bueno            :3688   1st Qu.:2008   1st Qu.:5.000       
+##  Peor :2171    Ni bueno, ni malo:3063   Median :2012   Median :7.000       
+##                Malo             : 889   Mean   :2013   Mean   :5.996       
+##                Muy malo         : 396   3rd Qu.:2017   3rd Qu.:7.000       
+##                                         Max.   :2019   Max.   :7.000       
+##                                                                            
+##  apoyo_democracia_bin   edad_grupos  
+##  No apoyo:2422        18-25   :1455  
+##  Apoyo   :6600        26-35   :1676  
+##                       36-45   :1520  
+##                       46-55   :1587  
+##                       56-65   :1327  
+##                       66 y más:1457  
+## 
+```
+]
+
+
+---
+
+class: inverse, center, middle
+
+# Tabulaciones 
+
+---
+
+## Tablas cruzadas
+
+- Un primer análisis descriptivo es calcular el apoyo a la democracia según las distintas categorías de las variables independientes
+
+- Este ejercicio sencillo, permite identificar de manera simple si se observan diferencias 
+
+- Para esto la tabulación cruzada es una buena herramienta
+
+- En este caso realizamos construimos tablas cruzadas para la variable dependiente **Apoyo a la democracia numérica** (1 es el menor apoyo - 7 mayor apoyo) según las variables seleccionadas
+
+---
+
+## Tablas cruzadas: sexo
+
+- Ejemplo de cóigo de tabla:
+
+
+.codefont[
+
+```r
+# 4. TABLAS CRUZADAS DE APOYO A LA DEMOCRACIA ----
+
+## 4.1 sexo ----
+t_sexo &lt;- data_uru %&gt;% 
+  count(apoyo_democracia_num, sexo) %&gt;% 
+  mutate(n = round((n/sum(n)*100),2), .by = sexo) %&gt;% 
+  spread(apoyo_democracia_num, n) %&gt;% 
+  DT::datatable(.,
+                caption = "Tabla. Apoyo a la democracia según sexo. Uruguay 2007-2019.", 
+                options = list(searching = FALSE,
+                               info = FALSE,
+                               dom = "rtip"))
+```
+]
+
+---
+
+## Tablas cruzadas: sexo
+
+- No parecen existir diferencias muy importantes según sexo
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-38422152d4d9b469ade7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-38422152d4d9b469ade7">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según sexo. Uruguay 2007-2019.<\/caption>","data":[["1","2"],["Hombre","Mujer"],[2.54,2.5],[1.64,1.53],[3.47,3.92],[7.52,8.31],[10.6,11.6],[16.95,16.21],[57.28,55.93]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sexo<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: grupos de edad
+
+.codefont[
+
+]
+
+- El apoyo a la democracia parece aumentar con la edad
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7fc33caa1c7c04e61747" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7fc33caa1c7c04e61747">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según grupos de edad. Uruguay 2007-2019.<\/caption>","data":[["1","2","3","4","5","6"],["18-25","26-35","36-45","46-55","56-65","66 y más"],[3.3,1.97,2.63,3.21,2.03,1.92],[2.34,1.49,1.25,1.7,1.06,1.65],[6.25,4.77,2.96,3.02,2.94,2.13],[14.36,10.32,7.96,6.24,4.14,3.98],[16.15,14.32,10.07,9.07,8.59,8.029999999999999],[17.18,17.9,16.45,15.88,15.98,15.85],[40.41,49.22,58.68,60.87,65.26000000000001,66.44]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>edad_grupos<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: nivel educativo
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia parece ser mayor entre las personas que cuentan con educación terciaria
+
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d55f7973b02ab95cb64f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d55f7973b02ab95cb64f">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según nivel educativo. Uruguay 2007-2019.<\/caption>","data":[["1","2","3"],["Primaria","Secundaria","Terciaria"],[3.36,3.12,1.86],[3.36,1.84,1.1],[5.05,4.81,2.54],[7.03,10.61,5.7],[15.6,13.29,8.550000000000001],[17.43,17.87,15.31],[48.17,48.47,64.95]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>nivel_educ<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: ascendencia étnico-racial
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia parece ser mayor entre las personas de ascendencia étnico-racial blanca
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b173fd43a9fb32580ba8" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b173fd43a9fb32580ba8">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según ascendencia étnico-racial. Uruguay 2007-2019.<\/caption>","data":[["1","2","3","4","5","6"],["Blanca","Mestiza","Indigena","Negra (afrouruguaya)","Mulata","Otra"],[2.43,2.5,1.38,2.62,4.65,3.79],[1.42,1.69,1.38,3.06,1.55,6.06],[3.55,3.83,2.76,5.68,5.04,4.55],[6.9,10.87,13.79,13.1,7.75,5.3],[10.49,12.49,13.79,13.54,10.85,17.42],[16.49,16.39,13.79,18.78,18.6,18.18],[58.71,52.24,53.1,43.23,51.55,44.7]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>etnia_raza<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: confianza interpersonal
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia parece aumentar conforme aumenta la confianza interpersonal
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-93d1e10e69a4565a8878" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-93d1e10e69a4565a8878">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según confianza interpersonal. Uruguay 2007-2019.<\/caption>","data":[["1","2","3","4"],["Muy confiable","Algo confiable","Poco confiable","Nada confiable"],[2.49,1.69,3.06,7.23],[1.31,1.13,2.58,3.27],[2.78,3.12,5.82,5.85],[5.59,8.02,10.2,10.5],[8.49,11.24,13.68,13.94],[14.98,17.6,16.92,14.63],[64.37,57.19,47.75,44.58]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>conf_interpersonal<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: víctima de delitos en el último año
+
+.codefont[
+
+]
+
+- No parecen existir diferencias muy importantes según el sufrimiento de delitos en el último año
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5456b52b1cdd9b4d89aa" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5456b52b1cdd9b4d89aa">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según si fue víctima de delitos. Uruguay 2007-2019.<\/caption>","data":[["1","2"],["Si","No"],[2.75,2.44],[1.68,1.56],[3.5,3.77],[7.65,8.01],[10.78,11.22],[16.57,16.57],[57.07,56.43]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>victima_delito<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: evolución de la situación económica personal
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia es menor entre las personas que consideran que su situación económica personal empeoró en el último año
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-275f0eab8cf077a09336" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-275f0eab8cf077a09336">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según evolución de situación económica personal. Uruguay 2007-2019.<\/caption>","data":[["1","2","3"],["Mejor","Igual","Peor"],[2.13,1.92,4.15],[1.42,1.37,2.21],[3.7,3.35,4.38],[8.52,7.31,8.380000000000001],[10.42,10.83,12.53],[16.51,17.01,15.8],[57.3,58.22,52.56]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sit_economica<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: evaluación del gobierno
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia aumenta entre las personas que tienen evaluación más positiva del gobierno
+
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d46c3670b43cca2bceba" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d46c3670b43cca2bceba">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según evaluación de gobierno. Uruguay 2007-2019.<\/caption>","data":[["1","2","3","4","5"],["Muy bueno","Bueno","Ni bueno, ni malo","Malo","Muy malo"],[1.32,1.3,2.51,4.95,11.36],[0.71,1.03,1.99,2.25,4.29],[1.42,2.6,4.57,5.96,7.83],[3.85,6.59,9.76,10.8,9.85],[6.69,10.6,13.58,10.57,9.09],[12.68,17.79,17.53,15.19,10.61],[73.33,60.09,50.05,50.28,46.97]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>eval_gobierno<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Tablas cruzadas: año
+
+.codefont[
+
+]
+
+
+- El apoyo a la democracia aumentó entre 2007 y 2012
+
+- A partir de 2014 descendió de manera importante en todas las olas
+
+
+.codefont[
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f6a5dac80f7f4fb2a1ae" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f6a5dac80f7f4fb2a1ae">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla. Apoyo a la democracia según año. Uruguay 2007-2019.<\/caption>","data":[["1","2","3","4","5","6","7"],[2007,2008,2010,2012,2014,2017,2019],[2.02,2.6,1.51,2.15,2.26,1.99,4.61],[2.47,1.16,1.11,1.26,0.85,2.21,2.09],[5.5,3.26,2.61,2.67,3.74,3.09,5.03],[6.69,5.5,7.64,6.31,7.13,10.01,11.73],[12.19,8.970000000000001,9.449999999999999,8.91,10.31,13.25,14.39],[15.95,19.1,16.88,14.03,15.75,18.32,15.92],[55.18,59.41,60.8,64.66,59.96,51.14,46.23]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>año<\/th>\n      <th>1<\/th>\n      <th>2<\/th>\n      <th>3<\/th>\n      <th>4<\/th>\n      <th>5<\/th>\n      <th>6<\/th>\n      <th>7<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"info":false,"dom":"rtip","columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+class: inverse, center, middle
+
+# Gráficos 
+
+
+
+---
+
+## Gráficos
+
+- Además del análisis tabular, la visualización gráfica es una herramienta importante de análisis
+
+- Las visualizaciones no son sólo para presentar resultados, son una herramienta importante de exploración de los datos y a veces pueden revelar información que no se identifica rápidamente en una tabla
+
+- En este caso realizamos gráficos de la variable dependiente **Apoyo a la democracia binaria** (Apoyo | No apoyo) según las variables seleccionadas
+
+---
+
+## Gráficos: sexo
+
+- Ejemplo de código de gráfico
+
+.codefont[
+
+```r
+## 4.1 sexo ----
+g_sexo &lt;- data_uru %&gt;% 
+  count(apoyo_democracia_bin, sexo) %&gt;% 
+  mutate(n = round((n/sum(n)*100),2), .by = sexo) %&gt;% 
+  spread(apoyo_democracia_bin, n) %&gt;% 
+  ggplot(., aes(x=sexo, y=Apoyo, fill = sexo,
+                text= paste("&lt;/br&gt;Sexo:", sexo,"&lt;/br&gt;Apoyo a la democracia:", paste0(Apoyo),"%"))) +
+  geom_col(width = 0.5, color = "black", size = 0.3) +
+  scale_fill_brewer(palette = "Pastel1") +
+  ylim(0, NA) +
+  ggtitle("Apoyo a la democracia según sexo (Uruguay 2007-2019)") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
+#grafico interactivo con plotly
+g_sexo &lt;- plotly::ggplotly(g_sexo, hoverinfo = 'text',tooltip = c("text")) %&gt;% 
+  plotly::layout(annotations = 
+                   list(x = 1, y = -0.1, 
+                        text = "Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop", 
+                        showarrow = F, xref='paper', yref='paper', 
+                        xanchor='right', yanchor='auto', xshift=0, yshift=0,
+                        font=list(size=10)))
+```
+]
+
+---
+
+## Gráficos: sexo
+
+- No parecen existir diferencias muy importantes según sexo
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-8c965ef01b645e4d797d" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-8c965ef01b645e4d797d">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[74.230000000000004],"text":"<\/br>Sexo: Hombre <\/br>Apoyo a la democracia: 74.23 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Hombre","legendgroup":"Hombre","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[72.140000000000001],"text":"<\/br>Sexo: Mujer <\/br>Apoyo a la democracia: 72.14 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Mujer","legendgroup":"Mujer","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según sexo (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,2.6000000000000001],"tickmode":"array","ticktext":["Hombre","Mujer"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["Hombre","Mujer"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.7115000000000005,77.941500000000005],"tickmode":"array","ticktext":["0","20","40","60"],"tickvals":[0,20,40,60],"categoryorder":"array","categoryarray":["0","20","40","60"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"auto","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc53f7529b":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc53f7529b","visdat":{"62cc53f7529b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: grupos de edad
+
+- El apoyo a la democracia aumenta con la edad
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ae94c3322e0b3aa43630" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-ae94c3322e0b3aa43630">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[57.590000000000003],"text":"<\/br>Grupos de edad: 18-25 <\/br>Apoyo a la democracia: 57.59 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"18-25","legendgroup":"18-25","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[67.120000000000005],"text":"<\/br>Grupos de edad: 26-35 <\/br>Apoyo a la democracia: 67.12 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"26-35","legendgroup":"26-35","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[75.129999999999995],"text":"<\/br>Grupos de edad: 36-45 <\/br>Apoyo a la democracia: 75.13 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"36-45","legendgroup":"36-45","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[4],"y":[76.75],"text":"<\/br>Grupos de edad: 46-55 <\/br>Apoyo a la democracia: 76.75 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(222,203,228,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"46-55","legendgroup":"46-55","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[5],"y":[81.239999999999995],"text":"<\/br>Grupos de edad: 56-65 <\/br>Apoyo a la democracia: 81.24 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(254,217,166,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"56-65","legendgroup":"56-65","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[6],"y":[82.290000000000006],"text":"<\/br>Grupos de edad: 66 y más <\/br>Apoyo a la democracia: 82.29 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,255,204,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"66 y más","legendgroup":"66 y más","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según grupos de edad (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,6.5999999999999996],"tickmode":"array","ticktext":["18-25","26-35","36-45","46-55","56-65","66 y más"],"tickvals":[1,2,3,3.9999999999999996,5,6],"categoryorder":"array","categoryarray":["18-25","26-35","36-45","46-55","56-65","66 y más"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-4.1145000000000005,86.404500000000013],"tickmode":"array","ticktext":["0","20","40","60","80"],"tickvals":[0,19.999999999999996,40,60.000000000000007,80],"categoryorder":"array","categoryarray":["0","20","40","60","80"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc12ce2ca":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc12ce2ca","visdat":{"62cc12ce2ca":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: nivel educativo
+
+- El apoyo a la democracia es mayor entre las personas con educación terciaria
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-23e53acee8aa90b39c03" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-23e53acee8aa90b39c03">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[65.599999999999994],"text":"<\/br>Nivel educativo: Primaria <\/br>Apoyo a la democracia: 65.6 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Primaria","legendgroup":"Primaria","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[66.329999999999998],"text":"<\/br>Nivel educativo: Secundaria <\/br>Apoyo a la democracia: 66.33 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Secundaria","legendgroup":"Secundaria","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[80.25],"text":"<\/br>Nivel educativo: Terciaria <\/br>Apoyo a la democracia: 80.25 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Terciaria","legendgroup":"Terciaria","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según nivel educativo (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,3.6000000000000001],"tickmode":"array","ticktext":["Primaria","Secundaria","Terciaria"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["Primaria","Secundaria","Terciaria"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-4.0125000000000002,84.262500000000003],"tickmode":"array","ticktext":["0","20","40","60","80"],"tickvals":[0,20,40,60,80],"categoryorder":"array","categoryarray":["0","20","40","60","80"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc298e3edd":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc298e3edd","visdat":{"62cc298e3edd":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: ascendencia étnico-racial
+
+- El apoyo a la democracia parece ser mayor entre las personas de ascendencia étnico-racial blanca
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4e3c311acb2d092827b5" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-4e3c311acb2d092827b5">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[75.200000000000003],"text":"<\/br>Ascendencia étnico racial: Blanca <\/br>Apoyo a la democracia: 75.2 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Blanca","legendgroup":"Blanca","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[68.620000000000005],"text":"<\/br>Ascendencia étnico racial: Mestiza <\/br>Apoyo a la democracia: 68.62 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Mestiza","legendgroup":"Mestiza","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[66.900000000000006],"text":"<\/br>Ascendencia étnico racial: Indigena <\/br>Apoyo a la democracia: 66.9 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Indigena","legendgroup":"Indigena","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[4],"y":[62.009999999999998],"text":"<\/br>Ascendencia étnico racial: Negra (afrouruguaya) <\/br>Apoyo a la democracia: 62.01 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(222,203,228,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Negra (afrouruguaya)","legendgroup":"Negra (afrouruguaya)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[5],"y":[70.159999999999997],"text":"<\/br>Ascendencia étnico racial: Mulata <\/br>Apoyo a la democracia: 70.16 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(254,217,166,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Mulata","legendgroup":"Mulata","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[6],"y":[62.880000000000003],"text":"<\/br>Ascendencia étnico racial: Otra <\/br>Apoyo a la democracia: 62.88 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,255,204,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Otra","legendgroup":"Otra","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según ascendencia étnico racial (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,6.5999999999999996],"tickmode":"array","ticktext":["Blanca","Mestiza","Indigena","Negra (afrouruguaya)","Mulata","Otra"],"tickvals":[1,2,3,3.9999999999999996,5,6],"categoryorder":"array","categoryarray":["Blanca","Mestiza","Indigena","Negra (afrouruguaya)","Mulata","Otra"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.7600000000000002,78.960000000000008],"tickmode":"array","ticktext":["0","20","40","60"],"tickvals":[0,20,40,60],"categoryorder":"array","categoryarray":["0","20","40","60"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc9b13d3":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc9b13d3","visdat":{"62cc9b13d3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: confianza interpersonal
+
+- El apoyo a la democracia parece aumentar conforme aumenta la confianza interpersonal
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ca476be670828fc5b933" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-ca476be670828fc5b933">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[79.349999999999994],"text":"<\/br>Confianza interpersonal: Muy confiable <\/br>Apoyo a la democracia: 79.35 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Muy confiable","legendgroup":"Muy confiable","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[74.790000000000006],"text":"<\/br>Confianza interpersonal: Algo confiable <\/br>Apoyo a la democracia: 74.79 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Algo confiable","legendgroup":"Algo confiable","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[64.670000000000002],"text":"<\/br>Confianza interpersonal: Poco confiable <\/br>Apoyo a la democracia: 64.67 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Poco confiable","legendgroup":"Poco confiable","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[4],"y":[59.210000000000001],"text":"<\/br>Confianza interpersonal: Nada confiable <\/br>Apoyo a la democracia: 59.21 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(222,203,228,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Nada confiable","legendgroup":"Nada confiable","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según confianza interpersonal (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,4.5999999999999996],"tickmode":"array","ticktext":["Muy confiable","Algo confiable","Poco confiable","Nada confiable"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["Muy confiable","Algo confiable","Poco confiable","Nada confiable"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.9674999999999998,83.317499999999995],"tickmode":"array","ticktext":["0","20","40","60","80"],"tickvals":[0,20.000000000000004,40,59.999999999999993,80],"categoryorder":"array","categoryarray":["0","20","40","60","80"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cce147591":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cce147591","visdat":{"62cce147591":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: víctima de delitos en el último año
+
+- No parecen existir diferencias muy importantes según el sufrimiento de delitos en el último año
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ec4c00ee1435ad6fc730" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-ec4c00ee1435ad6fc730">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[73.640000000000001],"text":"<\/br>Victima de delitos: Si <\/br>Apoyo a la democracia: 73.64 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Si","legendgroup":"Si","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[73],"text":"<\/br>Victima de delitos: No <\/br>Apoyo a la democracia: 73 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"No","legendgroup":"No","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según si la persona fue víctima de delito en el último año (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,2.6000000000000001],"tickmode":"array","ticktext":["Si","No"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["Si","No"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.6820000000000004,77.322000000000003],"tickmode":"array","ticktext":["0","20","40","60"],"tickvals":[0,20,40,60],"categoryorder":"array","categoryarray":["0","20","40","60"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc7bc48ed":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc7bc48ed","visdat":{"62cc7bc48ed":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: evolución de la situación económica personal
+
+- El apoyo a la democracia es menor entre las personas que consideran que su situación económica personal empeoró en el último año
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-282ce81ea1d8d5e549e8" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-282ce81ea1d8d5e549e8">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[73.810000000000002],"text":"<\/br>Situación económica: Mejor <\/br>Apoyo a la democracia: 73.81 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Mejor","legendgroup":"Mejor","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[75.230000000000004],"text":"<\/br>Situación económica: Igual <\/br>Apoyo a la democracia: 75.23 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Igual","legendgroup":"Igual","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[68.359999999999999],"text":"<\/br>Situación económica: Peor <\/br>Apoyo a la democracia: 68.36 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Peor","legendgroup":"Peor","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según evolución de la situación económica (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,3.6000000000000001],"tickmode":"array","ticktext":["Mejor","Igual","Peor"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["Mejor","Igual","Peor"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.7615000000000003,78.991500000000002],"tickmode":"array","ticktext":["0","20","40","60"],"tickvals":[0,20,40,60],"categoryorder":"array","categoryarray":["0","20","40","60"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc5521747f":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc5521747f","visdat":{"62cc5521747f":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: evaluación del gobierno
+
+- El apoyo a la democracia aumenta de forma importante entre las personas que tienen evaluación más positiva del gobierno
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e9da2e4397ca3bccaa0a" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-e9da2e4397ca3bccaa0a">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[86],"text":"<\/br>Evaluación del gobierno: Muy bueno <\/br>Apoyo a la democracia: 86 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Muy bueno","legendgroup":"Muy bueno","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[77.870000000000005],"text":"<\/br>Evaluación del gobierno: Bueno <\/br>Apoyo a la democracia: 77.87 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Bueno","legendgroup":"Bueno","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[67.579999999999998],"text":"<\/br>Evaluación del gobierno: Ni bueno, ni malo <\/br>Apoyo a la democracia: 67.58 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Ni bueno, ni malo","legendgroup":"Ni bueno, ni malo","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[4],"y":[65.469999999999999],"text":"<\/br>Evaluación del gobierno: Malo <\/br>Apoyo a la democracia: 65.47 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(222,203,228,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Malo","legendgroup":"Malo","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[5],"y":[57.579999999999998],"text":"<\/br>Evaluación del gobierno: Muy malo <\/br>Apoyo a la democracia: 57.58 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(254,217,166,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"Muy malo","legendgroup":"Muy malo","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según evaluación del gobierno (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,5.5999999999999996],"tickmode":"array","ticktext":["Muy bueno","Bueno","Ni bueno, ni malo","Malo","Muy malo"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["Muy bueno","Bueno","Ni bueno, ni malo","Malo","Muy malo"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-4.2999999999999998,90.299999999999997],"tickmode":"array","ticktext":["0","25","50","75"],"tickvals":[0,25,49.999999999999993,75],"categoryorder":"array","categoryarray":["0","25","50","75"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc42f050c3":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc42f050c3","visdat":{"62cc42f050c3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+## Gráficos: año
+
+- No parecen existir diferencias muy importantes según sexo
+
+.codefont[
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4c33c1d3a0a81af2d441" style="width:720px;height:468px;"></div>
+<script type="application/json" data-for="htmlwidget-4c33c1d3a0a81af2d441">{"x":{"data":[{"orientation":"v","width":0.5,"base":0,"x":[1],"y":[71.129999999999995],"text":"<\/br>Año: 2007 <\/br>Apoyo a la democracia: 71.13 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(251,180,174,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2007","legendgroup":"2007","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[2],"y":[78.510000000000005],"text":"<\/br>Año: 2008 <\/br>Apoyo a la democracia: 78.51 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(179,205,227,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2008","legendgroup":"2008","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[3],"y":[77.689999999999998],"text":"<\/br>Año: 2010 <\/br>Apoyo a la democracia: 77.69 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(204,235,197,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2010","legendgroup":"2010","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[4],"y":[78.689999999999998],"text":"<\/br>Año: 2012 <\/br>Apoyo a la democracia: 78.69 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(222,203,228,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2012","legendgroup":"2012","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[5],"y":[75.709999999999994],"text":"<\/br>Año: 2014 <\/br>Apoyo a la democracia: 75.71 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(254,217,166,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2014","legendgroup":"2014","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[6],"y":[69.459999999999994],"text":"<\/br>Año: 2017 <\/br>Apoyo a la democracia: 69.46 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,255,204,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2017","legendgroup":"2017","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.5,"base":0,"x":[7],"y":[62.149999999999999],"text":"<\/br>Año: 2019 <\/br>Apoyo a la democracia: 62.15 %","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(229,216,189,1)","line":{"width":1.1338582677165354,"color":"rgba(0,0,0,1)"}},"name":"2019","legendgroup":"2019","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":22.648401826484022,"l":22.648401826484022},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Apoyo a la democracia según año de ola de Lapop (Uruguay 2007-2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,7.5999999999999996],"tickmode":"array","ticktext":["2007","2008","2010","2012","2014","2017","2019"],"tickvals":[1,2,3,4.0000000000000009,5,6,7],"categoryorder":"array","categoryarray":["2007","2008","2010","2012","2014","2017","2019"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.9344999999999999,82.624499999999998],"tickmode":"array","ticktext":["0","20","40","60","80"],"tickvals":[0,20.000000000000004,40,60.000000000000007,80],"categoryorder":"array","categoryarray":["0","20","40","60","80"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","annotations":[{"x":1,"y":-0.10000000000000001,"text":"Fuente: The Americas Barometer by the LAPOP Lab www.vanderbilt.edu/lapop","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"bottom","xshift":0,"yshift":0,"font":{"size":10}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62cc1c1b4ad":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"62cc1c1b4ad","visdat":{"62cc1c1b4ad":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+
+class: inverse, center, middle
+
+# Modelos
+
+---
+
+## Modelos
+
+- El análisis de las tablas cruzadas (con la variable dependiente numérica) y de los gráficos (con variable dependiente dicotomizada) dan algunas pistas sobre los factores que influyen en el apoyo a la democracia en Uruguay en el período 2007-2019
+
+- A primera vista, los resultados parecen consistentes con la literatura reciente, con alguna excepción, como la aparente poca influencia de haber sufrido delitos en el último año.
+
+- Una buena forma de corroborar estos indicios, es estimar modelos de regresión
+
+- A modo de ejemplo, y sin cotejar que se cumplan los supuestos necesarios de cada modelo, se estima un modelo de regresión lineal simple, un modelo de regresión lineal múltiple y un modelo probit
+
+---
+
+## Regresión lineal simple: apoyo a la democracia y evaluación del gobierno
+
+- De acuerdo a la literatura y al análisis previo, una de las variables más influyentes en el apoyo a la democracia es la evaluación del gobierno
+
+- Cuanto mejor es la evaluación del gobierno, mayor es el apoyo a la democracia
+
+- Estimamos una regresión lineal simple para corroborarlo
+
+- Primero chequeamos que la variable dependiente sea continua como requiere una regresión lineal el tipo de variable (usemos la función `class()`)
+
+.codefont[
+
+```r
+class(data_uru$apoyo_democracia_num)
+```
+
+```
+## [1] "numeric"
+```
+]
+
+---
+
+## Regresión lineal simple: apoyo a la democracia y evaluación del gobierno
+
+- Utilizamos la función `lm()` para estimar el modelo de regresión lineal simple y `summary()` para ver los resultados
+
+
+.codefontchico[
+
+```r
+reg &lt;- lm(apoyo_democracia_num ~ eval_gobierno, data = data_uru)
+
+summary(reg) # imprimo resultados
+```
+
+```
+## 
+## Call:
+## lm(formula = apoyo_democracia_num ~ eval_gobierno, data = data_uru)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4523 -0.8270  0.5477  0.8213  1.7929 
+## 
+## Coefficients:
+##                                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                     6.45233    0.04644 138.930  &lt; 2e-16 ***
+## eval_gobiernoBueno             -0.27365    0.05228  -5.234  1.7e-07 ***
+## eval_gobiernoNi bueno, ni malo -0.62537    0.05340 -11.712  &lt; 2e-16 ***
+## eval_gobiernoMalo              -0.78754    0.06745 -11.676  &lt; 2e-16 ***
+## eval_gobiernoMuy malo          -1.24526    0.08676 -14.353  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.458 on 9017 degrees of freedom
+## Multiple R-squared:  0.03812,	Adjusted R-squared:  0.03769 
+## F-statistic: 89.33 on 4 and 9017 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+
+## Regresión lineal simple: apoyo a la democracia y evaluación del gobierno
+
+- Utilizamos el paquete **broom** para una presentación más ordenada de los resultados
+
+- Más allá de las limitaciones del análisis, se confirma que la relación entre evaluación de gobierno y apoyo a la democracia es estadísticamente significativa y en la dirección predicha
+
+.codefontchico[
+
+```r
+library(broom)
+coef &lt;- tidy(reg, conf.int = TRUE) 
+print(coef)
+```
+
+```
+## # A tibble: 5 × 7
+##   term                  estimate std.error statistic  p.value conf.low conf.high
+##   &lt;chr&gt;                    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)              6.45     0.0464    139.   0           6.36      6.54 
+## 2 eval_gobiernoBueno      -0.274    0.0523     -5.23 1.70e- 7   -0.376    -0.171
+## 3 eval_gobiernoNi buen…   -0.625    0.0534    -11.7  1.88e-31   -0.730    -0.521
+## 4 eval_gobiernoMalo       -0.788    0.0674    -11.7  2.83e-31   -0.920    -0.655
+## 5 eval_gobiernoMuy malo   -1.25     0.0868    -14.4  3.30e-46   -1.42     -1.08
+```
+]
+
+---
+
+## Regresión lineal simple: apoyo a la democracia y evaluación del gobierno
+
+Grafico simple a partir del promedio de apoyo según evaluación del gboierno
+
+.codefont[
+
+]
+
+.codefont[
+![](g_mendez_files/figure-html/p_reg1_grafico-1.png)&lt;!-- --&gt;
+]
+---
+
+## Regresión lineal multiple
+
+- Incluimos todas las variables de interés para estimar su influencia
+
+- Con todas las variables incluidas en el modelo se mantiene la significación estadística de la evaluación del gobierno
+
+- Además se identifican otro conjunto de variables significativas, más allá de que la varianza explicada por el modelo (aún con las limitaciones ya señaladas) es relativamente baja
+
+.codefontchico[
+
+```r
+reg2 &lt;- lm(apoyo_democracia_num ~ eval_gobierno + sit_economica + conf_interpersonal + victima_delito + as.numeric(año) + as.numeric(edad) + sexo + nivel_educ + etnia_raza, data = data_uru)
+```
+]
+
+---
+
+## Regresión lineal multiple
+
+.codefontmaschico[
+
+```
+## 
+## Call:
+## lm(formula = apoyo_democracia_num ~ eval_gobierno + sit_economica + 
+##     conf_interpersonal + victima_delito + as.numeric(año) + 
+##     as.numeric(edad) + sexo + nivel_educ + etnia_raza, data = data_uru)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.1791 -0.5819  0.4376  0.9407  2.7046 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      42.4078411  7.4001643   5.731 1.03e-08 ***
+## eval_gobiernoBueno               -0.1978050  0.0508215  -3.892  0.00010 ***
+## eval_gobiernoNi bueno, ni malo   -0.4706844  0.0528531  -8.906  &lt; 2e-16 ***
+## eval_gobiernoMalo                -0.6190853  0.0674178  -9.183  &lt; 2e-16 ***
+## eval_gobiernoMuy malo            -1.1182964  0.0863061 -12.957  &lt; 2e-16 ***
+## sit_economicaIgual                0.0678694  0.0358625   1.892  0.05846 .  
+## sit_economicaPeor                -0.0182629  0.0433454  -0.421  0.67352    
+## conf_interpersonalAlgo confiable -0.0377166  0.0360459  -1.046  0.29543    
+## conf_interpersonalPoco confiable -0.3166435  0.0453394  -6.984 3.08e-12 ***
+## conf_interpersonalNada confiable -0.5328260  0.0657527  -8.103 6.04e-16 ***
+## victima_delitoNo                 -0.1029197  0.0352982  -2.916  0.00356 ** 
+## as.numeric(año)                  -0.0182472  0.0036802  -4.958 7.25e-07 ***
+## as.numeric(edad)                  0.0147578  0.0009016  16.368  &lt; 2e-16 ***
+## sexoMujer                        -0.0338177  0.0297373  -1.137  0.25548    
+## nivel_educSecundaria              0.2794717  0.0616337   4.534 5.85e-06 ***
+## nivel_educTerciaria               0.6539324  0.0614549  10.641  &lt; 2e-16 ***
+## etnia_razaMestiza                -0.0251281  0.0388718  -0.646  0.51801    
+## etnia_razaIndigena               -0.0887950  0.1183215  -0.750  0.45300    
+## etnia_razaNegra (afrouruguaya)   -0.2498713  0.0949880  -2.631  0.00854 ** 
+## etnia_razaMulata                 -0.1267452  0.0894855  -1.416  0.15670    
+## etnia_razaOtra                   -0.3069823  0.1237714  -2.480  0.01315 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.405 on 9001 degrees of freedom
+## Multiple R-squared:  0.1084,	Adjusted R-squared:  0.1064 
+## F-statistic: 54.73 on 20 and 9001 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+
+## Regresión lineal multiple
+
+.codefontchico[
+
+```
+## # A tibble: 21 × 7
+##    term                 estimate std.error statistic  p.value conf.low conf.high
+##    &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)           42.4     7.40         5.73  1.03e- 8 27.9       56.9   
+##  2 eval_gobiernoBueno    -0.198   0.0508      -3.89  1.00e- 4 -0.297     -0.0982
+##  3 eval_gobiernoNi bue…  -0.471   0.0529      -8.91  6.35e-19 -0.574     -0.367 
+##  4 eval_gobiernoMalo     -0.619   0.0674      -9.18  5.13e-20 -0.751     -0.487 
+##  5 eval_gobiernoMuy ma…  -1.12    0.0863     -13.0   4.67e-38 -1.29      -0.949 
+##  6 sit_economicaIgual     0.0679  0.0359       1.89  5.85e- 2 -0.00243    0.138 
+##  7 sit_economicaPeor     -0.0183  0.0433      -0.421 6.74e- 1 -0.103      0.0667
+##  8 conf_interpersonalA…  -0.0377  0.0360      -1.05  2.95e- 1 -0.108      0.0329
+##  9 conf_interpersonalP…  -0.317   0.0453      -6.98  3.08e-12 -0.406     -0.228 
+## 10 conf_interpersonalN…  -0.533   0.0658      -8.10  6.04e-16 -0.662     -0.404 
+## 11 victima_delitoNo      -0.103   0.0353      -2.92  3.56e- 3 -0.172     -0.0337
+## 12 as.numeric(año)       -0.0182  0.00368     -4.96  7.25e- 7 -0.0255    -0.0110
+## 13 as.numeric(edad)       0.0148  0.000902    16.4   2.32e-59  0.0130     0.0165
+## 14 sexoMujer             -0.0338  0.0297      -1.14  2.55e- 1 -0.0921     0.0245
+## 15 nivel_educSecundaria   0.279   0.0616       4.53  5.85e- 6  0.159      0.400 
+## 16 nivel_educTerciaria    0.654   0.0615      10.6   2.76e-26  0.533      0.774 
+## 17 etnia_razaMestiza     -0.0251  0.0389      -0.646 5.18e- 1 -0.101      0.0511
+## 18 etnia_razaIndigena    -0.0888  0.118       -0.750 4.53e- 1 -0.321      0.143 
+## 19 etnia_razaNegra (af…  -0.250   0.0950      -2.63  8.54e- 3 -0.436     -0.0637
+## 20 etnia_razaMulata      -0.127   0.0895      -1.42  1.57e- 1 -0.302      0.0487
+## 21 etnia_razaOtra        -0.307   0.124       -2.48  1.31e- 2 -0.550     -0.0644
+```
+]
+
+---
+
+## Modelo probit
+
+- Incluimos las variables significativas para ver su impacto en la probabilidad de Apoyo a la democracia (variable binaria)
+
+- La evaluación del gobierno también es una variable significativa para predecir el apoyo o no apoyo a la democracia, junto con otras de las variables ya identificadas en la regresión lineal múltiple
+
+.codefontchico[
+
+```r
+reg3 &lt;- glm(apoyo_democracia_bin ~ eval_gobierno + sit_economica + conf_interpersonal + as.numeric(año) + as.numeric(edad) + nivel_educ + etnia_raza, family=binomial(link="probit"), data = data_uru)
+```
+]
+
+---
+## Modelo probit
+
+.codefontmaschico[
+
+```
+## 
+## Call:
+## glm(formula = apoyo_democracia_bin ~ eval_gobierno + sit_economica + 
+##     conf_interpersonal + as.numeric(año) + as.numeric(edad) + 
+##     nivel_educ + etnia_raza, family = binomial(link = "probit"), 
+##     data = data_uru)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.6353  -1.0495   0.5975   0.8081   1.6559  
+## 
+## Coefficients:
+##                                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                      41.4106342  7.2342406   5.724 1.04e-08 ***
+## eval_gobiernoBueno               -0.2500872  0.0571498  -4.376 1.21e-05 ***
+## eval_gobiernoNi bueno, ni malo   -0.4991382  0.0580120  -8.604  &lt; 2e-16 ***
+## eval_gobiernoMalo                -0.5422763  0.0701719  -7.728 1.09e-14 ***
+## eval_gobiernoMuy malo            -0.8136027  0.0856710  -9.497  &lt; 2e-16 ***
+## sit_economicaIgual                0.0539751  0.0360860   1.496   0.1347    
+## sit_economicaPeor                -0.0265520  0.0424951  -0.625   0.5321    
+## conf_interpersonalAlgo confiable -0.0751903  0.0370899  -2.027   0.0426 *  
+## conf_interpersonalPoco confiable -0.3001407  0.0445168  -6.742 1.56e-11 ***
+## conf_interpersonalNada confiable -0.4008962  0.0626044  -6.404 1.52e-10 ***
+## as.numeric(año)                  -0.0204598  0.0035984  -5.686 1.30e-08 ***
+## as.numeric(edad)                  0.0160852  0.0009353  17.198  &lt; 2e-16 ***
+## nivel_educSecundaria              0.3145595  0.0588962   5.341 9.25e-08 ***
+## nivel_educTerciaria               0.6814970  0.0597253  11.411  &lt; 2e-16 ***
+## etnia_razaMestiza                -0.0461229  0.0377357  -1.222   0.2216    
+## etnia_razaIndigena               -0.2086244  0.1137256  -1.834   0.0666 .  
+## etnia_razaNegra (afrouruguaya)   -0.2109215  0.0899200  -2.346   0.0190 *  
+## etnia_razaMulata                 -0.0602934  0.0870987  -0.692   0.4888    
+## etnia_razaOtra                   -0.2283530  0.1180130  -1.935   0.0530 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 10496.5  on 9021  degrees of freedom
+## Residual deviance:  9544.8  on 9003  degrees of freedom
+## AIC: 9582.8
+## 
+## Number of Fisher Scoring iterations: 4
+```
+]
+
+---
+
+## Modelo probit
+
+.codefontchico[
+
+```
+## # A tibble: 19 × 7
+##    term                 estimate std.error statistic  p.value conf.low conf.high
+##    &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)           41.4     7.23         5.72  1.04e- 8  27.2     55.6    
+##  2 eval_gobiernoBueno    -0.250   0.0571      -4.38  1.21e- 5  -0.363   -0.139  
+##  3 eval_gobiernoNi bue…  -0.499   0.0580      -8.60  7.69e-18  -0.614   -0.386  
+##  4 eval_gobiernoMalo     -0.542   0.0702      -7.73  1.09e-14  -0.680   -0.405  
+##  5 eval_gobiernoMuy ma…  -0.814   0.0857      -9.50  2.16e-21  -0.982   -0.646  
+##  6 sit_economicaIgual     0.0540  0.0361       1.50  1.35e- 1  -0.0169   0.125  
+##  7 sit_economicaPeor     -0.0266  0.0425      -0.625 5.32e- 1  -0.110    0.0569 
+##  8 conf_interpersonalA…  -0.0752  0.0371      -2.03  4.26e- 2  -0.148   -0.00259
+##  9 conf_interpersonalP…  -0.300   0.0445      -6.74  1.56e-11  -0.388   -0.213  
+## 10 conf_interpersonalN…  -0.401   0.0626      -6.40  1.52e-10  -0.523   -0.278  
+## 11 as.numeric(año)       -0.0205  0.00360     -5.69  1.30e- 8  -0.0275  -0.0134 
+## 12 as.numeric(edad)       0.0161  0.000935    17.2   2.73e-66   0.0143   0.0179 
+## 13 nivel_educSecundaria   0.315   0.0589       5.34  9.25e- 8   0.199    0.430  
+## 14 nivel_educTerciaria    0.681   0.0597      11.4   3.70e-30   0.565    0.798  
+## 15 etnia_razaMestiza     -0.0461  0.0377      -1.22  2.22e- 1  -0.120    0.0279 
+## 16 etnia_razaIndigena    -0.209   0.114       -1.83  6.66e- 2  -0.431    0.0168 
+## 17 etnia_razaNegra (af…  -0.211   0.0899      -2.35  1.90e- 2  -0.386   -0.0340 
+## 18 etnia_razaMulata      -0.0603  0.0871      -0.692 4.89e- 1  -0.228    0.110  
+## 19 etnia_razaOtra        -0.228   0.118       -1.93  5.30e- 2  -0.460    0.00608
+```
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"incremental": true,
+"df_print": "kable",
+"smaller": true,
+"widescreen": true,
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

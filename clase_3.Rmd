@@ -1,0 +1,472 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase 3: Análisis de datos"
+author: "FCS-UdelaR - Martín Opertti y Fabricio Carneiro"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output:
+  xaringan::moon_reader:
+    css: ["xaringan-themer.css", "estilo.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      incremental: true
+      df_print: kable  
+      smaller: true
+      widescreen: true
+      highlightLines: true
+---
+class: inverse, center, middle
+
+```{r setup, include=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(tidyverse)
+library(data.table)
+library(xaringanExtra)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+```
+
+# Importar datos con etiquetas 
+
+---
+## Etiquetas cuando importamos datos
+
+- Cuando importamos datos que tienen etiquetas (por ejemplo de formatos como Stata o SPSS) debemos tener cuidado con cómo manejar estas etiquetas
+
+- Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
+
+```{r eaj13bb, echo = FALSE, results='hide', message=FALSE}
+library(tidyverse)
+```
+
+.codefont[
+```{r ej13bb, echo = TRUE}
+library(haven)
+data_uru <- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %>% 
+  select(fecha, q1, q2, pol1)
+
+glimpse(data_uru)
+```
+]
+
+- Por defecto se leen como variables de tipo `double` (numérica) con etiquetas como atributos
+
+---
+
+## Etiquetas cuando importamos datos
+
+Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
+
+```{r ej13bca, echo = TRUE}
+library(haven)
+data_uru <- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %>% 
+  select(fecha, q1, q2, pol1) %>% 
+  as_factor()
+
+glimpse(data_uru)
+```
+
+---
+
+## Factores
+
+- Otro tipo de variables en R son los factores (factors), utilizados para representar data categórica. Estos suelen confundirse con las variables de caracteres pero tienen algunas diferencias. 
+
+- Normalmente los factores son utilizados para las variables de caracteres con un número de valores posibles fijo y cierto orden (opcional)
+
+- A R le gusta transformar las variables de caracteres en factores al importarlas (si usamos R Base particularmente).
+
+- El paquete [forcats](https://forcats.tidyverse.org/) (dentro del Tidyverse) ayuda a manejar variables de caracteres y factores:
+    - `fct_relevel()` cambia manualmente el orden de los niveles
+    - `fct_reoder()` cambia el orden de los niveles de acuerdo a otra variable
+    - `fct_infreq()` reordena un factor por la frecuencia de sus valores 
+    - `fct_lump()` collapsa los valores menos frecuentes en otra categoría "other". Es muy útil para preparar datos para tablas y gráficos
+
+```{r eaj13sssbb, echo = FALSE, results='hide', message=FALSE}
+data_uru <- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %>% 
+  as_factor()
+```
+
+---
+
+## Importar y exportar datos: factores 
+
+.codefontchico[
+```{r ej13, echo = TRUE}
+# Podemos chequear y coercionar factores
+is.factor(data_uru$q1) # Chequeo si es factor
+levels(data_uru$q1) # Chequeo los niveles
+# Transformo a caracter
+data_uru$q1 <- as.character(data_uru$q1) 
+class(data_uru$q1)
+# De vuelta a factor
+data_uru$q1 <- as.factor(data_uru$q1)
+class(data_uru$q1)
+```
+]
+
+---
+class: inverse, center, middle
+
+# Estimación intervalo de confianza
+
+---
+
+## Intervalo de confianza para una media
+
+La fórmula para calcular el intervalo de confianza de una media es: 
+
+$$CI = x ± z\frac{sd}{\sqrt{n}}$$
+
+Donde $x$ es la media de la muestra, z el valor crítico según el nivel de confianza elegido, $s$ es la desviación estandar y $n$ el número de casos. 
+
+En R podemos hacer esto utilizando las mismas funciones que ya vimos, incluyendo los calculos dentro de mutate!
+
+.codefont[
+```{r ej10, echo = TRUE}
+data_uru %>% 
+  mutate(l1 = as.numeric(l1)) %>% # pasar ideología a variable numérica
+  summarise(media = mean(l1),
+            sd = sd(l1),
+            n = n()) %>% 
+  mutate(se = sd / sqrt(n),
+         ci_inf = media - qnorm(.975) * (sd/sqrt(n)),
+         ci_sup = media + qnorm(.975) * (sd/sqrt(n))) 
+```
+]
+
+--- 
+
+---
+
+## Intervalo de confianza para una media según grupo
+
+Calcular la media de ideología según identificación partidaria. Notar como podemos manipular la tabla como cualquier dataframe
+
+.codefont[
+```{r ej0010, echo = TRUE}
+data_uru %>% 
+  mutate(l1 = as.numeric(l1)) %>% # pasar ideología a numérica
+  group_by(id_par) %>% 
+  summarise(media = mean(l1),
+            sd = sd(l1),
+            n = n()) %>% 
+  mutate(se = sd / sqrt(n),
+         ci_inf = media - qnorm(.975) * (sd/sqrt(n)),
+         ci_sup = media + qnorm(.975) * (sd/sqrt(n))) %>% 
+  select(-sd, -n, -se) %>% 
+  filter(id_par %in% c("Frente Amplio", "Partido Nacional", "Partido Colorado"))
+```
+]
+
+---
+
+## Intervalo de confianza para una proporción
+
+La fórmula para el intervalo de confianza una proporción es distinta a la de la media. Podemos calcularla de la siguiente forma para proporciones simples:
+
+.codefont[
+```{r ej000, echo = TRUE}
+data_uru %>% 
+  count(id_par) %>% 
+  mutate(
+    prop = n/sum(n), # Proporción de cada categoría
+    moe = (qnorm(0.975) * sqrt(prop*(1-prop)/nrow(data_uru))), # margen de error al 95% confianza   
+    ci_inf =  prop - moe, # Intervalo superior
+    ci_sup =  prop + moe # Intervalo superior
+  )  
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Regresión lineal
+
+---
+
+## Modelos de regresión lineal
+
+R trae un conjunto de funciones para estimar modelos de regresión. `lm()` sirve para estimar una regresión lineal. El primer argumento es la variable dependiente, luego `~` seguido de las variables independientes separadas por `+`, luego en el argumento data especificamos el dataframe a utilizar:
+
+```{r ch59_3, echo = TRUE, warning = FALSE, message=FALSE, eval = FALSE}
+reg <- lm(var_dependiente ~ var_ind_1 + var_ind2, data = mi_data)
+
+summary(reg) # Con summary podemos ver los resultados
+```
+
+---
+
+## Redistribución e ideología
+
+Con los datos de la encuesta de LAPOP podemos estimar un modelo de regresión lineal (MCO). Para eso necesitamos una variable dependiente numérica. Lo más cercano en esta base es la ideología. Estimemos un modelo para ver el efecto de las preferencias por políticas redistributivas en la autoidentificación ideológica. 
+
+- La variable **dependiente** que vamos a utilizar es `l1` que contiene los datos de la siguiente pregunta: *. Cambiando de tema, en esta tarjeta tenemos una escala del 1 a 10 que va de izquierda a derecha, en la que el 1 significa izquierda y el 10 significa derecha. Hoy en día cuando se habla de tendencias políticas, mucha gente habla de aquellos que simpatizan más con la izquierda o con la derecha. Según el sentido que tengan para usted los términos ‘izquierda’ y ‘derecha’ cuando piensa sobre su punto de vista político, ¿dónde se encontraría usted en esta escala? Dígame el número."* 
+
+- La variable **independiente** que vamos a utilizar es `redist3` que contiene los datos de la siguiente pregunta: *"La mayoría de los desempleados podría encontrar un trabajo si quisiera. ¿Hasta qué punto está de acuerdo o en desacuerdo?"* En una escala del 1 (muy en desacuerdo) al 7 (muy de acuerdo). 
+
+---
+
+## Chequeo de variables
+
+El primer paso antes de estimar un modelo de regresión es definir el formato de las variables que vamos a utilizar. Corroborar los siguientes pasos:
+
+- Como vimos en el curso, el modelo de regresión lineal de mínimos cuadrados ordinarios necesita como variable dependiente que la variable sea contínua. En R, esto significa que la variable dependiente debe ser numérica. En caso de que no lo sea, debemos pasarla a numérica
+
+- Las variables independientes pueden ser categóricas o continuas. Las variables categóricas en R son factores, mientras que las continuas son numéricas como vimos.
+
+- **Importante:** Cuando pasamos una variable a numérica tenemos que ser muy cuidadosos con que no nos queden valores de opciones como "No sabe o no contesta" como un valor más en la distribución.
+
+---
+
+## Variable de preferencias por redistribución
+
+Primero chequeamos el tipo de variable (usemos la función `class()`)
+
+.codefont[
+```{r ch59ar, echo = TRUE, warning = FALSE, message=FALSE}
+class(data_uru$redist3)
+```
+]
+
+Esta variable, al ser una escala del 1 al 7 (ordinal) la vamos a utilizar como numérica (7 es el mínimo de valores necesario para tomar una variable ordinal como numérica). Antes de eso, miremos la distribución de la variable (aún factor), antes de transformarla a numérica:
+
+.codefont[
+```{r ch59sadr, echo = TRUE, warning = FALSE, message=FALSE}
+count(data_uru, redist3)
+```
+]
+
+---
+
+## Variable de preferencias por redistribución
+
+Con la tabla anterior pudimos observar como 5 encuestados contestaron "No sabe" y dos no respondieron. No podemos pasar esos valores a la escala numérica, por lo que los excluiremos de la base de datos. Esto lo hacemo con la misma función que utilizamos para filtrar, `filter()`:
+
+.codefont[
+```{r ch59sad, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru <- data_uru %>% 
+  filter(redist3 != "No sabe") %>% 
+  filter(redist3 != "No responde") 
+```
+]
+
+Ahora chequeamos:
+
+.codefont[
+```{r ch59sad2, echo = TRUE, warning = FALSE, message=FALSE}
+count(data_uru, redist3)
+```
+]
+
+---
+
+## Variable de preferencias por redistribución
+
+Ahora sí estamos listos para pasar la variable a numérica.  Si no hubiesemos elimiando los casos que "No sabe" o "No contesta", Los primeros 7 valores se corresponden numéricamente de forma correcta pero los "No sabe" y "No responde" corresponderían al valor 8 y 9. Esto hubiese causado que el modelo interpete que las personas que contestaron no sabe o no responde son las que más de acuerdo están con la redistribución porque son los valores más altos. 
+
+.codefont[
+```{r ch98s33ad, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru <- data_uru %>% 
+  mutate(redist3_num = as.numeric(redist3)) 
+```
+]
+
+Chequeo que la versión numérica esté bien:
+
+.codefont[
+```{r all2, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru %>% 
+  count(redist3, redist3_num) %>% 
+  spread(redist3_num, n)
+```
+]
+
+---
+
+## Variable de preferencias por autoidentificación ideológica
+
+Repitamos lo mismo con la variable de ideología:
+
+.codefont[
+```{r ch59sd, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru %>% 
+  count(l1)
+```
+]
+ 
+
+---
+
+## Variable de preferencias por autoidentificación ideológica
+
+Filtremos de nuevo y luego creemos la variable numérica
+
+.codefont[
+```{r ch98sad, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru <- data_uru %>% 
+  filter(l1 != "No responde") %>% 
+  filter(l1 != "No sabe") %>% 
+  mutate(l1_num = as.numeric(l1))
+
+data_uru %>% 
+  count(l1, l1_num) %>% 
+  spread(l1_num, n)
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Previo a estimar el modelo de regresión recodifiquemos las dos variables y tiremos una tabla cruzada para tener una idea de la relación entre nuestras dos variables de interés. Ideología la vamos a recodificar en izquierda (1 a 4), centro (5 y 6) y derecha (7 a 10) y preferencias por redistribución en pro-redistribución (1 a 3), neutro (4) anti-redistribución (5 a 7).
+
+.codefont[
+```{r ch98sadddd, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru <- data_uru %>% 
+  mutate(l1_cat = case_when(
+    l1_num <= 4 ~ "Izquierda",
+    l1_num %in% c(5, 6) ~ "Centro",
+    l1_num >= 7 ~ "Derecha",
+  )) %>% 
+  mutate(redist3_cat = case_when(
+    redist3_num <= 3 ~ "Pro-redistribución",
+    redist3_num == 4 ~ "Neutro",
+    redist3_num >= 5 ~ "Anti-redistribución",
+  )) 
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Ahora podemos crear una tabla cruzada entre las dos variables. Como quiero ver el efecto de las preferencias redsitributivas en la autoidentificación ideológica, voy a crear una tabla donde en las filas estén los valores de preferencias por redistribución y las columnas la ideología, y que la tabla esté en porcentajes a nivel de la fila. Retomando lo que vimos en el módulo 2:
+
+.codefont[
+```{r ch98sadd, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru %>% 
+  count(redist3_cat, l1_cat) %>% 
+  mutate(n = n/sum(n)*100, .by = redist3_cat) %>% 
+  spread(l1_cat, n)
+```
+]
+
+---
+
+## Tabla de medias entre las dos variables
+
+También podemos crear una tabla con la media de ideología según las categorías de preferencias por redistribución:
+
+.codefont[
+```{r ch98sadd4, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru %>%
+  group_by(redist3_cat) %>% 
+  summarize(media_ideologia = mean(l1_num))
+```
+]
+
+---
+
+## Estimar modelo
+
+Ahora si podemos estimar el modelo. La variable dependiente siempre va primera y luego del ~ va la variable indepndiente. Con summary consultamos los resultados
+
+.codefontchico[
+```{r ch59, echo = TRUE, warning = FALSE, message=FALSE}
+reg <- lm(l1_num ~ redist3_num, data = data_uru)
+
+summary(reg) # Con summary podemos ver los resultados
+```
+]
+
+---
+
+## Estimar modelo con controles
+
+Normalmente estimamos modelos de regresión multiples que incluyen variables de control además de nuestra variable independiente de interés. En este caso controlemos por sexo y edad. Para agregar esas variables debemos chequear su formato
+
+- Sexo es categórica, por lo que debe ser incluida como factor.
+
+- Edad es continua por lo que debe ser incluida como numérica
+
+
+.codefontchico[
+```{r ch5aaaa9, echo = TRUE, warning = FALSE, message=FALSE}
+class(data_uru$q1)
+class(data_uru$q2)
+```
+]
+
+---
+
+## Estimar modelo con controles
+
+Transformemos entonces edad a numérica (chequear siempre que no haya valores perdidos como numéricos) y estimemos el modelo:
+
+.codefont[
+```{r ch5aab9, echo = TRUE, warning = FALSE, message=FALSE}
+data_uru <- data_uru %>% 
+  mutate(edad_num = as.numeric(q2))
+
+reg <- lm(l1_num ~ redist3_num + q1 + edad_num, data = data_uru)
+
+summary(reg) 
+```
+]
+
+---
+
+## Exportar resultados modelos de regresión 
+
+Para analizar mejor los resultados de nuestros modelos podemos utilizar el paquete [broom](https://broom.tidymodels.org/). La función `tidy()`, por ejemplo, nos permite extraer los resultados del modelo en un dataframe en formato tidy
+
+.codefont[
+```{r ch60, echo = TRUE, warning = FALSE, message=FALSE}
+library(broom)
+
+coef <- tidy(reg, conf.int = TRUE) 
+
+print(coef)
+```
+]
+
+Para exportar como archivo excel:
+
+.codefont[
+```{r ch60b, eval = FALSE, echo = TRUE}
+writexl::write_xlsx(coef, "resultads/reg.xlsx")
+```
+]
+
+
+
+
+
+

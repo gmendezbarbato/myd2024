@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Medición y diseño de investigación</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
+    <meta name="date" content="2023-07-03" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="estilo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Medición y diseño de investigación
+]
+.subtitle[
+## Clase 3: Análisis de datos
+]
+.author[
+### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
+]
+.date[
+### July 03, 2023
+]
+
+---
+
+class: inverse, center, middle
+
+
+
+# Importar datos con etiquetas 
+
+---
+## Etiquetas cuando importamos datos
+
+- Cuando importamos datos que tienen etiquetas (por ejemplo de formatos como Stata o SPSS) debemos tener cuidado con cómo manejar estas etiquetas
+
+- Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
+
+
+
+.codefont[
+
+```r
+library(haven)
+data_uru &lt;- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %&gt;% 
+  select(fecha, q1, q2, pol1)
+
+glimpse(data_uru)
+```
+
+```
+## Rows: 1,581
+## Columns: 4
+## $ fecha &lt;date&gt; 2019-03-09, 2019-04-14, 2019-03-16, 2019-03-09, 2019-03-24, 201…
+## $ q1    &lt;dbl+lbl&gt; 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2, …
+## $ q2    &lt;dbl+lbl&gt;  1, 14, 39, 16, 26, 45, 19, 20, 46, 36, 41,  8, 57, 37, 33, …
+## $ pol1  &lt;dbl+lbl&gt; 3, 4, 3, 2, 4, 4, 2, 1, 1, 2, 3, 1, 1, 4, 3, 1, 1, 2, 1, 1, …
+```
+]
+
+- Por defecto se leen como variables de tipo `double` (numérica) con etiquetas como atributos
+
+---
+
+## Etiquetas cuando importamos datos
+
+Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
+
+
+```r
+library(haven)
+data_uru &lt;- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %&gt;% 
+  select(fecha, q1, q2, pol1) %&gt;% 
+  as_factor()
+
+glimpse(data_uru)
+```
+
+```
+## Rows: 1,581
+## Columns: 4
+## $ fecha &lt;date&gt; 2019-03-09, 2019-04-14, 2019-03-16, 2019-03-09, 2019-03-24, 201…
+## $ q1    &lt;fct&gt; Mujer, Hombre, Mujer, Hombre, Hombre, Hombre, Hombre, Hombre, Ho…
+## $ q2    &lt;fct&gt; 18, 31, 56, 33, 43, 62, 36, 37, 63, 53, 58, 25, 74, 54, 50, 71, …
+## $ pol1  &lt;fct&gt; Poco, Nada, Poco, Algo, Nada, Nada, Algo, Mucho, Mucho, Algo, Po…
+```
+
+---
+
+## Factores
+
+- Otro tipo de variables en R son los factores (factors), utilizados para representar data categórica. Estos suelen confundirse con las variables de caracteres pero tienen algunas diferencias. 
+
+- Normalmente los factores son utilizados para las variables de caracteres con un número de valores posibles fijo y cierto orden (opcional)
+
+- A R le gusta transformar las variables de caracteres en factores al importarlas (si usamos R Base particularmente).
+
+- El paquete [forcats](https://forcats.tidyverse.org/) (dentro del Tidyverse) ayuda a manejar variables de caracteres y factores:
+    - `fct_relevel()` cambia manualmente el orden de los niveles
+    - `fct_reoder()` cambia el orden de los niveles de acuerdo a otra variable
+    - `fct_infreq()` reordena un factor por la frecuencia de sus valores 
+    - `fct_lump()` collapsa los valores menos frecuentes en otra categoría "other". Es muy útil para preparar datos para tablas y gráficos
+
+
+
+---
+
+## Importar y exportar datos: factores 
+
+.codefontchico[
+
+```r
+# Podemos chequear y coercionar factores
+is.factor(data_uru$q1) # Chequeo si es factor
+```
+
+```
+## [1] TRUE
+```
+
+```r
+levels(data_uru$q1) # Chequeo los niveles
+```
+
+```
+## [1] "Hombre" "Mujer"
+```
+
+```r
+# Transformo a caracter
+data_uru$q1 &lt;- as.character(data_uru$q1) 
+class(data_uru$q1)
+```
+
+```
+## [1] "character"
+```
+
+```r
+# De vuelta a factor
+data_uru$q1 &lt;- as.factor(data_uru$q1)
+class(data_uru$q1)
+```
+
+```
+## [1] "factor"
+```
+]
+
+---
+class: inverse, center, middle
+
+# Estimación intervalo de confianza
+
+---
+
+## Intervalo de confianza para una media
+
+La fórmula para calcular el intervalo de confianza de una media es: 
+
+`$$CI = x ± z\frac{sd}{\sqrt{n}}$$`
+
+Donde `\(x\)` es la media de la muestra, z el valor crítico según el nivel de confianza elegido, `\(s\)` es la desviación estandar y `\(n\)` el número de casos. 
+
+En R podemos hacer esto utilizando las mismas funciones que ya vimos, incluyendo los calculos dentro de mutate!
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  mutate(l1 = as.numeric(l1)) %&gt;% # pasar ideología a variable numérica
+  summarise(media = mean(l1),
+            sd = sd(l1),
+            n = n()) %&gt;% 
+  mutate(se = sd / sqrt(n),
+         ci_inf = media - qnorm(.975) * (sd/sqrt(n)),
+         ci_sup = media + qnorm(.975) * (sd/sqrt(n))) 
+```
+
+```
+## # A tibble: 1 × 6
+##   media    sd     n     se ci_inf ci_sup
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1  5.52  3.03  1581 0.0761   5.38   5.67
+```
+]
+
+--- 
+
+---
+
+## Intervalo de confianza para una media según grupo
+
+Calcular la media de ideología según identificación partidaria. Notar como podemos manipular la tabla como cualquier dataframe
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  mutate(l1 = as.numeric(l1)) %&gt;% # pasar ideología a numérica
+  group_by(id_par) %&gt;% 
+  summarise(media = mean(l1),
+            sd = sd(l1),
+            n = n()) %&gt;% 
+  mutate(se = sd / sqrt(n),
+         ci_inf = media - qnorm(.975) * (sd/sqrt(n)),
+         ci_sup = media + qnorm(.975) * (sd/sqrt(n))) %&gt;% 
+  select(-sd, -n, -se) %&gt;% 
+  filter(id_par %in% c("Frente Amplio", "Partido Nacional", "Partido Colorado"))
+```
+
+```
+## # A tibble: 3 × 4
+##   id_par           media ci_inf ci_sup
+##   &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Frente Amplio     3.08   2.85   3.30
+## 2 Partido Nacional  7.40   7.09   7.70
+## 3 Partido Colorado  7.47   7.06   7.88
+```
+]
+
+---
+
+## Intervalo de confianza para una proporción
+
+La fórmula para el intervalo de confianza una proporción es distinta a la de la media. Podemos calcularla de la siguiente forma para proporciones simples:
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  count(id_par) %&gt;% 
+  mutate(
+    prop = n/sum(n), # Proporción de cada categoría
+    moe = (qnorm(0.975) * sqrt(prop*(1-prop)/nrow(data_uru))), # margen de error al 95% confianza   
+    ci_inf =  prop - moe, # Intervalo superior
+    ci_sup =  prop + moe # Intervalo superior
+  )  
+```
+
+```
+## # A tibble: 6 × 6
+##   id_par                              n   prop     moe  ci_inf ci_sup
+##   &lt;fct&gt;                           &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Frente Amplio                     355 0.225  0.0206  0.204   0.245 
+## 2 Partido Nacional                  229 0.145  0.0173  0.127   0.162 
+## 3 Partido Colorado                   98 0.0620 0.0119  0.0501  0.0739
+## 4 Otros partidos                     61 0.0386 0.00949 0.0291  0.0481
+## 5 No simpatiza con ningun partido   813 0.514  0.0246  0.490   0.539 
+## 6 NS/NC                              25 0.0158 0.00615 0.00966 0.0220
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Regresión lineal
+
+---
+
+## Modelos de regresión lineal
+
+R trae un conjunto de funciones para estimar modelos de regresión. `lm()` sirve para estimar una regresión lineal. El primer argumento es la variable dependiente, luego `~` seguido de las variables independientes separadas por `+`, luego en el argumento data especificamos el dataframe a utilizar:
+
+
+```r
+reg &lt;- lm(var_dependiente ~ var_ind_1 + var_ind2, data = mi_data)
+
+summary(reg) # Con summary podemos ver los resultados
+```
+
+---
+
+## Redistribución e ideología
+
+Con los datos de la encuesta de LAPOP podemos estimar un modelo de regresión lineal (MCO). Para eso necesitamos una variable dependiente numérica. Lo más cercano en esta base es la ideología. Estimemos un modelo para ver el efecto de las preferencias por políticas redistributivas en la autoidentificación ideológica. 
+
+- La variable **dependiente** que vamos a utilizar es `l1` que contiene los datos de la siguiente pregunta: *. Cambiando de tema, en esta tarjeta tenemos una escala del 1 a 10 que va de izquierda a derecha, en la que el 1 significa izquierda y el 10 significa derecha. Hoy en día cuando se habla de tendencias políticas, mucha gente habla de aquellos que simpatizan más con la izquierda o con la derecha. Según el sentido que tengan para usted los términos ‘izquierda’ y ‘derecha’ cuando piensa sobre su punto de vista político, ¿dónde se encontraría usted en esta escala? Dígame el número."* 
+
+- La variable **independiente** que vamos a utilizar es `redist3` que contiene los datos de la siguiente pregunta: *"La mayoría de los desempleados podría encontrar un trabajo si quisiera. ¿Hasta qué punto está de acuerdo o en desacuerdo?"* En una escala del 1 (muy en desacuerdo) al 7 (muy de acuerdo). 
+
+---
+
+## Chequeo de variables
+
+El primer paso antes de estimar un modelo de regresión es definir el formato de las variables que vamos a utilizar. Corroborar los siguientes pasos:
+
+- Como vimos en el curso, el modelo de regresión lineal de mínimos cuadrados ordinarios necesita como variable dependiente que la variable sea contínua. En R, esto significa que la variable dependiente debe ser numérica. En caso de que no lo sea, debemos pasarla a numérica
+
+- Las variables independientes pueden ser categóricas o continuas. Las variables categóricas en R son factores, mientras que las continuas son numéricas como vimos.
+
+- **Importante:** Cuando pasamos una variable a numérica tenemos que ser muy cuidadosos con que no nos queden valores de opciones como "No sabe o no contesta" como un valor más en la distribución.
+
+---
+
+## Variable de preferencias por redistribución
+
+Primero chequeamos el tipo de variable (usemos la función `class()`)
+
+.codefont[
+
+```r
+class(data_uru$redist3)
+```
+
+```
+## [1] "factor"
+```
+]
+
+Esta variable, al ser una escala del 1 al 7 (ordinal) la vamos a utilizar como numérica (7 es el mínimo de valores necesario para tomar una variable ordinal como numérica). Antes de eso, miremos la distribución de la variable (aún factor), antes de transformarla a numérica:
+
+.codefont[
+
+```r
+count(data_uru, redist3)
+```
+
+```
+## # A tibble: 9 × 2
+##   redist3               n
+##   &lt;fct&gt;             &lt;int&gt;
+## 1 Muy en desacuerdo   235
+## 2 2                   191
+## 3 3                   214
+## 4 4                   212
+## 5 5                   242
+## 6 6                   180
+## 7 Muy de acuerdo      300
+## 8 No sabe               5
+## 9 No responde           2
+```
+]
+
+---
+
+## Variable de preferencias por redistribución
+
+Con la tabla anterior pudimos observar como 5 encuestados contestaron "No sabe" y dos no respondieron. No podemos pasar esos valores a la escala numérica, por lo que los excluiremos de la base de datos. Esto lo hacemo con la misma función que utilizamos para filtrar, `filter()`:
+
+.codefont[
+
+```r
+data_uru &lt;- data_uru %&gt;% 
+  filter(redist3 != "No sabe") %&gt;% 
+  filter(redist3 != "No responde") 
+```
+]
+
+Ahora chequeamos:
+
+.codefont[
+
+```r
+count(data_uru, redist3)
+```
+
+```
+## # A tibble: 7 × 2
+##   redist3               n
+##   &lt;fct&gt;             &lt;int&gt;
+## 1 Muy en desacuerdo   235
+## 2 2                   191
+## 3 3                   214
+## 4 4                   212
+## 5 5                   242
+## 6 6                   180
+## 7 Muy de acuerdo      300
+```
+]
+
+---
+
+## Variable de preferencias por redistribución
+
+Ahora sí estamos listos para pasar la variable a numérica.  Si no hubiesemos elimiando los casos que "No sabe" o "No contesta", Los primeros 7 valores se corresponden numéricamente de forma correcta pero los "No sabe" y "No responde" corresponderían al valor 8 y 9. Esto hubiese causado que el modelo interpete que las personas que contestaron no sabe o no responde son las que más de acuerdo están con la redistribución porque son los valores más altos. 
+
+.codefont[
+
+```r
+data_uru &lt;- data_uru %&gt;% 
+  mutate(redist3_num = as.numeric(redist3)) 
+```
+]
+
+Chequeo que la versión numérica esté bien:
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  count(redist3, redist3_num) %&gt;% 
+  spread(redist3_num, n)
+```
+
+```
+## # A tibble: 7 × 8
+##   redist3             `1`   `2`   `3`   `4`   `5`   `6`   `7`
+##   &lt;fct&gt;             &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1 Muy en desacuerdo   235    NA    NA    NA    NA    NA    NA
+## 2 2                    NA   191    NA    NA    NA    NA    NA
+## 3 3                    NA    NA   214    NA    NA    NA    NA
+## 4 4                    NA    NA    NA   212    NA    NA    NA
+## 5 5                    NA    NA    NA    NA   242    NA    NA
+## 6 6                    NA    NA    NA    NA    NA   180    NA
+## 7 Muy de acuerdo       NA    NA    NA    NA    NA    NA   300
+```
+]
+
+---
+
+## Variable de preferencias por autoidentificación ideológica
+
+Repitamos lo mismo con la variable de ideología:
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  count(l1)
+```
+
+```
+## # A tibble: 12 × 2
+##    l1              n
+##    &lt;fct&gt;       &lt;int&gt;
+##  1 Izquierda     197
+##  2 2              73
+##  3 3             164
+##  4 4             121
+##  5 5             366
+##  6 6             127
+##  7 7             112
+##  8 8             122
+##  9 9              54
+## 10 Derecha       145
+## 11 No responde    37
+## 12 No sabe        56
+```
+]
+ 
+
+---
+
+## Variable de preferencias por autoidentificación ideológica
+
+Filtremos de nuevo y luego creemos la variable numérica
+
+.codefont[
+
+```r
+data_uru &lt;- data_uru %&gt;% 
+  filter(l1 != "No responde") %&gt;% 
+  filter(l1 != "No sabe") %&gt;% 
+  mutate(l1_num = as.numeric(l1))
+
+data_uru %&gt;% 
+  count(l1, l1_num) %&gt;% 
+  spread(l1_num, n)
+```
+
+```
+## # A tibble: 10 × 11
+##    l1          `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
+##    &lt;fct&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1 Izquierda   197    NA    NA    NA    NA    NA    NA    NA    NA    NA
+##  2 2            NA    73    NA    NA    NA    NA    NA    NA    NA    NA
+##  3 3            NA    NA   164    NA    NA    NA    NA    NA    NA    NA
+##  4 4            NA    NA    NA   121    NA    NA    NA    NA    NA    NA
+##  5 5            NA    NA    NA    NA   366    NA    NA    NA    NA    NA
+##  6 6            NA    NA    NA    NA    NA   127    NA    NA    NA    NA
+##  7 7            NA    NA    NA    NA    NA    NA   112    NA    NA    NA
+##  8 8            NA    NA    NA    NA    NA    NA    NA   122    NA    NA
+##  9 9            NA    NA    NA    NA    NA    NA    NA    NA    54    NA
+## 10 Derecha      NA    NA    NA    NA    NA    NA    NA    NA    NA   145
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Previo a estimar el modelo de regresión recodifiquemos las dos variables y tiremos una tabla cruzada para tener una idea de la relación entre nuestras dos variables de interés. Ideología la vamos a recodificar en izquierda (1 a 4), centro (5 y 6) y derecha (7 a 10) y preferencias por redistribución en pro-redistribución (1 a 3), neutro (4) anti-redistribución (5 a 7).
+
+.codefont[
+
+```r
+data_uru &lt;- data_uru %&gt;% 
+  mutate(l1_cat = case_when(
+    l1_num &lt;= 4 ~ "Izquierda",
+    l1_num %in% c(5, 6) ~ "Centro",
+    l1_num &gt;= 7 ~ "Derecha",
+  )) %&gt;% 
+  mutate(redist3_cat = case_when(
+    redist3_num &lt;= 3 ~ "Pro-redistribución",
+    redist3_num == 4 ~ "Neutro",
+    redist3_num &gt;= 5 ~ "Anti-redistribución",
+  )) 
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Ahora podemos crear una tabla cruzada entre las dos variables. Como quiero ver el efecto de las preferencias redsitributivas en la autoidentificación ideológica, voy a crear una tabla donde en las filas estén los valores de preferencias por redistribución y las columnas la ideología, y que la tabla esté en porcentajes a nivel de la fila. Retomando lo que vimos en el módulo 2:
+
+.codefont[
+
+```r
+data_uru %&gt;% 
+  count(redist3_cat, l1_cat) %&gt;% 
+  mutate(n = n/sum(n)*100, .by = redist3_cat) %&gt;% 
+  spread(l1_cat, n)
+```
+
+```
+## # A tibble: 3 × 4
+##   redist3_cat         Centro Derecha Izquierda
+##   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Anti-redistribución   30.3    33.0      36.7
+## 2 Neutro                34.2    22.3      43.6
+## 3 Pro-redistribución    36.5    27.2      36.3
+```
+]
+
+---
+
+## Tabla de medias entre las dos variables
+
+También podemos crear una tabla con la media de ideología según las categorías de preferencias por redistribución:
+
+.codefont[
+
+```r
+data_uru %&gt;%
+  group_by(redist3_cat) %&gt;% 
+  summarize(media_ideologia = mean(l1_num))
+```
+
+```
+## # A tibble: 3 × 2
+##   redist3_cat         media_ideologia
+##   &lt;chr&gt;                         &lt;dbl&gt;
+## 1 Anti-redistribución            5.27
+## 2 Neutro                         4.74
+## 3 Pro-redistribución             5.11
+```
+]
+
+---
+
+## Estimar modelo
+
+Ahora si podemos estimar el modelo. La variable dependiente siempre va primera y luego del ~ va la variable indepndiente. Con summary consultamos los resultados
+
+.codefontchico[
+
+```r
+reg &lt;- lm(l1_num ~ redist3_num, data = data_uru)
+
+summary(reg) # Con summary podemos ver los resultados
+```
+
+```
+## 
+## Call:
+## lm(formula = l1_num ~ redist3_num, data = data_uru)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.2841 -2.0768 -0.1286  1.8714  5.0269 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.92126    0.15727  31.291   &lt;2e-16 ***
+## redist3_num  0.05183    0.03394   1.527    0.127    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.69 on 1479 degrees of freedom
+## Multiple R-squared:  0.001574,	Adjusted R-squared:  0.0008991 
+## F-statistic: 2.332 on 1 and 1479 DF,  p-value: 0.127
+```
+]
+
+---
+
+## Estimar modelo con controles
+
+Normalmente estimamos modelos de regresión multiples que incluyen variables de control además de nuestra variable independiente de interés. En este caso controlemos por sexo y edad. Para agregar esas variables debemos chequear su formato
+
+- Sexo es categórica, por lo que debe ser incluida como factor.
+
+- Edad es continua por lo que debe ser incluida como numérica
+
+
+.codefontchico[
+
+```r
+class(data_uru$q1)
+```
+
+```
+## [1] "factor"
+```
+
+```r
+class(data_uru$q2)
+```
+
+```
+## [1] "factor"
+```
+]
+
+---
+
+## Estimar modelo con controles
+
+Transformemos entonces edad a numérica (chequear siempre que no haya valores perdidos como numéricos) y estimemos el modelo:
+
+.codefont[
+
+```r
+data_uru &lt;- data_uru %&gt;% 
+  mutate(edad_num = as.numeric(q2))
+
+reg &lt;- lm(l1_num ~ redist3_num + q1 + edad_num, data = data_uru)
+
+summary(reg) 
+```
+
+```
+## 
+## Call:
+## lm(formula = l1_num ~ redist3_num + q1 + edad_num, data = data_uru)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0732 -1.9056 -0.0228  1.9500  5.5994 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.443177   0.206178  21.550  &lt; 2e-16 ***
+## redist3_num  0.054672   0.033616   1.626   0.1041    
+## q1Mujer     -0.254144   0.138464  -1.835   0.0666 .  
+## edad_num     0.020449   0.003891   5.255 1.69e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.664 on 1477 degrees of freedom
+## Multiple R-squared:  0.02231,	Adjusted R-squared:  0.02032 
+## F-statistic: 11.23 on 3 and 1477 DF,  p-value: 2.735e-07
+```
+]
+
+---
+
+## Exportar resultados modelos de regresión 
+
+Para analizar mejor los resultados de nuestros modelos podemos utilizar el paquete [broom](https://broom.tidymodels.org/). La función `tidy()`, por ejemplo, nos permite extraer los resultados del modelo en un dataframe en formato tidy
+
+.codefont[
+
+```r
+library(broom)
+
+coef &lt;- tidy(reg, conf.int = TRUE) 
+
+print(coef)
+```
+
+```
+## # A tibble: 4 × 7
+##   term        estimate std.error statistic  p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   4.44     0.206       21.6  8.70e-90   4.04      4.85  
+## 2 redist3_num   0.0547   0.0336       1.63 1.04e- 1  -0.0113    0.121 
+## 3 q1Mujer      -0.254    0.138       -1.84 6.66e- 2  -0.526     0.0175
+## 4 edad_num      0.0204   0.00389      5.26 1.69e- 7   0.0128    0.0281
+```
+]
+
+Para exportar como archivo excel:
+
+.codefont[
+
+```r
+writexl::write_xlsx(coef, "resultads/reg.xlsx")
+```
+]
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"incremental": true,
+"df_print": "kable",
+"smaller": true,
+"widescreen": true,
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
