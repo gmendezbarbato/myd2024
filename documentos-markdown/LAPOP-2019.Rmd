@@ -1,0 +1,115 @@
+---
+title: "Libro de Códigos - LAPOP 2019"
+author: "Martín Opertti"
+date: "2023-04-06"
+output: 
+  html_document:
+    theme: cerulean 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Ficha técnica
+
+LAPOP (Latin American Public Opinion Project) es un proyecto de investigación de la universidad de Vanderbilt que desarrolla encuestas de opinión pública de alta calidad principalmente en América Latina. LAPOP conduce un conjunto de encuestas regulares o específicas, siendo el Barómetro de las Américas su conjunto de encuestas más reconocido. El Barómetro de las Américas permite comparaciones  entre individuos, regiones, países y tiempo, a través de un cuestionario común y una metodología estandarizados. En Uruguay se lleva a cabo desde el año 2006.
+
+La ronda 2018/19 del Barómetro de las Américas en Uruguay fue llevada a cabo entre 8 de marzo y el 19 de mayo de 2019. El tamaño muestral es de 1581 observaciones y la muestra es autoponderada. El 100% de las encuestas fueron realizadas cara a cara, llevadas a cabo por la empresa Cifra. La tasa de respuesta (RR3) fue del 18%.
+
+Pueden encontrar la ficha técnica completa en el siguiente [enlace](https://www.vanderbilt.edu/lapop/). 
+
+# Variables
+
+## Variables sociodemográficas
+
+```{r id, echo = FALSE}
+id <- data.frame(Nombre = c("Identificador", "Fecha de encuesta", "Género", "Edad",
+                            "Nivel Educativo", "Religión", "Ocupación"),  
+                 Variable = c("`idnum`", "`fecha`", "`q1`", "`q2`", 
+                              "`ed_rec`", "`q3cn`", "`ocup4a`"),
+                 Pregunta = c("Identificador de encuestado", "Fecha de la encuesta", 
+                              "-", "¿Cuál es su edad en años cumplidos?",
+                              "Recodificada de ¿Cuál fue el último año de educación que usted completó o aprobó?",
+                              "Si usted es de alguna religión, ¿podría decirme cuál es su religión?",
+                              "¿A qué se dedica usted principalmente? ¿Está usted actualmente:"
+                              ))
+
+knitr::kable(id)
+```
+
+
+## Variables actitudinales
+
+```{r , echo = FALSE}
+id <- data.frame(Nombre = c("Problema más grave del país",
+                            "Percepción retrospectiva de la economía del país",
+                            "Percepción retrospectiva de su situación económica particular",
+                            "Participación en protesta",
+                            "Opinión sobre frase sobre desempleo",
+                            "Opinión sobre frase sobre democracia"),  
+                 Variable = c("`a4`", "`soct2`", "`idio2`", "`prot3`", "`redist3`", "`ing4`"),
+                 Pregunta = c("En su opinión ¿cuál es el problema más grave que está enfrentando el país?",
+                              "¿Considera usted que la situación económica del país es mejor, igual o peor que hace doce meses?",
+                              "¿Considera usted que su situación económica actual es mejor, igual o peor que la de hace doce meses?",
+                              "¿En los últimos 12 meses ha participado en una manifestación o protesta pública?",
+                              "La mayoría de los desempleados podría encontrar un trabajo si quisiera. ¿Hasta qué punto está de acuerdo o en desacuerdo?",
+                              "Puede que la democracia tenga problemas, pero es
+mejor que cualquier otra forma de gobierno. ¿Hasta qué punto está de acuerdo o en
+desacuerdo con esta frase?"))
+
+knitr::kable(id)
+```
+
+
+## Variables políticas
+
+```{r , echo = FALSE}
+id <- data.frame(Nombre = c("Participación en últimas elecciones",
+                            "Partido por el que votó en las últimas elecciones",
+                            "Identificación partidaria",
+                            "Interés en la política",
+                            "Intención de voto próximas elecciones nacionales",
+                            "Autoidentificación ideológica",
+                            "Respeto por instituciones políticas uruguayas",
+                            "Confianza en las fuerzas armadas",
+                            "Confianza en los partidos políticos",
+                            "Confianza en en los medios de comunicación",
+                            "Confianza en el parlamento",
+                            "Opinión sobre matrimonio igualitario"),  
+                 Variable = c("`vb2`", "`vb3n`", "`id_par`", "`pol1`", "`uruvbnc1`",
+                              "`l1`", "`b1`","`b12`", "`b21`", "`b37`","`b13`", "`d6`"),
+                 Pregunta = c("¿Votó usted en la primera vuelta de las últimas elecciones presidenciales de octubre 2014?",
+                              "¿Por quién votó para Presidente en la primera vuelta de las últimas elecciones presidenciales de octubre 2014?",
+                              "¿En este momento, simpatiza con algún partido político? + ¿Con cuál partido político simpatiza usted?",
+                              "¿Qué tanto interés tiene usted en la política: mucho, algo, poco o nada?",
+                              "¿Y más específicamente, a qué partido piensa votar en octubre de 2019, para elegir presidente?",
+                              ". Cambiando de tema, en esta tarjeta tenemos una escala del 1 a 10 que va de izquierda a derecha, en la que el 1 significa izquierda y el 10 significa derecha. Hoy en día cuando se habla de tendencias políticas, mucha gente habla de aquellos que simpatizan más con la izquierda o con la derecha. Según el sentido que tengan para usted los términos 'izquierda' y 'derecha' cuando piensa sobre su punto de vista político, ¿dónde se encontraría usted en esta escala? Dígame el número. ",
+                              "¿Hasta qué punto tiene usted respeto por las instituciones políticas de Uruguay?",
+                              "¿Hasta qué punto tiene confianza usted en las Fuerzas Armadas?",
+                              "¿Hasta qué punto tiene confianza usted en los partidos políticos?",
+                              "¿Hasta qué punto tiene usted confianza en los medios de comunicación?",
+                              "¿Hasta qué punto tiene usted confianza en el parlamento?",
+                              "¿Con qué firmeza aprueba o desaprueba que las parejas del mismo sexo puedan tener el derecho a casarse?"))
+
+knitr::kable(id)
+```
+
+
+
+&nbsp;
+<hr />
+
+<div style="text-align: center">										
+
+<center>
+![](ima/udelar-logo.png){width=30%}
+</center>
+<br>
+
+ <font size="4"> Facultad de Ciencias Sociales - UdelaR </font> 
+
+<br>
+
+
