@@ -1,0 +1,12 @@
+name: "prueba"
+output_dir: "."
+navbar:
+  title: "Prueba"
+  left:
+    - text: "Inicio"
+      href: index.html
+
+output:
+  html_document:
+    theme: cerulean
+    highlight: textmate
