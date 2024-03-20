@@ -1,8 +1,8 @@
 ---
 title: "Medición y diseño de investigación"
-subtitle: "Clase 1: Introducción y fundamentos de la programación en R"
+subtitle: "Introducción a R y RStudio"
 author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
-date: 'marzo 2024'
+date: '20 marzo 2024'
 output:
   xaringan::moon_reader:
     css: ["xaringan-themer.css", "estilo.css"]
@@ -49,9 +49,102 @@ use_extra_styles(
   mute_unhighlighted_code = TRUE
   )  
 ```
+# Introducción a R y RStudio
+
+---
+## Introducción a R y RStudio
+
+- **Tres clases**
+
+--
+
+  - Introducción
+  - Manipulación de datos (básico)
+  - Análisis de datos (básico)
+
+--
+
+- **Cada clase**
+
+--
+
+  - Presentación
+  - Código de la clase
+  - Ejercicio
+  - Solución del ejercicio
+
+--
+
+- **Enfoque _"hands on"_**
+
+--
+
+- **Curva de aprendizaje empinada**
+
+---
+
+## Algunos ejemplos simples del potencial de R
+
+- **Extracción y Análisis de datos** 
+
+--
+
+  - [Speech](https://nicolas-schmidt.github.io/speech/index.html)
+  - [Speech - Ejemplos](https://github.com/Nicolas-Schmidt/speech-ejemplos?tab=readme-ov-file#ejemplo-1)
+
+--
+
+- **Visualización de datos**
+
+--
+
+  - [UMAD - Data electoral y op](https://bancodedatos-fcs.shinyapps.io/appPolitica/)
+
+--
+
+- **Elaboración de documentos** 
+
+--
+
+  - [UMAD - Datos Electorales](https://umad-fcs.github.io/Piso-I-Politica/)
+
+--
+
+- **Extracción + análisis + visualización + Documento**
+
+--
+
+  - [Ejemplo de flujo](https://gmendezbarbato.github.io/myd2024/whisper_manini.html)
+
+---
+class: inverse, center, middle
+
+# Plan para hoy
 
 
-# Programación y ¿Qué es R?  
+---
+
+## Introducción
+
+- **Programación y ¿Qué es R y Rstudio?**
+
+- **Consejos**
+
+- **Primeros pasos**
+
+- **Lenguaje básico en R**
+
+- **Objetos**
+
+- **Vectores**
+
+- **Ejercicio**
+
+---
+class: inverse, center, middle
+
+# Programación y ¿Qué es R?
+
 
 ---
 
@@ -72,24 +165,30 @@ knitr::include_graphics("ima/softwares.png")
 ## ¿Por qué usar R?
 
 - Es un software libre y gratuito
+
 --
 
 - Generar nuevas funciones es fácil, por lo que las está en constante desarrollo
+
 --
 
 - Tiene muchos usuarios de diversas disciplinas lo que genera una comunidad (particularmente mediante foros) que es de gran utilidad para la resolución de problemas de código
+
 --
 
 - Es uno de los programas más utilizados para técnicas innovadaras en estadística y visualización de datos 
+
 --
 
 - Trabaja muy bien con otros programas/lenguajes (Excel, Latex, HTML, etc.)
+
 --
 
 - Es cada vez más usado tanto en el ámbito académico como profesional
+
 --
 
-
+- Es versátil y permite integrar la mayor parte de las actividades que un/a investigador/a realiza cotidianamente en un flujo ordenado
 
 ---
 
@@ -118,7 +217,7 @@ knitr::include_graphics("ima/gui_cli.png")
 - **Recolección de datos:** Saber programar abre la posibilidad para la recolección de datos que no es posible o es muy costosa manualmente.
 
 --
-- **Reproducibildiad:** El análisis de datos mediante programación mejora la transparencia y reproducibilidad en el proceso de generación de conocimiento
+- **Reproducibilidad:** El análisis de datos mediante programación mejora la transparencia y reproducibilidad en el proceso de generación de conocimiento
 
 --
 - **Colaboración:** La programación abre la puerta para una colaboración mucho más sencilla y eficiente. 
@@ -132,7 +231,7 @@ knitr::include_graphics("ima/gui_cli.png")
 
 - R es un software y un lenguaje de programación gratuito enfocado en el análisis estadístico y la visualización de datos.
 
-- R cuenta con gran potencia y flexibilidad, así como una númerosa -y creciente- comunidad de usuarios tanto académicos como profesionales.
+- R cuenta con gran potencia y flexibilidad, así como una numerosa -y creciente- comunidad de usuarios tanto académicos como profesionales.
 
 .center[
 ```{r, out.width = "150px"}
@@ -156,26 +255,99 @@ knitr::include_graphics("ima/rstudio.png")
 La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos recursos para aprender de forma independiente y resolver problemas cuando nos estancamos:
 
 - Libro "R for Data Science". Es muy completo y referencia en la mayoría de los cursos de R, pueden acceder a la versión online [original](https://r4ds.had.co.nz/) y a una [traducción](https://r4ds-en-espaniol.netlify.app/)
+
 - [R Bloggers](https://www.r-bloggers.com/) y [rpubs](https://rpubs.com/) publican miles de tutoriales para temas específicos 
+
 - Existen foros -por ej. [Stack Overflow](https://stackoverflow.com/)- donde responden una infinidad preguntas de programación en R. 
+
 - [IntRo](https://github.com/Nicolas-Schmidt/IntRo) es un excelente curso de R a cargo de Nicolás Schmidt  de Facultad de Ciencias Sociales
+
 - [AnalizaR](https://arcruz0.github.io/libroadp/index.html) es un libro sobre análisis de datos en R con énfasis en Ciencia Política 
 
 ---
-## Estructura del laboratorio
+class: inverse, center, middle
 
-- Módulo 1: Introducción y fundamentos de la programación en R
 
-- Módulo 2: Manipulación de datos 
+# Cuatro consejos (Nicolás Schmidt - IntRo R)
 
-- Módulo 3: Análisis de datos 
+---
 
-- Cada módulo cuenta con:
+## 1. Potencial  
 
-  - Presentación
-  - Código de la clase
-  - Ejercicio
-  - Solución del ejercicio
+--
+
+**Mostrar la mejor versión de R**
+
+--
+
+  → Estadística: frecuentista y bayesiana
+  
+  → Gráficos de alta calidad: estáticos, animados e interactivos.  
+  
+  → Crear una pagina web  
+  
+  → Git  
+  
+  → Escribir un libro: markdown, LATEX  
+  
+  → Hacer presentaciones: markdown, LATEX  
+  
+  → Escribir un paper  
+  
+  → Gestionar y mandar mails  
+  
+  → Crear gif  
+  
+  → Jugar: packman, prince...  
+  
+  → Ver videos de YouTube  
+
+---
+
+## 2. Sinceridad
+
+--
+
+**No es fácil aprender R y generar un mínimo de autonomía.**
+
+--
+
+  → Continentar al estudiante en relación a los errores.  
+  
+  → Dedicarle mucho tiempo a los mecanismos para obtener ayuda, los recursos disponibles y la mayor cantidad de atajos posibles para controlar la frustración.  
+
+---
+
+## 3. Emular
+
+--
+
+**Emular y estimular con el curso el uso frecuente de R**
+
+--
+
+  → Uso de Git   
+  
+  → Descarga de versiones de paquetes   
+  
+  → Tener que usar R para todo lo relativo a un curso   
+
+
+---
+
+## 4. Fundamentos
+
+--
+
+**No iniciar con aplicaciones!**
+
+--
+
+  → La persona que se inicia en R va a querer aplicar la herramienta a sus  problemas: leer datos, hacer descriptivos, hacer un gráfico...  
+  
+  → Hacer eso es evadir la frustración!  
+  
+  → R ES un lenguaje de programación. Problemas complejos soluciones complejas.  
 
 ---
 class: inverse, center, middle
@@ -502,486 +674,17 @@ v3
 ## Ejercicio
 
 .content-box-blue[
-*(1) Crear un vector con la edad de los integrantes de tu hogar*
 
-*(2) Realizar una operación sobre ese vector para calcular la edad de cada integrante en 2030*
+*(1) Crear un vector de nombre _num_ que contenga los números del 1 al 10* 
 
-]
+*(2) Aplicar al menos una operación de suma, resta, multiplicación y división al vector _num_ y guardar los resultados en cuatro objetos diferentes*
 
+*(3) Listar los objetos creados en el ambiente (Global Environment)*
 
----
-class: inverse, center, middle
+*(4) Eliminar todos los objetos creados* 
 
-# Dataframes 
+*(5) Crear un vector con la edad de los integrantes de tu hogar*
 
----
-
-## Dataframes
-- Un dataframe o marco de datos (es lo que nos solemos referir como "base de datos"). 
-
-- Es por lejos la estructura más usada y útil para almacenar y analizar datos
-
-- Formalmente, son la conjunción de dos o más vectores (independientemente de su tipo) en una tabla con dimensiones (Grolemund, 2014)
-
-- Cada vector se transforma en una columna.
-
-- Es una forma de estructurar datos con filas y columnas. Las filas suelen ser las observaciones y las columnas las variables. 
-
-- Cada columna .bold[debe] tener la misma longitud (número de observaciones)
-
----
-
-## Dataframes
-Posible estructura de un dataframe o marco de datos:
-
-.center[
-```{r, out.width = "1000px"}
-knitr::include_graphics("ima/dataframe.png")
-```
-]
-
-.right[(Grolemund, 2014)]
----
-
-## Dataframes
-Normalmente los dataframes con los que trabajamos los importamos desde otro formato (lo veremos más adelante), pero también podemos crearlos fácilmente en R. 
-
-Supongamos que queremos estructurar los resultados de una encuesta muy corta:
-
-.codefont[
-```{r ej8, echo = TRUE, error=TRUE}
-# Usamos la función data.frame
-encuesta <- data.frame(edad = c(18,24,80,40,76), 
-                       ideologia = c("Izquierda", "Izquierda", "Derecha", 
-                                     "Centro", "Derecha"),
-                       voto = c("Partido A", "Partido A", "Partido C",
-                                "Partido B", "Partido B"))
-class(encuesta)
-
-encuesta
-```
-]
-
----
-
-## Dataframes: indexación
-De forma similar a los vectores, la indexación `[]` nos permite acceder a datos dentro de nuestro dataframe. Como los dataframes tienen dos dimensiones (filas y columnas), tenemos que especificar cuáles valores queremos obtener. Para ello la indexación se divide en dos por una coma: antes de la coma nos referimos a las filas, y luego de la coma a las columnas:
-
-.codefont[
-```{r ej8_3, echo = TRUE, error=TRUE}
-# Valor de fila 1 y columna 1
-encuesta[1, 1]
-# Valor de toda la columna 1 (no fijamos filas entonces nos devuelve todas)
-encuesta[, 1]
- # Valor de toda la fila 1 (no fijamos columnas entonces nos devuelve todas)
-encuesta[1, ]
-```
-]
-
----
-
-## Dataframes 
-Una segunda manera para referirnos a datos dentro un dataframe es el usando el símbolo `$` . Es la manera más utilizada para refernirnos a una columna de un dataframe, y es muy sencillo de utilizar.  
-
-.codefont[
-```{r ej8_2, echo = TRUE, error=TRUE}
-# Primero escribimos el nombre del dataframe, seguido por el símbolo $ y 
-# el nombre de la variable (sin comillas)
-encuesta$edad # Esto imprime todos los valores de esa variable
-# En un dataframe cada variable es un vector y podemos fijarnos su clase
-class(encuesta$edad) 
-mean(encuesta$edad) # Podemos aplicarle funciones (la media en este caso)
-```
-]
-
----
-
-## Ejercicio
-
-.content-box-blue[
-*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 4 países a elección de ustedes*
+*(6) Realizar una operación sobre ese vector para calcular la edad de cada integrante en 2030*
 
 ]
-
----
-
-## Ejercicio
-
-.content-box-blue[
-*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 4 países a elección de ustedes*
-
-*(2) Crear esa misma tabla de datos en R usando la función data.frame()*
-
-]
-
----
-
-## Ejercicio
-
-.content-box-blue[
-*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 3 países a elección de ustedes*
-
-*(2) Crear esa misma tabla de datos en R usando la función data.frame()*
-
-*(3) Crear un vector llamado "paises" con los nombres de los países que eligieron*
-]
-
-
----
-class: inverse, center, middle
-
-# Funciones
-
----
-
-## Funciones 
-
-- Una función es una serie de instrucciones para realizar una tarea específica. La función suele necesitar un imput o entrada (generalmente datos) y suele devolver un output o salida (generalmente datos luego de cierta regla)
-
-- Los objetos .bold[son] cosas, las funciones .bold[hacen] cosas
-
-- Por ejemplo, en el caso anterior, usamos la función `mean()` para calcular la media de la variable "edad" del dataframe "encuesta"
-
-- Usar una función es sencillo: escribimos el nombre de la función, seguido de un paréntesis y dentro los datos a los que le queremos aplicar la función. Pueden ser objetos o directamente valores. Ej. `mean(c(10,20,30))` o `mean(objeto)`
-
-- Dentro de la función se especifican los argumentos, que pueden ser dividos en dos tipos. El primero son los datos a los que se le aplica la función y el resto detalles de cómo se computa la función.
-
----
-
-## Funciones 
-.center[
-```{r, out.width = "1250px"}
-knitr::include_graphics("ima/ima_fun.png")
-```
-]
----
-
-## Funciones (ejemplo) 
-
-```{r ej9bb2, echo = TRUE}
-# Supongamos que queremos calcular la media de: 12,24,36,48,60 
-(12 + 24 + 36 + 48 + 60)/5 # Calculo directamente la media
-data_ej <- c(12, 24, 36, 48, 60) # Genero el vector con los 5 números 
-sum(data_ej) / length(data_ej) # Calculo con dos funciones su media
-mean(data_ej) # Calculo la media directamente con la función mean()
-# También se puede ingresar data directamente en el argumento x
-mean(c(12, 24, 36, 48, 60)) 
-```
-
----
-
-## Funciones: R Base
-
-- R viene con un cojunto de [funciones](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html)  
-
-- Las funciones que vienen "por defecto" son las que escribieron los creadores, al igual que en otros softwares no libres.
-
-- La ventaja de R es que cualquiera puede crear nuevas funciones y publicarlas. Colecciones de funciones (generalmente relacionadas) se llaman "paquetes".
-
----
-
-## Funciones: argumentos
-- Las funciones generalmente cuentan con argumentos que van dentro de los paréntesis.
-
-- La mayoría de las funciones cuentan con el argumento "x" que suele ser el objeto al que le pasaremos la función. Al ser la mayoría de las veces el primer argumento, muchas veces no se explicita: 
-
-```{r ej9bb2_b, echo = TRUE}
-media_fun <- mean(data_ej) # Sin explicitar argumento x
-
-media_fun_x <- mean(x = data_ej) # Explicitando argumento x
-
-identical(media_fun, media_fun_x) # El mismo resultado
-```
-
----
-
-## Funciones: argumentos 
-- Muchas funciones necesitan más de un argumento para funcionar de forma correcta. 
-
-- Por ejemplo, pensemos en la función `identical()`: "La forma segura y confiable de probar dos objetos para que sean exactamente iguales. Devuelve `TRUE` en este caso, `FALSE` en cualquier otro caso".
-
-- Por definición, `identical()` necesita dos conjuntos de datos distintos, para testear si son iguales.
-
-- En la documentación `help(identical)` podemos ver que cuenta no solo con el argumento x, sino que también con y. 
-
-.codefont[
-```{r ej9bb2_c, echo = TRUE}
-# Dos maneras de aplicar la función
-identical(media_fun, media_fun_x) # por posición
-identical(x = media_fun, y = media_fun_x) # por especificación
-```
-]
----
-
-## Funciones: argumentos 
-
-- A su vez, las funciones muchas veces cuentan con otros argumentos aparte de los datos que usan de insumo. Son detalles de cómo queremos aplicar la regla o el output que recibimos. 
-
-- Volvamos a la función `mean()`. Voy a crear un dataframe con la posición que obtuvo Uruguay en los últimos 6 mundiales de futbol masculino
-
-.codefont[
-```{r ej9bb2_d, echo = TRUE}
-# Dataframe con el resultado de Uruguuay en los últimos 6 mundiales
-uru_mundial <- data.frame(year = c(2002, 2006, 2010, 2014, 2018, 2022),
-                          posicion = c(26, NA, 4, 12, 5, 20))
-# Veamos la posición promedio:
-mean(uru_mundial$posicion) 
-# Como tenemos un dato perdido, la función nos devuelve NA
-
-# Si especificamos el argumento na.rm (no tener en cuenta los datos perdidos):
-mean(uru_mundial$posicion, na.rm = TRUE)
-
-```
-]
----
-
-## Funciones: argumentos por defecto
-
-- Es importante entender que la función `mean()` <b> por defecto </b> tiene el argumento `na.rm = FALSE`. De esta forma, si nosotros solamente le pasamos el argumento x, no quitará los datos perdidos. 
-
-- Leer la documentación de las funciones es fundamental, y sobretodo prestar atención a los argumentos por defecto.
-
----
-
-## Funciones: argumentos 
-
-```{r ej9bb2_e, echo = TRUE, eval = FALSE}
-help(mean)
-```
-
-.center[
-```{r, out.width = "1000px"}
-knitr::include_graphics("ima/ima_mean.jpeg")
-```
-]
-
----
-class: inverse, center, middle
-
-# Dialectos y paquetes
-
----
-## Ejercicio 
-
-.content-box-blue[
-*Supongamos que tengo estos datos:*
-]
-
-```{r ej2a, echo = FALSE, results='hide', message=FALSE, warning=FALSE}
-library(readxl)
-library(tidyverse)
-library(data.table)
-datauru <- read_excel("data/datauru.xlsx")
-data <- select(datauru, anio, pbi, inflacion, desempleo, presidente) 
-```
-
-```{r ej2b, echo = TRUE}
-data
-```
----
-
-## Ejercicio 
-
-.content-box-blue[
-*¿Qué quiero hacer con el código debajo?*
-]
-
-.codefont[
-```{r ej2c, echo = TRUE, eval = FALSE}
-as.data.frame(t(sapply(X = split(
-  x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
-           which(colnames(data) %in% c("pbi", "inflacion"))],
-  f = data$presidente[which(data$presidente %in% c("Vázquez", "Sanguinetti"))],
-  drop = TRUE),
-  FUN = function(x) {apply(x, 2, mean)})))
-```
-]
-
----
-## Ejercicio 
-
-.content-box-blue[
-*¿Qué quiero hacer con el código debajo?*
-]
-
-```{r ej2e, echo = TRUE, eval = FALSE}
-data_dt <- data 
-
-setDT(data_dt) 
-
-data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
-       c("presidente", "pbi", "inflacion")  ][ 
-         , lapply(.SD, mean), by = presidente] 
-```
-
----
-## Ejercicio 
-
-.content-box-blue[
-*¿Qué quiero hacer con el código debajo?*
-]
-
-```{r ej2d, echo = TRUE, eval = FALSE}
-data %>%
-  filter(presidente %in% c("Vázquez", "Sanguinetti")) %>% 
-  select(presidente, pbi, inflacion) %>%
-  group_by(presidente) %>% 
-  summarise_all(mean) 
-
-```
-
----
-## R Base 
-
-```{r ej2f, echo = TRUE}
-as.data.frame(t(sapply(X = split(
-  x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
-           which(colnames(data) %in% c("pbi", "inflacion"))],
-  f = data$presidente[which(data$presidente %in% c("Vázquez", "Sanguinetti"))],
-  drop = TRUE),
-  FUN = function(x) {apply(x, 2, mean)})))
-```
-
----
-## Data.table 
-
-```{r ej2g, echo = TRUE}
-data_dt <- data 
-setDT(data_dt) 
-data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
-       c("presidente", "pbi", "inflacion")  ][ 
-         , lapply(.SD, mean), by = presidente] 
-```
-
----
-## Tidyverse
-
-```{r ej2h, echo = TRUE}
-data %>%
-  filter(presidente %in% c("Vázquez", "Sanguinetti")) %>% 
-  select(presidente, pbi, inflacion) %>%
-  group_by(presidente) %>% 
-  summarise_all(mean) 
-
-```
-
----
-
-## Paquetes 
-
-- Los paquetes son conjuntos de funciones, documentación de ayuda y a veces datos
---
-
-- El conjunto de funciones que vienen por defecto en R se le denomina "Base". Por ej. las funciones que hemos utilizado hasta ahora  -`mean()`, `identical()`, `help()`- están dentro del R Base.
---
-
-- El repositorio principal donde se alojan los paquetes de R se llama Comprehensive R Archive Network [CRAN](https://cran.r-project.org/). Hay más de 10.000 paquetes alojados en CRAN. Aquí hay dos listas con algunos de los paquetes más 
-útiles: [support.rstudio](https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages) y [towardsdatascience](https://towardsdatascience.com/a-comprehensive-list-of-handy-r-packages-e85dad294b3d)  
---
-
-- Los paquetes alojados en CRAN son testados antes de ser publicados. Por eso es recomendable tener cuidado con utilizar paquetes que no han sido publicados allí aún.
---
-
-- Los paquetes normalmente están relacionados a alguna temática, por ejemplo existen paquetes específicos para manipulación de datos [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf), visualización de datos [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf) o importar y exportar datos [readr](https://cran.r-project.org/web/packages/readr/readr.pdf). Dado que R es libre, cualquier persona puede crear y publicar un paquete (publicarlo en CRAN requiere ciertos procesos igualmente), esto facilita que haya paquetes muy específicos para ciertas tareas que pueden ser de gran utilidad. Por ejemplo, existen paquetes para  conectarse con la API de Twitter [rtweet](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf), para utilizar los datos de [Gapminder](https://cran.csiro.au/web/packages/gapminder/gapminder.pdf) o para analizar datos electorales y de opinión pública en Uruguay [opuy](https://nicolas-schmidt.github.io/opuy/)
-
----
-
-## Paquetes: instalación 
-- Cuando abrimos R solamente tenemos cargado por defecto el paquete Base. 
-
-- La primera vez que queremos utilizar un paquete tenemos que descargarlo con el siguiente comando:
-
-```{r ej10, echo = TRUE, results="hide", error=TRUE, eval = FALSE}
-# Para descargar paquetes de CRAN, utilizamos la siguiente función:
-install.packages("nombre_del_paquete")
-install.packages("dplyr") # Ejemplo
-
-# Existen otros paquetes no alojados en CRAN, que se instalan con
-# el paquete "devtools" 
-```
-
----
-
-## Paquetes: cargar 
-- Luego de instalarlo (una sola vez por versión de R), tenemos que cargar el paquete utilizando la función `library()`
-
-
-- Esto lo debemos realizar en cada sesión de R que vayamos a utilizar (cada vez que abrimos R). 
-```{r ej10_a, echo = TRUE,  eval = FALSE}
-library(nombre_del_paquete)
-library(dplyr) # Ejemplo
-```
-
----
-
-## Dialectos
-- Como vimos, en R podemos realizar una misma operación de muchas maneras distintas. Puesto de otra manera, R como lenguaje de programación tiene distintos "dialectos", esto es, paquetes (o conjuntos de paquetes) con sus propias funciones, sintaxis y comunidad de usuarios. 
-
-- Para la mayoría de las funciones requeridas para un análisis de datos estándar (importar datos, manipular, modelar y visualizar) existen -de forma muy simplificada- tres grandes dialectos: [R Base](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html), [tidyverse](https://www.tidyverse.org/) y [data.table](https://rdatatable.gitlab.io/data.table/).
-
-- Tidyverse es una colección de paquetes diseñados para el análisis de datos. Este conjunto de paquetes comparte una filosofía de diseño, grámatica y estructura de datos. 
-
-- Las ventajas de Tidyverse están en su gramática (fácil de leer lo que invita a compartir y replicar), consistencia, alcance y su numerosa y creciente comunidad.
-
-```{r ej1, echo = FALSE, results='hide'}
-encuesta <- data.frame(edad = c(18,24,80), 
-                       ideologia = c("Izquierda", "Izquierda", "Derecha"),
-                       voto = c("Partido A", "Partido A", "Partido C"))
-```
-
-
----
-class: inverse, center, middle
-
-# Tidyverse
-
----
-
-## Tidyverse 
-
-
-Tidyverse cuenta con varios paquetes que sirven para distintos tipos de tareas específicas. Podemos cargar todos los paquetes de forma conjunta: 
-
-.codefont[
-```{r ej00, echo = TRUE, results='hide', error=TRUE, eval = FALSE}
-install.packages("tidyverse")
-library(tidyverse)
-
-install.packages("dplyr")
-library(dplyr)
-```
-]
-
-.center[
-```{r ej0, out.width = "200px"}
-knitr::include_graphics("ima/tidy.jpg")
-```
-]
-
----
-
-## Tidyverse: paquetes 
-
-.pull-left[Paquetes que Tidyverse carga: 
-
-- [readr](https://readr.tidyverse.org/): importar y exportar datos
-- [dplyr](https://dplyr.tidyverse.org/): manipulación de datos
-- [tidyr](https://tidyr.tidyverse.org/): manipulación de datos
-- [ggplot2](https://ggplot2.tidyverse.org/): visualización de datos
-- [purr](https://purrr.tidyverse.org/): programación avanzada
-- [tibble](https://tibble.tidyverse.org/): estructura de datos
-- [forcats](https://forcats.tidyverse.org/): factores
-- [stringr](https://stringr.tidyverse.org/): variables de caracteres
-]
-
-.pull-right[
-```{r ej0_a, out.width = "500px"}
-knitr::include_graphics("ima/tidy_pack.jpg")
-```
-]
-
-
-
-
-
-
