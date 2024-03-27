@@ -1003,6 +1003,52 @@ data <- select(datauru, anio, pbi, inflacion, desempleo, presidente)
 ```{r ej2b, echo = TRUE}
 data
 ```
+---
+## Dialectos: R Base 
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+```{r ej2f1, echo = TRUE, eval = FALSE}
+as.data.frame(t(sapply(X = split(
+  x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
+           which(colnames(data) %in% c("pbi", "inflacion"))],
+  f = data$presidente[which(data$presidente %in% c("Vázquez", "Sanguinetti"))],
+  drop = TRUE),
+  FUN = function(x) {apply(x, 2, mean)})))
+```
+
+---
+## Dialectos: Data.table 
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+```{r ej2g1, echo = TRUE, eval = FALSE}
+data_dt <- data 
+setDT(data_dt) 
+data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
+       c("presidente", "pbi", "inflacion")  ][ 
+         , lapply(.SD, mean), by = presidente] 
+```
+
+---
+## Dialectos: Tidyverse
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+```{r ej2h1, echo = TRUE, eval = FALSE}
+data %>%
+  filter(presidente %in% c("Vázquez", "Sanguinetti")) %>% 
+  select(presidente, pbi, inflacion) %>%
+  group_by(presidente) %>% 
+  summarise_all(mean) 
+
+```
 
 ---
 ## Dialectos: R Base 

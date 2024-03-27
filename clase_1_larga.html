@@ -1254,6 +1254,54 @@ data
 ## 10  1994 370984750100      44.7      9    Lacalle    
 ## # ℹ 25 more rows
 ```
+---
+## Dialectos: R Base 
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+
+```r
+as.data.frame(t(sapply(X = split(
+  x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
+           which(colnames(data) %in% c("pbi", "inflacion"))],
+  f = data$presidente[which(data$presidente %in% c("Vázquez", "Sanguinetti"))],
+  drop = TRUE),
+  FUN = function(x) {apply(x, 2, mean)})))
+```
+
+---
+## Dialectos: Data.table 
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+
+```r
+data_dt &lt;- data 
+setDT(data_dt) 
+data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
+       c("presidente", "pbi", "inflacion")  ][ 
+         , lapply(.SD, mean), by = presidente] 
+```
+
+---
+## Dialectos: Tidyverse
+
+.content-box-blue[
+*¿Qué quiero hacer con el código debajo?*
+]
+
+
+```r
+data %&gt;%
+  filter(presidente %in% c("Vázquez", "Sanguinetti")) %&gt;% 
+  select(presidente, pbi, inflacion) %&gt;%
+  group_by(presidente) %&gt;% 
+  summarise_all(mean) 
+```
 
 ---
 ## Dialectos: R Base 
