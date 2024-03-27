@@ -5,7 +5,7 @@
 #                                                                              #
 ##----------------------------------------------------------------------------##
 
-## EJERCICIO ----
+## EJERCICIO VECTORES ----
 
 # (1) Crear un vector de nombre num que contenga los números del 1 al 10 
 
@@ -52,3 +52,37 @@ edades_2030 <- edades + 2030 - 2024
 edades_2030 <- edades + (2030-2024) # lo mismo
 
 edades_2030 <- edades + 6 # una aleternativa menos elegante
+
+
+
+## EJERCICIO DATA FRAMES ----
+
+# (1) Crear la tabla de datos de la imagen de arriba en R usando la función data.frame()
+
+tabla <- data.frame(departamento = c("Montevideo", "Colonia", "Rivera"),
+                    nombre = c("Carolina Cosse", "Carlos Moreira", "Richard Sander"),
+                    partido = c("Frente Amplio", "Nacional", "Colorado"),
+                    edad = c(62, 77, 59))
+
+tabla # chequeo
+
+
+# (2) Agregar una variable con el sexo de cada candidato
+
+tabla$sexo <- c("Femenino", "Masculino", "Masculino")
+
+tabla # chequeo
+
+
+# otra forma
+sexo <- c("Femenino", "Masculino", "Masculino") #creo un vector con los datos
+tabla[ ,5] <- sexo # agrego el vector sexo al data.frame utilizando la indexación [ , ] para indicar que es la columna 5
+colnames(tabla)[5] <- "sexo" # renombro la columna con el nombre de la variable sexo
+
+tabla # chequeo
+
+# (3) Convertir en factor la variable partido
+
+tabla$partido <- as.factor(tabla$partido)
+
+class(tabla$partido) # chequeo que haya convertido a factor
