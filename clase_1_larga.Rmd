@@ -262,7 +262,7 @@ knitr::include_graphics("ima/rstudio.png")
 
 La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos recursos para aprender de forma independiente y resolver problemas cuando nos estancamos:
 
-- Libro "R for Data Science". Es muy completo y referencia en la mayoría de los cursos de R, pueden acceder a la versión online [original](https://r4ds.had.co.nz/) y a una [traducción](https://r4ds-en-espaniol.netlify.app/)
+- Libro "R for Data Science". Es muy completo y referencia en la mayoría de los cursos de R, pueden acceder a la versión online [original](https://r4ds.had.co.nz/) y a una [traducción](https://es.r4ds.hadley.nz/)
 
 - [R Bloggers](https://www.r-bloggers.com/) y [rpubs](https://rpubs.com/) publican miles de tutoriales para temas específicos 
 
@@ -396,6 +396,10 @@ knitr::include_graphics("ima/consola_standard.png")
 
 - Para ejecutar una línea de código pueden usar el botón de "Run" arriba a la derecha o -más cómodo- `ctrl + enter`
 
+--
+
+### Ahora ingresen/descarguen la carpeta de eva Codigo Clase 1 y abran el archivo codigo_1.R 
+
 ---
 
 ## Anotaciones
@@ -464,6 +468,10 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 10 * 10
 ```
 ]
+
+--
+
+- [**Operadores en R**](https://gmendezbarbato.github.io/myd2024/documentos-markdown/operadores.html)
 
 ---
 
@@ -597,6 +605,7 @@ R tiene funciones que nos permiten identificar la clase, el tipo, la estructura 
 
 - `attributes()` - ¿Tiene metadatos?
 
+- `str()` (paquete `utils`) - ¿CUál es la estructura interna del objeto?
 
 ---
 
@@ -798,7 +807,7 @@ knitr::include_graphics("ima/intendente_df.png")
 
 *(2) Agregar una variable con el sexo de cada candidato*
 
-*(3) Convertir en factor la variable partido*
+*(3) Convertir en factor la variable partido utilizando la función as.factor()*
 ]
 
 
@@ -812,7 +821,7 @@ class: inverse, center, middle
 
 ## Funciones 
 
-- Una función es una serie de instrucciones para realizar una tarea específica. La función suele necesitar un imput o entrada (generalmente datos) y suele devolver un output o salida (generalmente datos luego de cierta regla)
+- Una función es una serie de instrucciones para realizar una tarea específica. La función suele necesitar un input o entrada (generalmente datos) y suele devolver un output o salida (generalmente datos luego de cierta regla)
 
 - Los objetos .bold[son] cosas, las funciones .bold[hacen] cosas
 
@@ -825,6 +834,16 @@ class: inverse, center, middle
 ---
 
 ## Funciones 
+
+- [Explicación informal](https://www.youtube.com/watch?v=eViT5wKoN-Q)
+
+Fuente: El Traductor de Ingeniería [https://www.youtube.com/@eltraductor_ok](https://www.youtube.com/@eltraductor_ok)
+
+--
+
+<br/>
+
+
 .center[
 ```{r, out.width = "1250px"}
 knitr::include_graphics("ima/ima_fun.png")
@@ -941,19 +960,41 @@ class: inverse, center, middle
 ## Paquetes 
 
 - Los paquetes son conjuntos de funciones, documentación de ayuda y a veces datos
+
 --
 
 - El conjunto de funciones que vienen por defecto en R se le denomina "Base". Por ej. las funciones que hemos utilizado hasta ahora  -`mean()`, `identical()`, `help()`- están dentro del R Base.
+
 --
 
 - El repositorio principal donde se alojan los paquetes de R se llama Comprehensive R Archive Network [CRAN](https://cran.r-project.org/). Hay más de 10.000 paquetes alojados en CRAN. Aquí hay dos listas con algunos de los paquetes más 
 útiles: [support.rstudio](https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages) y [towardsdatascience](https://towardsdatascience.com/a-comprehensive-list-of-handy-r-packages-e85dad294b3d)  
+
 --
 
 - Los paquetes alojados en CRAN son testados antes de ser publicados. Por eso es recomendable tener cuidado con utilizar paquetes que no han sido publicados allí aún.
+
+---
+
+## Paquetes 
+
+Los paquetes normalmente están relacionados a alguna temática, por ejemplo:
+
+- existen paquetes específicos para manipulación de datos [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf), 
+
+- visualización de datos [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf) 
+
+- importar y exportar datos [readr](https://cran.r-project.org/web/packages/readr/readr.pdf) o [rio](https://cran.r-project.org/web/packages/rio/index.html). 
+
 --
 
-- Los paquetes normalmente están relacionados a alguna temática, por ejemplo existen paquetes específicos para manipulación de datos [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf), visualización de datos [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf) o importar y exportar datos [readr](https://cran.r-project.org/web/packages/readr/readr.pdf). Dado que R es libre, cualquier persona puede crear y publicar un paquete (publicarlo en CRAN requiere ciertos procesos igualmente), esto facilita que haya paquetes muy específicos para ciertas tareas que pueden ser de gran utilidad. Por ejemplo, existen paquetes para  conectarse con la API de Twitter [rtweet](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf), para utilizar los datos de [Gapminder](https://cran.csiro.au/web/packages/gapminder/gapminder.pdf) o para analizar datos electorales y de opinión pública en Uruguay [opuy](https://nicolas-schmidt.github.io/opuy/)
+Dado que R es libre, cualquier persona puede crear y publicar un paquete (publicarlo en CRAN requiere ciertos procesos igualmente), esto facilita que haya paquetes muy específicos para ciertas tareas que pueden ser de gran utilidad. Por ejemplo, existen paquetes para:
+
+- conectarse con la API de Twitter [rtweet](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf), 
+
+- para utilizar los datos de [Gapminder](https://cran.csiro.au/web/packages/gapminder/gapminder.pdf) 
+
+- para analizar datos electorales y de opinión pública en Uruguay [opuy](https://nicolas-schmidt.github.io/opuy/)
 
 ---
 
@@ -1153,7 +1194,7 @@ knitr::include_graphics("ima/tidy.jpg")
 - [dplyr](https://dplyr.tidyverse.org/): manipulación de datos
 - [tidyr](https://tidyr.tidyverse.org/): manipulación de datos
 - [ggplot2](https://ggplot2.tidyverse.org/): visualización de datos
-- [purr](https://purrr.tidyverse.org/): programación avanzada
+- [purrr](https://purrr.tidyverse.org/): programación avanzada
 - [tibble](https://tibble.tidyverse.org/): estructura de datos
 - [forcats](https://forcats.tidyverse.org/): factores
 - [stringr](https://stringr.tidyverse.org/): variables de caracteres
