@@ -3,15 +3,14 @@
   <head>
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
-    <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
-    <meta name="date" content="2023-06-29" />
-    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <meta name="author" content="FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez" />
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
-    <link href="libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-    <link href="libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
     <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view-0.2.6/tile-view.js"></script>
     <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
@@ -39,10 +38,10 @@ class: center, middle, inverse, title-slide
 ## Clase 2: Manipulación de datos
 ]
 .author[
-### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
+### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
 ]
 .date[
-### June 29, 2023
+### Abril 08, 2024
 ]
 
 ---
@@ -50,6 +49,32 @@ class: center, middle, inverse, title-slide
 class: inverse, center, middle
 
 
+
+class: inverse, center, middle
+
+# Plan para hoy
+
+
+---
+
+## Introducción
+
+- **Directorios de trabajo**
+
+- **Proyectos**
+
+- **Importar y exportar datos**
+
+- **Exploración data frames**
+
+- **Estadística descriptiva**
+
+- **Transformación de datos**
+
+- **Ejercicios**
+
+---
+class: inverse, center, middle
 
 # Directorios de trabajo 
 
@@ -63,7 +88,7 @@ class: inverse, center, middle
 ```r
 # Puedo fijar el directorio de trabajo con la función setwd()
 # Fijar la carpeta donde vamos a importar y exportar los archivos:
-setwd("micompu/micarpeta") 
+setwd("micompu/micarpeta") # ojo con la / no es \
 getwd() # Con está función puedo consultar el directorio
 ```
 ]
@@ -134,6 +159,47 @@ De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.
 ```r
 datauru &lt;- read_excel("data/datauru.xlsx") 
 ```
+
+---
+
+## Trabajar con proyectos
+
+RStudio tiene una solución mucho más eficiente para setear directorios de trabajo: **Proyectos**
+
+Los proyectos se guardan en una carpeta en un archivo .Rproj
+
+De manera simplificada, lo que hace es setear una carpeta. Por lo cual, al abrir ese archivo de proyecto, RStudio "ya sabe" que estamos trabajando en ese directorio y no tenemos que escirbir la ruta.
+
+Hay tres opciones al crear un proyecto:
+
+  - Crearlo en un nuevo directorio (nueva carpeta)
+  
+  - Crearlo en un directorio ya existente
+  
+  - Trabajar en control de versiones (Por ejemplo, clonando un repositorio de github con la URL)
+  
+
+---
+
+## Trabajar con proyectos
+
+.center[
+&lt;img src="ima/proj.png" width="1000px" /&gt;
+]
+
+---
+
+## Trabajar con proyectos 
+
+En la computadora en la que estés trabajando, en la carpeta creada, crea un proyecto.
+
+El nombre del proyecto debe ser igual al nombre de la carpeta matriz que lo contiene. 
+
+Ejemplo: 
+
+  - Archivo: **curso_myd.Rproj**
+  
+  - Carpeta: curso_myd
 
 
 ---
@@ -225,7 +291,13 @@ También es posible importar datos guardados en los formatos de otros softwares 
 
 ```r
 library(haven)
+```
 
+```
+## Warning: package 'haven' was built under R version 4.2.3
+```
+
+```r
 # SPSS
 gapminder_spss &lt;- read_spss("data/gapminder.sav") 
 
@@ -304,6 +376,18 @@ write_sav(data_gapminder, "resultados/gapminder.sav")
 write_sas(data_gapminder, "resultados/gapminder.sas")
 ```
 ]
+
+
+---
+class: inverse, center, middle
+
+# Paquete rio
+
+---
+
+## Paquete rio
+
+
 
 ---
 class: inverse, center, middle
@@ -586,7 +670,7 @@ table(gapminder_07$year)
 ---
 ## Operadores aritméticos 
 
-&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; margin-left: auto; margin-right: auto;"&gt;
+&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; color: black; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; Operador &lt;/th&gt;
@@ -633,7 +717,7 @@ table(gapminder_07$year)
 
 ## Operadores relacionales 
 
-&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; margin-left: auto; margin-right: auto;"&gt;
+&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; color: black; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; Operador &lt;/th&gt;
@@ -692,7 +776,7 @@ table(gapminder_07$year)
 
 ## Operadores booleanos
 
-&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; margin-left: auto; margin-right: auto;"&gt;
+&lt;table class="table table-striped table-hover table-condensed" style="font-size: 20px; color: black; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; Operador &lt;/th&gt;
@@ -800,7 +884,7 @@ print(gapminder_07_america)
 ##  8 Cuba                2007    78.3  11416987     8948.
 ##  9 Dominican Republic  2007    72.2   9319622     6025.
 ## 10 Ecuador             2007    75.0  13755680     6873.
-## # … with 15 more rows
+## # ℹ 15 more rows
 ```
 ]
 
@@ -1138,388 +1222,6 @@ gapminder &lt;- gapminder
 
 *(4) Asegurarse de hacer los primeros 3 pasos en un mismo pipeline*
 ]
-
----
-class: inverse, center, middle
-
-# Tablas cruzadas
-
----
-## Resumir datos: tablas simples
-
-Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
-
-.codefontchico[
-
-```r
-# Frecuencia simple
-d_gap %&gt;% 
-  count(continent)
-```
-
-```
-## # A tibble: 5 × 2
-##   continent     n
-##   &lt;fct&gt;     &lt;int&gt;
-## 1 Africa      624
-## 2 Americas    300
-## 3 Asia        396
-## 4 Europe      360
-## 5 Oceania      24
-```
-
-```r
-# Frecuencia proporción
-d_gap %&gt;% 
-  count(continent) %&gt;% 
-  mutate(per = n/sum(n)*100) %&gt;% # Porcentaje
-  mutate(prop = n/sum(n)) # Proporción
-```
-
-```
-## # A tibble: 5 × 4
-##   continent     n   per   prop
-##   &lt;fct&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Africa      624 36.6  0.366 
-## 2 Americas    300 17.6  0.176 
-## 3 Asia        396 23.2  0.232 
-## 4 Europe      360 21.1  0.211 
-## 5 Oceania      24  1.41 0.0141
-```
-]
-
----
-## Resumir datos: tablas cruzadas
-
-Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
-
-.codefontchico[
-
-```r
-# Tabla cruzada en formato largo
-d_gap %&gt;% 
-  count(continent, pob_rec)
-```
-
-```
-## # A tibble: 15 × 3
-##    continent pob_rec     n
-##    &lt;fct&gt;     &lt;chr&gt;   &lt;int&gt;
-##  1 Africa    Grande     86
-##  2 Africa    Mediana   208
-##  3 Africa    Pequeña   330
-##  4 Americas  Grande     72
-##  5 Americas  Mediana    98
-##  6 Americas  Pequeña   130
-##  7 Asia      Grande    168
-##  8 Asia      Mediana   111
-##  9 Asia      Pequeña   117
-## 10 Europe    Grande     92
-## 11 Europe    Mediana   152
-## 12 Europe    Pequeña   116
-## 13 Oceania   Grande      1
-## 14 Oceania   Mediana    11
-## 15 Oceania   Pequeña    12
-```
-]
-
----
-## Resumir datos: tablas cruzadas
-
- Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
-
-.codefont[
-
-```r
-# Tabla cruzada en formato ancho
-d_gap %&gt;% 
-  count(continent, pob_rec) %&gt;% 
-  spread(pob_rec, n)
-```
-
-```
-## # A tibble: 5 × 4
-##   continent Grande Mediana Pequeña
-##   &lt;fct&gt;      &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
-## 1 Africa        86     208     330
-## 2 Americas      72      98     130
-## 3 Asia         168     111     117
-## 4 Europe        92     152     116
-## 5 Oceania        1      11      12
-```
-]
-
----
-## Resumir datos: tablas cruzadas
-
-Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
-
-.codefont[
-
-```r
-# Porcentaje total
-d_gap %&gt;% 
-  count(continent, pob_rec) %&gt;%
-  mutate(n = n/sum(n)*100) %&gt;% 
-  spread(pob_rec, n)
-```
-
-```
-## # A tibble: 5 × 4
-##   continent Grande Mediana Pequeña
-##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Africa    5.05    12.2    19.4  
-## 2 Americas  4.23     5.75    7.63 
-## 3 Asia      9.86     6.51    6.87 
-## 4 Europe    5.40     8.92    6.81 
-## 5 Oceania   0.0587   0.646   0.704
-```
-]
-
----
-## Resumir datos: tablas cruzada
-
-Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
-
-.codefontchico[
-
-```r
-# % de paises en cada tamaño de población por continente 
-d_gap %&gt;% 
-  count(continent, pob_rec) %&gt;%
-  mutate(n = n/sum(n)*100, .by = continent) %&gt;% 
-  spread(pob_rec, n)
-```
-
-```
-## # A tibble: 5 × 4
-##   continent Grande Mediana Pequeña
-##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Africa     13.8     33.3    52.9
-## 2 Americas   24       32.7    43.3
-## 3 Asia       42.4     28.0    29.5
-## 4 Europe     25.6     42.2    32.2
-## 5 Oceania     4.17    45.8    50
-```
-
-```r
-# % de continente por tamaño de población  
-d_gap %&gt;% 
-  count(continent, pob_rec) %&gt;%
-  mutate(n = n/sum(n)*100, .by = pob_rec) %&gt;% 
-  spread(pob_rec, n)
-```
-
-```
-## # A tibble: 5 × 4
-##   continent Grande Mediana Pequeña
-##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Africa    20.5     35.9    46.8 
-## 2 Americas  17.2     16.9    18.4 
-## 3 Asia      40.1     19.1    16.6 
-## 4 Europe    22.0     26.2    16.5 
-## 5 Oceania    0.239    1.90    1.70
-```
-]
-
-
-
----
-class: inverse, center, middle
-
-# Tablas con estadísticas descriptivas
-
----
-## Resumir datos 
-
-Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
-
-Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
-
-.codefont[
-
-```r
-gapminder %&gt;% 
-  summarise(media = mean(lifeExp, na.rm=T))
-```
-
-```
-## # A tibble: 1 × 1
-##   media
-##   &lt;dbl&gt;
-## 1  59.5
-```
-
-```r
-# Por ahora no hay mucha diferencia con
-mean(gapminder$lifeExp, na.rm = TRUE)
-```
-
-```
-## [1] 59.47444
-```
-]
-
-
----
-## Resumir datos 
-
-Hasta ahora `summarise()` no nos es de gran utilidad, la utilidad de `summarise()`  es su uso conjunto con `group_by()`, para estimar diferentes estadísticas según grupos específicos. 
-
-Cuando utilizamos `group_by()` en un pipeline cambiamos la unidad de análisis desde todo el dataframe a niveles de una variable. Retomando el ejemplo, podemos ver el promedio de expectativa de vida según año:
-
-.codefont[
-
-```r
-gapminder %&gt;% 
-  group_by(year) %&gt;% 
-  summarise(media = mean(lifeExp, na.rm = T)) 
-```
-
-```
-## # A tibble: 12 × 2
-##     year media
-##    &lt;int&gt; &lt;dbl&gt;
-##  1  1952  49.1
-##  2  1957  51.5
-##  3  1962  53.6
-##  4  1967  55.7
-##  5  1972  57.6
-##  6  1977  59.6
-##  7  1982  61.5
-##  8  1987  63.2
-##  9  1992  64.2
-## 10  1997  65.0
-## 11  2002  65.7
-## 12  2007  67.0
-```
-]
-
-
----
-## Resumir datos 
-
-Algunas de las operaciones más utilizadas para resumir datos:
-
-- `mean()`: media 
-- `median()`: mediana
-- `sd()`: desvío estandar
-- `sum()`: suma
-- `n()`: número de observaciones
-- `n_distinct()`: número de valores únicos
-- `min()` y `max()`: mínimo y máximo
-- `first()`: primer valor
-
-
----
-## Resumir datos
-
-Podemos utilizar más de una variable dentro de `group_by()`. Por ejemplo, calculemos la media de expectativa de vida por año comparando America y Europa para 1997, 2002 y 2007:
-
-.codefont[
-
-```r
-resumen_1 &lt;- gapminder %&gt;% 
-  filter(continent %in% c("Americas", "Europe")) %&gt;% 
-  filter(year &gt;= 1997) %&gt;% 
-  group_by(continent, year) %&gt;% 
-  summarise(media = mean(lifeExp, na.rm = TRUE)) 
-```
-
-```
-## `summarise()` has grouped output by 'continent'. You can override using the
-## `.groups` argument.
-```
-
-```r
-resumen_1
-```
-
-```
-## # A tibble: 6 × 3
-## # Groups:   continent [2]
-##   continent  year media
-##   &lt;fct&gt;     &lt;int&gt; &lt;dbl&gt;
-## 1 Americas   1997  71.2
-## 2 Americas   2002  72.4
-## 3 Americas   2007  73.6
-## 4 Europe     1997  75.5
-## 5 Europe     2002  76.7
-## 6 Europe     2007  77.6
-```
-]
-
----
-## Resumir datos
-
-Una de las grandes ventajas de `summarise()` es que podemos resumir muy fácilmente varias estadísticas en un solo dataframe. 
-
-.codefont[
-
-```r
-resumen_2 &lt;- gapminder %&gt;% 
-  filter(continent %in% c("Americas", "Europe")) %&gt;%
-  filter(year == 2007) %&gt;%
-  group_by(continent) %&gt;% 
-  summarise(media = mean(gdpPercap),
-            desvio = sd(gdpPercap),
-            suma = sum(gdpPercap),
-            max = max(gdpPercap),
-            min = min(gdpPercap),
-            paises = n()) 
-
-resumen_2
-```
-
-```
-## # A tibble: 2 × 7
-##   continent  media desvio    suma    max   min paises
-##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;
-## 1 Americas  11003.  9713. 275076. 42952. 1202.     25
-## 2 Europe    25054. 11800. 751634. 49357. 5937.     30
-```
-]
-
----
-## Exportar tablas
-
-Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
-
-.codefont[
-
-```r
-library(writexl)
-writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
-```
-]
-
-
----
-
-## Ejercicio
-
-.content-box-blue[
-*Para este ejercicio vamos a utilizar el dataframe de gapminder y vamos a crear una variable nueva recodificando los valores la variable de pbi per capita (gdpPercap). Para eso peguen el código debajo*
-
-
-```r
-library(gapminder)
-gapminder &lt;- gapminder %&gt;% 
-  mutate(gdp_rec = case_when(
-    gdpPercap &lt; 2000 ~ "Bajo",
-    gdpPercap &gt;= 2000 &amp; gdpPercap &lt;= 5000 ~ "Medio",
-    gdpPercap &gt; 5000 ~ "Alto"
-  ))
-```
-
-*(1) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de pbi per cápita*
-
-*(2) Ahora crear una tabla cruzada entre continente y la variable recodificada de pbi per cápita (incluir el % a nivel de fila)*
-
-*(3) Crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
-
-]
-
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

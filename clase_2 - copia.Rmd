@@ -64,13 +64,13 @@ class: inverse, center, middle
 
 - **Proyectos**
 
-- **Importar y exportar datos**
-
 - **Exploración data frames**
 
 - **Estadística descriptiva**
 
 - **Transformación de datos**
+
+- **Creación de tablas**
 
 - **Ejercicios**
 
@@ -148,49 +148,6 @@ De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.
 ```{r ejasdasa,  echo = TRUE}
 datauru <- read_excel("data/datauru.xlsx") 
 ```
-
----
-
-## Trabajar con proyectos
-
-RStudio tiene una solución mucho más eficiente para setear directorios de trabajo: **Proyectos**
-
-Los proyectos se guardan en una carpeta en un archivo .Rproj
-
-De manera simplificada, lo que hace es setear una carpeta. Por lo cual, al abrir ese archivo de proyecto, RStudio "ya sabe" que estamos trabajando en ese directorio y no tenemos que escirbir la ruta.
-
-Hay tres opciones al crear un proyecto:
-
-  - Crearlo en un nuevo directorio (nueva carpeta)
-  
-  - Crearlo en un directorio ya existente
-  
-  - Trabajar en control de versiones (Por ejemplo, clonando un repositorio de github con la URL)
-  
-
----
-
-## Trabajar con proyectos
-
-.center[
-```{r proj, out.width = "1000px"}
-knitr::include_graphics("ima/proj.png")
-```
-]
-
----
-
-## Trabajar con proyectos 
-
-En la computadora en la que estés trabajando, en la carpeta creada, crea un proyecto.
-
-El nombre del proyecto debe ser igual al nombre de la carpeta matriz que lo contiene. 
-
-Ejemplo: 
-
-  - Archivo: **curso_myd.Rproj**
-  
-  - Carpeta: curso_myd
 
 
 ---
@@ -332,18 +289,6 @@ write_sav(data_gapminder, "resultados/gapminder.sav")
 write_sas(data_gapminder, "resultados/gapminder.sas")
 ```
 ]
-
-
----
-class: inverse, center, middle
-
-# Paquete rio
-
----
-
-## Paquete rio
-
-
 
 ---
 class: inverse, center, middle
@@ -843,4 +788,226 @@ gapminder <- gapminder
 
 *(4) Asegurarse de hacer los primeros 3 pasos en un mismo pipeline*
 ]
+
+---
+class: inverse, center, middle
+
+# Tablas cruzadas
+
+---
+## Resumir datos: tablas simples
+
+Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
+
+.codefontchico[
+```{r ch9sdasss, echo = TRUE}
+# Frecuencia simple
+d_gap %>% 
+  count(continent)
+
+# Frecuencia proporción
+d_gap %>% 
+  count(continent) %>% 
+  mutate(per = n/sum(n)*100) %>% # Porcentaje
+  mutate(prop = n/sum(n)) # Proporción
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
+
+.codefontchico[
+```{r ch9ssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato largo
+d_gap %>% 
+  count(continent, pob_rec)
+
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+ Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
+
+.codefont[
+```{r ch9ssssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato ancho
+d_gap %>% 
+  count(continent, pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
+
+.codefont[
+```{r ch9sdas2222, echo = TRUE}
+# Porcentaje total
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzada
+
+Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
+
+.codefontchico[
+```{r ch9sdas1111, echo = TRUE}
+# % de paises en cada tamaño de población por continente 
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = continent) %>% 
+  spread(pob_rec, n)
+
+# % de continente por tamaño de población  
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+
+
+---
+class: inverse, center, middle
+
+# Tablas con estadísticas descriptivas
+
+---
+## Resumir datos 
+
+Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
+
+Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
+
+.codefont[
+```{r ch9, echo = TRUE}
+gapminder %>% 
+  summarise(media = mean(lifeExp, na.rm=T))
+
+# Por ahora no hay mucha diferencia con
+mean(gapminder$lifeExp, na.rm = TRUE)
+```
+]
+
+
+---
+## Resumir datos 
+
+Hasta ahora `summarise()` no nos es de gran utilidad, la utilidad de `summarise()`  es su uso conjunto con `group_by()`, para estimar diferentes estadísticas según grupos específicos. 
+
+Cuando utilizamos `group_by()` en un pipeline cambiamos la unidad de análisis desde todo el dataframe a niveles de una variable. Retomando el ejemplo, podemos ver el promedio de expectativa de vida según año:
+
+.codefont[
+```{r ch10, echo = TRUE}
+gapminder %>% 
+  group_by(year) %>% 
+  summarise(media = mean(lifeExp, na.rm = T)) 
+
+```
+]
+
+
+---
+## Resumir datos 
+
+Algunas de las operaciones más utilizadas para resumir datos:
+
+- `mean()`: media 
+- `median()`: mediana
+- `sd()`: desvío estandar
+- `sum()`: suma
+- `n()`: número de observaciones
+- `n_distinct()`: número de valores únicos
+- `min()` y `max()`: mínimo y máximo
+- `first()`: primer valor
+
+
+---
+## Resumir datos
+
+Podemos utilizar más de una variable dentro de `group_by()`. Por ejemplo, calculemos la media de expectativa de vida por año comparando America y Europa para 1997, 2002 y 2007:
+
+.codefont[
+```{r ch12, echo = TRUE, warning=FALSE}
+resumen_1 <- gapminder %>% 
+  filter(continent %in% c("Americas", "Europe")) %>% 
+  filter(year >= 1997) %>% 
+  group_by(continent, year) %>% 
+  summarise(media = mean(lifeExp, na.rm = TRUE)) 
+resumen_1
+```
+]
+
+---
+## Resumir datos
+
+Una de las grandes ventajas de `summarise()` es que podemos resumir muy fácilmente varias estadísticas en un solo dataframe. 
+
+.codefont[
+```{r ch13, echo = TRUE}
+resumen_2 <- gapminder %>% 
+  filter(continent %in% c("Americas", "Europe")) %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>% 
+  summarise(media = mean(gdpPercap),
+            desvio = sd(gdpPercap),
+            suma = sum(gdpPercap),
+            max = max(gdpPercap),
+            min = min(gdpPercap),
+            paises = n()) 
+
+resumen_2
+```
+]
+
+---
+## Exportar tablas
+
+Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
+
+.codefont[
+```{r ch13___8, echo = TRUE}
+library(writexl)
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
+```
+]
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*Para este ejercicio vamos a utilizar el dataframe de gapminder y vamos a crear una variable nueva recodificando los valores la variable de pbi per capita (gdpPercap). Para eso peguen el código debajo*
+
+```{r ch9sdas11321, echo = TRUE}
+library(gapminder)
+gapminder <- gapminder %>% 
+  mutate(gdp_rec = case_when(
+    gdpPercap < 2000 ~ "Bajo",
+    gdpPercap >= 2000 & gdpPercap <= 5000 ~ "Medio",
+    gdpPercap > 5000 ~ "Alto"
+  ))
+```
+
+*(1) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de pbi per cápita*
+
+*(2) Ahora crear una tabla cruzada entre continente y la variable recodificada de pbi per cápita (incluir el % a nivel de fila)*
+
+*(3) Crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+
+]
+
 
