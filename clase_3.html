@@ -4,14 +4,13 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
-    <meta name="date" content="2023-07-03" />
-    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
-    <link href="libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-    <link href="libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
     <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view-0.2.6/tile-view.js"></script>
     <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
@@ -38,13 +37,638 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
 ]
 .date[
-### July 03, 2023
+### Abril 09, 2024
 ]
 
 ---
 
 class: inverse, center, middle
 
+
+
+class: inverse, center, middle
+
+# Explorar Dataframes 
+
+---
+
+## Resumen de un dataframe
+
+.codefont[
+
+```r
+library(gapminder)
+data_gapminder &lt;- gapminder
+```
+]
+.codefont[
+
+]
+
+.codefont[
+
+```r
+dim(data_gapminder) # Número de filas y columnas
+```
+
+```
+## [1] 1704    6
+```
+
+```r
+names(data_gapminder) # Nombre de variables
+```
+
+```
+## [1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
+```
+
+```r
+head(data_gapminder, 3) # Imprime primeras filas (3 en este caso)
+```
+
+```
+## # A tibble: 3 × 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.
+```
+]
+
+---
+
+## Resumen de un dataframe 
+
+Una de las funciones más utiles para resumir un dataframe es `glimpse()` del paquete dplyr o tidyverse. Es particularmente util debido a que permite un vistazo al nombre, tipo y primeros valores de .bold[todos] las variables de un dataframe.
+
+
+```r
+# Resumen más completo:
+glimpse(gapminder) 
+```
+
+```
+## Rows: 1,704
+## Columns: 6
+## $ country   &lt;fct&gt; "Afghanistan", "Afghanistan", "Afghanistan", "Afghanistan", …
+## $ continent &lt;fct&gt; Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, …
+## $ year      &lt;int&gt; 1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, …
+## $ lifeExp   &lt;dbl&gt; 28.801, 30.332, 31.997, 34.020, 36.088, 38.438, 39.854, 40.8…
+## $ pop       &lt;int&gt; 8425333, 9240934, 10267083, 11537966, 13079460, 14880372, 12…
+## $ gdpPercap &lt;dbl&gt; 779.4453, 820.8530, 853.1007, 836.1971, 739.9811, 786.1134, …
+```
+
+---
+## Tablas simples
+
+En R Base la función para obtener frecuencias es `table()` junto con `prop.table()` y `addmargins()`
+
+.codefontchico[
+
+```r
+# Para obtener una tabla de frecuencias de una variable usamos la función
+# table() de R Base
+tabla_1 &lt;- table(data_gapminder$continent) # Frecuencia simple
+tabla_1 
+```
+
+```
+## 
+##   Africa Americas     Asia   Europe  Oceania 
+##      624      300      396      360       24
+```
+
+```r
+prop.table(tabla_1) # Proporciones
+```
+
+```
+## 
+##     Africa   Americas       Asia     Europe    Oceania 
+## 0.36619718 0.17605634 0.23239437 0.21126761 0.01408451
+```
+
+```r
+addmargins(tabla_1) # Totales
+```
+
+```
+## 
+##   Africa Americas     Asia   Europe  Oceania      Sum 
+##      624      300      396      360       24     1704
+```
+
+```r
+addmargins(prop.table(tabla_1)) # Proporciones y totales
+```
+
+```
+## 
+##     Africa   Americas       Asia     Europe    Oceania        Sum 
+## 0.36619718 0.17605634 0.23239437 0.21126761 0.01408451 1.00000000
+```
+]
+
+
+---
+class: inverse, center, middle
+
+# Estadística descriptiva
+
+---
+
+## Medidas de tendencia central 
+
+.codefont[
+
+```r
+mean(data_gapminder$lifeExp) # Media
+```
+
+```
+## [1] 59.47444
+```
+
+```r
+median(data_gapminder$lifeExp) # Mediana
+```
+
+```
+## [1] 60.7125
+```
+
+```r
+sd(data_gapminder$lifeExp) # Desvío estandar
+```
+
+```
+## [1] 12.91711
+```
+]
+
+---
+
+## Rangos 
+
+
+```r
+range(data_gapminder$lifeExp) # Rango
+```
+
+```
+## [1] 23.599 82.603
+```
+
+```r
+max(data_gapminder$lifeExp)
+```
+
+```
+## [1] 82.603
+```
+
+```r
+min(data_gapminder$lifeExp)
+```
+
+```
+## [1] 23.599
+```
+
+---
+
+## Histogramas 
+También podemos graficar los datos rápidamente. Por ejemplo, un histograma:
+
+.center[
+.codefont[
+
+```r
+hist(data_gapminder$lifeExp,
+     main = "Distribución de expectativa de vida (Gapminder)")
+```
+
+&lt;img src="clase_3_files/figure-html/ej22-1.png" width="400px" /&gt;
+]
+]
+---
+
+## Gráfico de dispersión (scatterplot) 
+
+.center[
+
+```r
+plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
+     main = "Relación entre expectativa de vida y PBI per cápita")
+```
+
+&lt;img src="clase_3_files/figure-html/ej22_b-1.png" width="400px" /&gt;
+]
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Importar el archivo excel en la carpeta data llamado "datauru"*
+
+*(2) Explorar las variables y el tipo de cada variable con la función glimpse()*
+
+*(3) Calcular la media de una variable numérica*
+
+*(4) Crear una tabla de proporciones con la distribución de la variable partido*
+
+*(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)*
+]
+
+---
+
+class: inverse, center, middle
+
+# Tablas cruzadas
+
+---
+## Resumir datos: tablas simples
+
+Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
+
+.codefontchico[
+
+```r
+library(rio)
+```
+
+```
+## Warning: package 'rio' was built under R version 4.2.3
+```
+
+```r
+d_gap &lt;- import("data/d_gap.csv")
+
+
+# Frecuencia simple
+d_gap %&gt;% 
+  count(continent)
+```
+
+```
+##   continent   n
+## 1    Africa 624
+## 2  Americas 300
+## 3      Asia 396
+## 4    Europe 360
+## 5   Oceania  24
+```
+
+```r
+# Frecuencia proporción
+d_gap %&gt;% 
+  count(continent) %&gt;% 
+  mutate(per = n/sum(n)*100) %&gt;% # Porcentaje
+  mutate(prop = n/sum(n)) # Proporción
+```
+
+```
+##   continent   n       per       prop
+## 1    Africa 624 36.619718 0.36619718
+## 2  Americas 300 17.605634 0.17605634
+## 3      Asia 396 23.239437 0.23239437
+## 4    Europe 360 21.126761 0.21126761
+## 5   Oceania  24  1.408451 0.01408451
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
+
+.codefontchico[
+
+```r
+# Tabla cruzada en formato largo
+d_gap %&gt;% 
+  count(continent, pob_rec)
+```
+
+```
+##    continent pob_rec   n
+## 1     Africa  Grande  86
+## 2     Africa Mediana 208
+## 3     Africa Pequeña 330
+## 4   Americas  Grande  72
+## 5   Americas Mediana  98
+## 6   Americas Pequeña 130
+## 7       Asia  Grande 168
+## 8       Asia Mediana 111
+## 9       Asia Pequeña 117
+## 10    Europe  Grande  92
+## 11    Europe Mediana 152
+## 12    Europe Pequeña 116
+## 13   Oceania  Grande   1
+## 14   Oceania Mediana  11
+## 15   Oceania Pequeña  12
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+ Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
+
+.codefont[
+
+```r
+# Tabla cruzada en formato ancho
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+##   continent Grande Mediana Pequeña
+## 1    Africa     86     208     330
+## 2  Americas     72      98     130
+## 3      Asia    168     111     117
+## 4    Europe     92     152     116
+## 5   Oceania      1      11      12
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
+
+.codefont[
+
+```r
+# Porcentaje total
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+##   continent     Grande    Mediana    Pequeña
+## 1    Africa 5.04694836 12.2065728 19.3661972
+## 2  Americas 4.22535211  5.7511737  7.6291080
+## 3      Asia 9.85915493  6.5140845  6.8661972
+## 4    Europe 5.39906103  8.9201878  6.8075117
+## 5   Oceania 0.05868545  0.6455399  0.7042254
+```
+]
+
+---
+## Resumir datos: tablas cruzada
+
+Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
+
+.codefontchico[
+
+```r
+# % de paises en cada tamaño de población por continente 
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100, .by = continent) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+##   continent    Grande  Mediana  Pequeña
+## 1    Africa 13.782051 33.33333 52.88462
+## 2  Americas 24.000000 32.66667 43.33333
+## 3      Asia 42.424242 28.03030 29.54545
+## 4    Europe 25.555556 42.22222 32.22222
+## 5   Oceania  4.166667 45.83333 50.00000
+```
+
+```r
+# % de continente por tamaño de población  
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+##   continent     Grande   Mediana   Pequeña
+## 1    Africa 20.5250597 35.862069 46.808511
+## 2  Americas 17.1837709 16.896552 18.439716
+## 3      Asia 40.0954654 19.137931 16.595745
+## 4    Europe 21.9570406 26.206897 16.453901
+## 5   Oceania  0.2386635  1.896552  1.702128
+```
+]
+
+
+
+---
+class: inverse, center, middle
+
+# Tablas con estadísticas descriptivas
+
+---
+## Resumir datos 
+
+Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
+
+Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
+
+.codefont[
+
+```r
+gapminder %&gt;% 
+  summarise(media = mean(lifeExp, na.rm=T))
+```
+
+```
+## # A tibble: 1 × 1
+##   media
+##   &lt;dbl&gt;
+## 1  59.5
+```
+
+```r
+# Por ahora no hay mucha diferencia con
+mean(gapminder$lifeExp, na.rm = TRUE)
+```
+
+```
+## [1] 59.47444
+```
+]
+
+
+---
+## Resumir datos 
+
+Hasta ahora `summarise()` no nos es de gran utilidad, la utilidad de `summarise()`  es su uso conjunto con `group_by()`, para estimar diferentes estadísticas según grupos específicos. 
+
+Cuando utilizamos `group_by()` en un pipeline cambiamos la unidad de análisis desde todo el dataframe a niveles de una variable. Retomando el ejemplo, podemos ver el promedio de expectativa de vida según año:
+
+.codefont[
+
+```r
+gapminder %&gt;% 
+  group_by(year) %&gt;% 
+  summarise(media = mean(lifeExp, na.rm = T)) 
+```
+
+```
+## # A tibble: 12 × 2
+##     year media
+##    &lt;int&gt; &lt;dbl&gt;
+##  1  1952  49.1
+##  2  1957  51.5
+##  3  1962  53.6
+##  4  1967  55.7
+##  5  1972  57.6
+##  6  1977  59.6
+##  7  1982  61.5
+##  8  1987  63.2
+##  9  1992  64.2
+## 10  1997  65.0
+## 11  2002  65.7
+## 12  2007  67.0
+```
+]
+
+
+---
+## Resumir datos 
+
+Algunas de las operaciones más utilizadas para resumir datos:
+
+- `mean()`: media 
+- `median()`: mediana
+- `sd()`: desvío estandar
+- `sum()`: suma
+- `n()`: número de observaciones
+- `n_distinct()`: número de valores únicos
+- `min()` y `max()`: mínimo y máximo
+- `first()`: primer valor
+
+
+---
+## Resumir datos
+
+Podemos utilizar más de una variable dentro de `group_by()`. Por ejemplo, calculemos la media de expectativa de vida por año comparando America y Europa para 1997, 2002 y 2007:
+
+.codefont[
+
+```r
+resumen_1 &lt;- gapminder %&gt;% 
+  filter(continent %in% c("Americas", "Europe")) %&gt;% 
+  filter(year &gt;= 1997) %&gt;% 
+  group_by(continent, year) %&gt;% 
+  summarise(media = mean(lifeExp, na.rm = TRUE)) 
+```
+
+```
+## `summarise()` has grouped output by 'continent'. You can override using the
+## `.groups` argument.
+```
+
+```r
+resumen_1
+```
+
+```
+## # A tibble: 6 × 3
+## # Groups:   continent [2]
+##   continent  year media
+##   &lt;fct&gt;     &lt;int&gt; &lt;dbl&gt;
+## 1 Americas   1997  71.2
+## 2 Americas   2002  72.4
+## 3 Americas   2007  73.6
+## 4 Europe     1997  75.5
+## 5 Europe     2002  76.7
+## 6 Europe     2007  77.6
+```
+]
+
+---
+## Resumir datos
+
+Una de las grandes ventajas de `summarise()` es que podemos resumir muy fácilmente varias estadísticas en un solo dataframe. 
+
+.codefont[
+
+```r
+resumen_2 &lt;- gapminder %&gt;% 
+  filter(continent %in% c("Americas", "Europe")) %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;% 
+  summarise(media = mean(gdpPercap),
+            desvio = sd(gdpPercap),
+            suma = sum(gdpPercap),
+            max = max(gdpPercap),
+            min = min(gdpPercap),
+            paises = n()) 
+
+resumen_2
+```
+
+```
+## # A tibble: 2 × 7
+##   continent  media desvio    suma    max   min paises
+##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;
+## 1 Americas  11003.  9713. 275076. 42952. 1202.     25
+## 2 Europe    25054. 11800. 751634. 49357. 5937.     30
+```
+]
+
+---
+## Exportar tablas
+
+Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
+
+.codefont[
+
+```r
+library(writexl)
+```
+
+```
+## Warning: package 'writexl' was built under R version 4.2.3
+```
+
+```r
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
+```
+]
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*Para este ejercicio vamos a utilizar el dataframe de gapminder y vamos a crear una variable nueva recodificando los valores la variable de pbi per capita (gdpPercap). Para eso peguen el código debajo*
+
+
+```r
+library(gapminder)
+gapminder &lt;- gapminder %&gt;% 
+  mutate(gdp_rec = case_when(
+    gdpPercap &lt; 2000 ~ "Bajo",
+    gdpPercap &gt;= 2000 &amp; gdpPercap &lt;= 5000 ~ "Medio",
+    gdpPercap &gt; 5000 ~ "Alto"
+  ))
+```
+
+*(1) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de pbi per cápita*
+
+*(2) Ahora crear una tabla cruzada entre continente y la variable recodificada de pbi per cápita (incluir el % a nivel de fila)*
+
+*(3) Crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+
+]
 
 
 # Importar datos con etiquetas 
@@ -62,6 +686,13 @@ class: inverse, center, middle
 
 ```r
 library(haven)
+```
+
+```
+## Warning: package 'haven' was built under R version 4.2.3
+```
+
+```r
 data_uru &lt;- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %&gt;% 
   select(fecha, q1, q2, pol1)
 

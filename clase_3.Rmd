@@ -51,6 +51,364 @@ use_extra_styles(
   )  
 ```
 
+class: inverse, center, middle
+
+# Explorar Dataframes 
+
+---
+
+## Resumen de un dataframe
+
+.codefont[
+```{r ej18a, eval = TRUE, echo = TRUE, warning=FALSE}
+library(gapminder)
+data_gapminder <- gapminder
+```
+]
+.codefont[
+```{r ej18, eval = FALSE, warning=FALSE}
+# R tiene un visor para datos. Pueden dar click en el dataframe en el ambiente o:
+view(data_gapminder)
+```
+]
+
+.codefont[
+```{r ej18b, echo = TRUE, warning=FALSE}
+dim(data_gapminder) # Número de filas y columnas
+names(data_gapminder) # Nombre de variables
+head(data_gapminder, 3) # Imprime primeras filas (3 en este caso)
+```
+]
+
+---
+
+## Resumen de un dataframe 
+
+Una de las funciones más utiles para resumir un dataframe es `glimpse()` del paquete dplyr o tidyverse. Es particularmente util debido a que permite un vistazo al nombre, tipo y primeros valores de .bold[todos] las variables de un dataframe.
+
+```{r ej19bc, echo = TRUE, warning=FALSE}
+# Resumen más completo:
+glimpse(gapminder) 
+```
+
+---
+## Tablas simples
+
+En R Base la función para obtener frecuencias es `table()` junto con `prop.table()` y `addmargins()`
+
+.codefontchico[
+```{r ej19b_2, echo = TRUE}
+# Para obtener una tabla de frecuencias de una variable usamos la función
+# table() de R Base
+tabla_1 <- table(data_gapminder$continent) # Frecuencia simple
+tabla_1 
+
+prop.table(tabla_1) # Proporciones
+
+addmargins(tabla_1) # Totales
+
+addmargins(prop.table(tabla_1)) # Proporciones y totales
+```
+]
+
+
+---
+class: inverse, center, middle
+
+# Estadística descriptiva
+
+---
+
+## Medidas de tendencia central 
+
+.codefont[
+```{r ej20, echo = TRUE}
+mean(data_gapminder$lifeExp) # Media
+median(data_gapminder$lifeExp) # Mediana
+sd(data_gapminder$lifeExp) # Desvío estandar
+```
+]
+
+---
+
+## Rangos 
+
+```{r ej21, echo = TRUE}
+range(data_gapminder$lifeExp) # Rango
+max(data_gapminder$lifeExp)
+min(data_gapminder$lifeExp)
+```
+
+---
+
+## Histogramas 
+También podemos graficar los datos rápidamente. Por ejemplo, un histograma:
+
+.center[
+.codefont[
+```{r ej22, echo = TRUE,  out.width = '400px'}
+hist(data_gapminder$lifeExp,
+     main = "Distribución de expectativa de vida (Gapminder)")
+```
+]
+]
+---
+
+## Gráfico de dispersión (scatterplot) 
+
+.center[
+```{r ej22_b, echo = TRUE,  out.width = '400px'}
+plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
+     main = "Relación entre expectativa de vida y PBI per cápita")
+```
+]
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Importar el archivo excel en la carpeta data llamado "datauru"*
+
+*(2) Explorar las variables y el tipo de cada variable con la función glimpse()*
+
+*(3) Calcular la media de una variable numérica*
+
+*(4) Crear una tabla de proporciones con la distribución de la variable partido*
+
+*(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)*
+]
+
+---
+
+class: inverse, center, middle
+
+# Tablas cruzadas
+
+---
+## Resumir datos: tablas simples
+
+Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
+
+.codefontchico[
+```{r ch9sdasss, echo = TRUE, message=FALSE, warning=FALSE}
+library(rio)
+d_gap <- import("data/d_gap.csv")
+
+# Frecuencia simple
+d_gap %>% 
+  count(continent)
+
+# Frecuencia proporción
+d_gap %>% 
+  count(continent) %>% 
+  mutate(per = n/sum(n)*100) %>% # Porcentaje
+  mutate(prop = n/sum(n)) # Proporción
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
+
+.codefontchico[
+```{r ch9ssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato largo
+d_gap %>% 
+  count(continent, pob_rec)
+
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+ Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
+
+.codefont[
+```{r ch9ssssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato ancho
+d_gap %>% 
+  count(continent, pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
+
+.codefont[
+```{r ch9sdas2222, echo = TRUE}
+# Porcentaje total
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzada
+
+Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
+
+.codefontchico[
+```{r ch9sdas1111, echo = TRUE}
+# % de paises en cada tamaño de población por continente 
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = continent) %>% 
+  spread(pob_rec, n)
+
+# % de continente por tamaño de población  
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+
+
+---
+class: inverse, center, middle
+
+# Tablas con estadísticas descriptivas
+
+---
+## Resumir datos 
+
+Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
+
+Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
+
+.codefont[
+```{r ch9, echo = TRUE}
+gapminder %>% 
+  summarise(media = mean(lifeExp, na.rm=T))
+
+# Por ahora no hay mucha diferencia con
+mean(gapminder$lifeExp, na.rm = TRUE)
+```
+]
+
+
+---
+## Resumir datos 
+
+Hasta ahora `summarise()` no nos es de gran utilidad, la utilidad de `summarise()`  es su uso conjunto con `group_by()`, para estimar diferentes estadísticas según grupos específicos. 
+
+Cuando utilizamos `group_by()` en un pipeline cambiamos la unidad de análisis desde todo el dataframe a niveles de una variable. Retomando el ejemplo, podemos ver el promedio de expectativa de vida según año:
+
+.codefont[
+```{r ch10, echo = TRUE}
+gapminder %>% 
+  group_by(year) %>% 
+  summarise(media = mean(lifeExp, na.rm = T)) 
+
+```
+]
+
+
+---
+## Resumir datos 
+
+Algunas de las operaciones más utilizadas para resumir datos:
+
+- `mean()`: media 
+- `median()`: mediana
+- `sd()`: desvío estandar
+- `sum()`: suma
+- `n()`: número de observaciones
+- `n_distinct()`: número de valores únicos
+- `min()` y `max()`: mínimo y máximo
+- `first()`: primer valor
+
+
+---
+## Resumir datos
+
+Podemos utilizar más de una variable dentro de `group_by()`. Por ejemplo, calculemos la media de expectativa de vida por año comparando America y Europa para 1997, 2002 y 2007:
+
+.codefont[
+```{r ch12, echo = TRUE, warning=FALSE}
+resumen_1 <- gapminder %>% 
+  filter(continent %in% c("Americas", "Europe")) %>% 
+  filter(year >= 1997) %>% 
+  group_by(continent, year) %>% 
+  summarise(media = mean(lifeExp, na.rm = TRUE)) 
+resumen_1
+```
+]
+
+---
+## Resumir datos
+
+Una de las grandes ventajas de `summarise()` es que podemos resumir muy fácilmente varias estadísticas en un solo dataframe. 
+
+.codefont[
+```{r ch13, echo = TRUE}
+resumen_2 <- gapminder %>% 
+  filter(continent %in% c("Americas", "Europe")) %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>% 
+  summarise(media = mean(gdpPercap),
+            desvio = sd(gdpPercap),
+            suma = sum(gdpPercap),
+            max = max(gdpPercap),
+            min = min(gdpPercap),
+            paises = n()) 
+
+resumen_2
+```
+]
+
+---
+## Exportar tablas
+
+Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
+
+.codefont[
+```{r ch13___8, echo = TRUE, message=FALSE, warning=FALSE}
+library(writexl)
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
+```
+]
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*Para este ejercicio vamos a utilizar el dataframe de gapminder y vamos a crear una variable nueva recodificando los valores la variable de pbi per capita (gdpPercap). Para eso peguen el código debajo*
+
+```{r ch9sdas11321, echo = TRUE}
+library(gapminder)
+gapminder <- gapminder %>% 
+  mutate(gdp_rec = case_when(
+    gdpPercap < 2000 ~ "Bajo",
+    gdpPercap >= 2000 & gdpPercap <= 5000 ~ "Medio",
+    gdpPercap > 5000 ~ "Alto"
+  ))
+```
+
+*(1) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de pbi per cápita*
+
+*(2) Ahora crear una tabla cruzada entre continente y la variable recodificada de pbi per cápita (incluir el % a nivel de fila)*
+
+*(3) Crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+
+]
+
+---
+
+class: inverse, center, middle
+
 # Importar datos con etiquetas 
 
 ---
@@ -60,12 +418,12 @@ use_extra_styles(
 
 - Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
 
-```{r eaj13bb, echo = FALSE, results='hide', message=FALSE}
+```{r eaj13bb, echo = FALSE, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
 .codefont[
-```{r ej13bb, echo = TRUE}
+```{r ej13bb, echo = TRUE, message=FALSE, warning=FALSE}
 library(haven)
 data_uru <- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %>% 
   select(fecha, q1, q2, pol1)
@@ -82,7 +440,7 @@ glimpse(data_uru)
 
 Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
 
-```{r ej13bca, echo = TRUE}
+```{r ej13bca, echo = TRUE, message=FALSE, warning=FALSE}
 library(haven)
 data_uru <- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %>% 
   select(fecha, q1, q2, pol1) %>% 
