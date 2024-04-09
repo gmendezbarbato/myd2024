@@ -113,7 +113,7 @@ head(desempleo_uru, 4)
 
 En la computadora en la que estés trabajando debes crear una carpeta (dentro de la carpeta que prefieras o en el escritorio), con las siguientes carpetas dentro:
 
-- **Data** Descargar de EVA la carpeta data dentro de la sección laboratorio y pegar el contenido aquí.
+- **data** Descargar de EVA la carpeta **Data** dentro de la sección laboratorio y pegar el contenido aquí.
 - **Scripts** Descargar los distintos scripts (archivos de código) del EVA y guardarlos en esta carpeta (código de la clase, ejercicios, etc.)
 - **graficos** Crear una carpeta gráficos que por el momento esté vacía, vamos a ir incluyendo guardando archivos ahí 
 - **resultados** Crear una carpeta resultados que por el momento esté vacía, vamos a ir incluyendo guardando archivos ahí
@@ -137,10 +137,10 @@ knitr::include_graphics("ima/carpeta_curso.png")
 
 Al comienzo de cada script **deben** especificar el directorio donde está su carpeta del curso, de lo contrario los códigos les van a devolver errores. 
 
-En este caso, por ejemplo, creé la carpeta "cacrpeta_del_curso" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
+En este caso, por ejemplo, creé la carpeta "carpeta_del_curso" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
 
 ```{r ejasdasda,  echo = TRUE, eval = FALSE}
-setwd("C:/Usuario/Martin/Dropbox/cursos/Medicion y diseño/cacrpeta_del_curso") 
+setwd("C:/Usuario/User/Desktop/cursos/Medicion y diseño/carpeta_del_curso") 
 ```
 
 De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.xlsx" que está guardada en la carpeta data dentro de la carpeta laboratorio, simplemente tenemos que especificar la siguiente dirección (porque R ya lo va a buscar dentro de la carpeta laboratorio)
@@ -188,10 +188,19 @@ El nombre del proyecto debe ser igual al nombre de la carpeta matriz que lo cont
 
 Ejemplo: 
 
-  - Archivo: **curso_myd.Rproj**
+  - Archivo: **carpeta_del_curso.Rproj**
   
-  - Carpeta: curso_myd
+  - Carpeta: **carpeta_del_curso**
 
+---
+
+## here::here
+
+- El paquete **here** tiene una función llamada también `here()` que facilita la selección de rutas de archivos.
+
+- Pueden explorarlo con `help(here)` o `?here` o buscar ayuda en los foros
+
+- Recuerden que para utilizarlo deben instalarlo previamente `install.packages("here")`
 
 ---
 class: inverse, center, middle
@@ -343,7 +352,95 @@ class: inverse, center, middle
 
 ## Paquete rio
 
+- El paquete rio permite importar, exportar y convertir datos desde y hacia diferentes formatos de manera más óptima.
 
+- Las funciones import() y export() facilitan la tarea y hacen más intuitivo el proceso.
+
+- En realidad lo que hace rio() es emnascarar en un paquete muchas funciones de los paquetes de importación que vimos anteriormente.
+
+- Una de las grandes ventajas es que "adivina" el formato.
+
+.center[
+```{r rio, out.width = "250px"}
+knitr::include_graphics("ima/rio_navaja.png")
+```
+]
+
+---
+
+## Paquete rio: import
+
+**Varios paquetes**
+.codefont[
+```{r rio1, echo = TRUE, warning=FALSE, message=FALSE, results='hide'}
+# Importar csv
+# Con la función read_csv() del paquete readr importamos archivos .csv
+library(tidyverse) # carga readr
+gapminder_csv <- read_csv("data/gapminder.csv")
+
+# Importar Excel
+# Con la función read_excel() del paquete readxl importamos archivos excel
+library(readxl)
+gapminder_excel <- read_excel("data/gapminder.xlsx")
+
+# Importar SPSS
+# Con la función read_spss() del paquete haven importamos archivos SPSS
+library(haven)
+gapminder_spss <- read_spss("data/gapminder.sav") 
+```
+]
+
+**rio**
+.codefont[
+```{r rio1a, echo = TRUE, warning=FALSE, message=FALSE, results='hide'}
+# Rio
+# Con la función import() de rio importamos, csv, excel, SPSS y más...
+library(rio)
+# Importar csv
+gapminder_csv <- import("data/gapminder.csv")
+# Importar Excel
+gapminder_excel <- import("data/gapminder.xlsx")
+# Importar SPSS
+gapminder_spss <- import("data/gapminder.sav")
+```
+]
+
+---
+
+## Paquete rio: export
+
+**Varios paquetes**
+.codefont[
+```{r rio2, echo = TRUE, warning=FALSE, message=FALSE, results='hide'}
+# Guardar .csv
+# Con la función write_excel_csv del paquete readr exportamos archivos csv
+write_excel_csv(gapminder_csv, "resultados/gapminder.csv")
+
+# Guardar excel
+# Con la función write_xlsx del paquete writexl exportamos archivos excel
+library(writexl)
+write_xlsx(gapminder_excel, "resultados/gapminder.xlsx")
+
+# Guardar .sav (SPSS)
+# Con la función write_sav() del paquete haven exportamos archivos SPSS
+library(haven)
+write_sav(gapminder_spss, "resultados/gapminder.dta")
+```
+]
+
+**rio**
+.codefont[
+```{r rio2a, echo = TRUE, warning=FALSE, message=FALSE, results='hide'}
+# Con la función export() de rio exportamos, csv, excel, SPSS y más...
+library(rio)
+# Exportar (guardar) csv
+ export(gapminder_csv, "resultados/gapminder.csv")
+# Exportar (guardar) Excel
+export(gapminder_excel, "resultados/gapminder.xlsx")
+# Exportar (guardar) SPSS
+export(gapminder_spss, "resultados/gapminder.sav")
+```
+]
 
 ---
 class: inverse, center, middle
