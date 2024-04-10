@@ -114,8 +114,8 @@ head(desempleo_uru, 4)
 
 En la computadora en la que estés trabajando debes crear una carpeta (dentro de la carpeta que prefieras o en el escritorio), con las siguientes carpetas dentro:
 
-- **data** Descargar de EVA la carpeta **Data** dentro de la sección laboratorio y pegar el contenido aquí.
-- **Scripts** Descargar los distintos scripts (archivos de código) del EVA y guardarlos en esta carpeta (código de la clase, ejercicios, etc.)
+- **data** Descargar de EVA la carpeta **Data** (está en la sección Introducción a R y RStudio, Materiales Clase 2) y pegar el contenido aquí.
+- **Scripts** Descargar los distintos scripts (archivos de código) del EVA y guardarlos en esta carpeta (código de la clase, ejercicios, soluciones, etc.)
 - **graficos** Crear una carpeta gráficos que por el momento esté vacía, vamos a ir incluyendo guardando archivos ahí 
 - **resultados** Crear una carpeta resultados que por el momento esté vacía, vamos a ir incluyendo guardando archivos ahí
 
