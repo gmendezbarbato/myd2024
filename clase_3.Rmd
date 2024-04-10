@@ -1,7 +1,7 @@
 ---
 title: "Medición y diseño de investigación"
 subtitle: "Clase 3: Análisis de datos"
-author: "FCS-UdelaR - Martín Opertti y Fabricio Carneiro"
+author: "FCS-UdelaR - Gustavo Méndez y Fabricio Carneiro"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
   xaringan::moon_reader:

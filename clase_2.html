@@ -41,7 +41,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
 ]
 .date[
-### Abril 09, 2024
+### 10 de abril 2024
 ]
 
 ---
@@ -150,7 +150,7 @@ En este caso, por ejemplo, creé la carpeta "carpeta_del_curso" dentro de una ca
 
 
 ```r
-setwd("C:/Usuario/User/Desktop/cursos/Medicion y diseño/carpeta_del_curso") 
+setwd("C:/Usuario/User/Desktop/myd2024/carpeta_del_curso") 
 ```
 
 De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.xlsx" que está guardada en la carpeta data dentro de la carpeta laboratorio, simplemente tenemos que especificar la siguiente dirección (porque R ya lo va a buscar dentro de la carpeta laboratorio)
@@ -164,11 +164,11 @@ datauru &lt;- read_excel("data/datauru.xlsx")
 
 ## Trabajar con proyectos
 
-RStudio tiene una solución mucho más eficiente para setear directorios de trabajo: **Proyectos**
+RStudio tiene una solución mucho más eficiente para fijar directorios de trabajo: **Proyectos**
 
 Los proyectos se guardan en una carpeta en un archivo .Rproj
 
-De manera simplificada, lo que hace es setear una carpeta. Por lo cual, al abrir ese archivo de proyecto, RStudio "ya sabe" que estamos trabajando en ese directorio y no tenemos que escirbir la ruta.
+De manera simplificada, lo que hace es setear una carpeta. Por lo cual, al abrir ese archivo de proyecto, RStudio "sabe" que estamos trabajando en ese directorio y no tenemos que escirbir la ruta.
 
 Hay tres opciones al crear un proyecto:
 
@@ -191,15 +191,17 @@ Hay tres opciones al crear un proyecto:
 
 ## Trabajar con proyectos 
 
-En la computadora en la que estés trabajando, en la carpeta creada, crea un proyecto.
+Crea un proyecto en la carpeta del curso creada en la computadora en la que estés trabajando.
 
 El nombre del proyecto debe ser igual al nombre de la carpeta matriz que lo contiene. 
 
 Ejemplo: 
 
+  - Carpeta: **carpeta_del_curso**
+  
   - Archivo: **carpeta_del_curso.Rproj**
   
-  - Carpeta: **carpeta_del_curso**
+  
 
 ---
 
@@ -272,7 +274,7 @@ dim(gapminder_excel)
 Algunos paquetes incluyen datos, por ejemplo, gapminder. En la documentación del paquete se encuentra el nombre de los datos. Con una simple asignación los podemos cargar 
 
 ```r
-#install.packages("gampminder")
+#install.packages("gapminder")
 library(gapminder)
 
 data_gapminder &lt;- gapminder
@@ -300,13 +302,7 @@ También es posible importar datos guardados en los formatos de otros softwares 
 
 ```r
 library(haven)
-```
 
-```
-## Warning: package 'haven' was built under R version 4.2.3
-```
-
-```r
 # SPSS
 gapminder_spss &lt;- read_spss("data/gapminder.sav") 
 
@@ -331,7 +327,9 @@ gapminder_stata &lt;- haven::read_stata("data/gapminder.dta")
 ---
 
 ## Importar datos 
-R también cuenta con sus propios formatos de almacenamiento de datos (`.rds` y `.Rdata` o `.rda`). Este enfoque es poco práctico si queremos usar los datos almacenados en otro programa, pero muy útil si solamente usaremos R dado que mantiene la información tal cual estaba en R (por ej. tipos de variables o atributos):
+R también cuenta con sus propios formatos de almacenamiento de datos (`.rds` y `.Rdata` o `.rda`). 
+
+Este enfoque es poco práctico si queremos usar los datos almacenados en otro programa, pero muy útil si solamente usaremos R dado que mantiene la información tal cual estaba en R (por ej. tipos de variables o atributos):
 
 .codefont[
 
@@ -396,11 +394,11 @@ class: inverse, center, middle
 
 ## Paquete rio
 
-- El paquete rio permite importar, exportar y convertir datos desde y hacia diferentes formatos de manera más óptima.
+- El paquete [rio](https://cran.r-project.org/web/packages/rio/rio.pdf) permite importar, exportar y convertir datos desde y hacia diferentes formatos de manera más óptima.
 
-- Las funciones import() y export() facilitan la tarea y hacen más intuitivo el proceso.
+- Las funciones `import()` y `export()` facilitan la tarea y hacen más intuitivo el proceso.
 
-- En realidad lo que hace rio() es emnascarar en un paquete muchas funciones de los paquetes de importación que vimos anteriormente.
+- En realidad lo que hace **rio** es enmascarar en un paquete muchas funciones de los paquetes de importación que vimos anteriormente.
 
 - Una de las grandes ventajas es que "adivina" el formato.
 
@@ -437,7 +435,6 @@ gapminder_spss &lt;- read_spss("data/gapminder.sav")
 .codefont[
 
 ```r
-# Rio
 # Con la función import() de rio importamos, csv, excel, SPSS y más...
 library(rio)
 # Importar csv
@@ -495,10 +492,14 @@ class: inverse, center, middle
 
 ---
 
-## Resumen de un dataframe
+## Resumen visual de un dataframe
 
 .codefont[
 
+```r
+# R tiene un visor para datos. Pueden dar click en el dataframe en el ambiente o:
+view(data_gapminder)
+```
 ]
 
 .codefont[
@@ -535,13 +536,14 @@ head(data_gapminder, 3) # Imprime primeras filas (3 en este caso)
 
 ---
 
-## Resumen de un dataframe 
+## Resumen visual de un dataframe 
 
-Una de las funciones más utiles para resumir un dataframe es `glimpse()` del paquete dplyr o tidyverse. Es particularmente util debido a que permite un vistazo al nombre, tipo y primeros valores de .bold[todos] las variables de un dataframe.
+Una de las funciones más útiles para resumir un dataframe es `glimpse()` del paquete dplyr o tidyverse. Es particularmente util debido a que permite un vistazo al nombre, tipo y primeros valores de .bold[todos] las variables de un dataframe.
 
+.codefont[
 
 ```r
-# Resumen más completo:
+# Resumen visual más completo:
 glimpse(gapminder) 
 ```
 
@@ -555,6 +557,7 @@ glimpse(gapminder)
 ## $ pop       &lt;int&gt; 8425333, 9240934, 10267083, 11537966, 13079460, 14880372, 12…
 ## $ gdpPercap &lt;dbl&gt; 779.4453, 820.8530, 853.1007, 836.1971, 739.9811, 786.1134, …
 ```
+]
 
 ---
 ## Tablas simples
@@ -709,15 +712,26 @@ plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
 ## Ejercicio
 
 .content-box-blue[
-*(1) Importar el archivo excel en la carpeta data llamado "datauru"*
+*(1) Importar el archivo excel en la carpeta data llamado "datauru.xlsx"*
 
-*(2) Explorar las variables y el tipo de cada variable con la función glimpse()*
+*(2) Explorar el dataframe con dim(), names(), head()*
 
-*(3) Calcular la media de una variable numérica*
+*(3) Explorar el dataframe con la función glimpse()*
 
-*(4) Crear una tabla de proporciones con la distribución de la variable partido*
+*(4) Explorar el dataframe con la función str()*
 
-*(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)*
+*(5) Explorar el dataframe con la función summary()*
+
+*(6) Exportar (guardar) el archivo excel en la carpeta resultados con el nombre "datauru.xlsx"*
+
+
+
+
+&lt;!-- *(3) Calcular la media de una variable numérica* --&gt;
+
+&lt;!-- *(4) Crear una tabla de proporciones con la distribución de la variable partido* --&gt;
+
+&lt;!-- *(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)* --&gt;
 ]
 
 ---
@@ -953,11 +967,23 @@ select(gapminder, 1:3) # Orden numérico
 
 ---
 
+
+## Pipeline %&gt;% 
+- Una de las ventajas del Tidyverse es la facilidad con la que se puede leer e interpretar el código. Un elemento fundamental para esto es el pipeline (`%&gt;%`). Es muy útil para expresar una secuencia de muchas operaciones.
+
+- Habíamos visto varias formas de realizar esto: sobrescribir el mismo objeto, con objetos intermedios o anidando funciones. 
+
+- El pipeline del paquete [magrittr](https://magrittr.tidyverse.org/) hace más fácil modificar operaciones puntuales dentro de conjunto de operaciones y hace que sea más fácil leer (evitando leer de adentro hacia afuera) entre otras ventajas.
+
+- Como vimos, la mayoría de las funciones de dplyr que se aplican a un dataframe tienen como primer argumento el dataframe al que le queremos aplicar la función. 
+
+- Con el pipeline especificamos el dataframe solamente una vez al principio. De esta forma nos enfocamos en la transformación y no en el objeto.
+
+---
+
 ## Pipeline %&gt;% 
 
-Cuando queremos realizar más de una operación a un dataframe podemos utilizar el pipeline. Como vimos, la mayoría de las funciones de dplyr que se aplican a un dataframe tienen como primer argumento el dataframe al que le queremos aplicar la función. 
-
-Con el pipeline especificamos el dataframe solamente una vez al principio, y luego todas las funciones que vamos utilizando no necesitan especificación. De esta forma nos enfocamos en la transformación y no en el objeto.
+Cuando queremos realizar más de una operación a un dataframe podemos utilizar el pipeline. 
 
 .codefont[
 
@@ -987,19 +1013,10 @@ print(gapminder_07_america)
 ```
 ]
 
+No es recomendable usar el pipeline cuando hay más de un objeto o si las funciones tienen múltiples entradas y salidas
+
+
 ---
-## Pipeline %&gt;% 
-- Una de las ventajas del Tidyverse es la facilidad con la que se puede leer e interpretar el código. Un elemento fundamental para esto es el pipeline (`%&gt;%`). Es muy útil para expresar una secuencia de muchas operaciones.
-
-- Habíamos visto varias formas de realizar esto: sobrescribir el mismo objeto, con objetos intermedios o anidando funciones. 
-
-- El pipeline del paquete [magrittr](https://magrittr.tidyverse.org/) hace más fácil modificar operaciones puntuales dentro de conjunto de operaciones, hace que sea más fácil leer (evitando leer de adentro hacia afuera) entre otras ventajas.
-
-- Es recomendable evitar usar el pipeline cuando queremos trabajar más de un objeto a la vez
-
-- `x %&gt;% f == f(x)`
-
-- Se puede leer como un "y entonces"
 
 ---
 ## Otras funciones de dplyr muy útiles
@@ -1315,11 +1332,14 @@ library(gapminder)
 gapminder &lt;- gapminder
 ```
 
-*(2) En ese mismo dataframe con solamente las observaciones de América y Oceanía seleccionar solamente tres variables: country y lifeExp*
+*(2) En ese mismo dataframe con solamente las observaciones de América y Oceanía seleccionar solamente tres variables: continent, country y lifeExp*
 
 *(3) En ese mismo dataframe, crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)*
 
 *(4) Asegurarse de hacer los primeros 3 pasos en un mismo pipeline*
+
+*(Extra) convertir la variable creada a factor modificando el mismo código con funciones anidadas*
+
 ]
 
     </textarea>
