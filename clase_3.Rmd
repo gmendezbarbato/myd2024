@@ -18,7 +18,7 @@ output:
 ---
 class: inverse, center, middle
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
 library(xaringanthemer)
 library(kableExtra)
 library(xaringan)

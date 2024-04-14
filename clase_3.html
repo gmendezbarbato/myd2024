@@ -3,7 +3,7 @@
   <head>
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
-    <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
+    <meta name="author" content="FCS-UdelaR - Gustavo Méndez y Fabricio Carneiro" />
     <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -34,10 +34,10 @@ class: center, middle, inverse, title-slide
 ## Clase 3: Análisis de datos
 ]
 .author[
-### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
+### FCS-UdelaR - Gustavo Méndez y Fabricio Carneiro
 ]
 .date[
-### Abril 09, 2024
+### Abril 14, 2024
 ]
 
 ---
@@ -299,15 +299,7 @@ Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del 
 
 ```r
 library(rio)
-```
-
-```
-## Warning: package 'rio' was built under R version 4.2.3
-```
-
-```r
 d_gap &lt;- import("data/d_gap.csv")
-
 
 # Frecuencia simple
 d_gap %&gt;% 
@@ -632,13 +624,6 @@ Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los po
 
 ```r
 library(writexl)
-```
-
-```
-## Warning: package 'writexl' was built under R version 4.2.3
-```
-
-```r
 writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
 ```
 ]
@@ -670,6 +655,9 @@ gapminder &lt;- gapminder %&gt;%
 
 ]
 
+---
+
+class: inverse, center, middle
 
 # Importar datos con etiquetas 
 
@@ -686,13 +674,6 @@ gapminder &lt;- gapminder %&gt;%
 
 ```r
 library(haven)
-```
-
-```
-## Warning: package 'haven' was built under R version 4.2.3
-```
-
-```r
 data_uru &lt;- read_dta("data_lapop/md_lapop_uruguay_2019.dta") %&gt;% 
   select(fecha, q1, q2, pol1)
 
