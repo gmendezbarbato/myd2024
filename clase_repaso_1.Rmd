@@ -1,0 +1,525 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase repaso primer parcial: R"
+author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
+date: '6 de mayo 2024'
+# date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output:
+  xaringan::moon_reader:
+    css: ["xaringan-themer.css", "estilo.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      incremental: true
+      df_print: kable  
+      smaller: true
+      widescreen: true
+      highlightLines: true
+---
+class: inverse, center, middle
+
+```{r setup, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(tidyverse)
+library(data.table)
+library(xaringanExtra)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+```
+
+# Plan para hoy
+
+
+---
+
+## Ejercicios de repaso para el primer parcial
+
+- **Vectores**
+
+- **Proyectos**
+
+- **Cargar paquetes**
+
+- **Descargar base de datos**
+
+- **Importar datos**
+
+- **Explorar datos**
+
+- **Manipular y transformar datos**
+
+- **Tablas, media y gráficos**
+
+- **Exportar datos**
+
+
+### Descargar y abrir el archivo repaso_parcial_1.R de la sección de eva Repaso primer parcial
+
+---
+class: inverse, center, middle
+
+# Vectores 
+
+---
+
+## Vectores
+
+.content-box-blue[
+1. Crear un vector numérico con tres elementos y asignarlo al objeto **vec1**
+
+2. Crear un vector character que contenga los números 1, 2, 3 y asignarlo al objeto **vec2**.
+
+3. Sumar los vectores **vec1** y **vec2** y asignarlos al vector de nombre **vec3**. Realizar las operaciones necesarias para que los vectores puedan sumarse.
+]
+
+---
+
+## Vectores
+
+.codefont[
+```{r vec, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+# VECTORES ----
+
+# 1. Crear un vector numérico con tres elementos y asignarlo al objeto vec1 
+
+vec1 <- c(2, 3, 5)
+
+# 2. Crear un vector character que contenga los numeros 1, 2, 3 y 
+#asignarlo al objeto vec2.
+vec2 <- c("1", "2", "3")
+
+
+# 3. Sumar los vectores vec1 y vec2 y asignarlos al vector de nombre vec3. 
+# Realice las operaciones necesarias para que los vectores puedan sumarse.
+vec2 <- as.numeric(vec2)
+
+vec3 <- vec1 + vec2
+```
+]
+
+---
+class: inverse, center, middle
+
+# Proyectos 
+
+---
+
+## Proyectos
+
+.content-box-blue[
+1. Crear un proyecto en una carpeta existente de nombre **repaso_myd**
+
+2. Crear un proyecto en una carpeta nueva de nombre **repaso_myd2**
+]
+
+--
+
+.codefont[
+```{r proy, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+# 1. Crear un proyecto en una carpeta existente de nombre **repaso_myd**
+  
+# Se crea una carpeta en la pc de nombre repaso_myd
+# Se ingresa a RStudio y se va a File / New Project, se crea el proyecto en
+# un directorio existente (repaso_myd)
+
+# 2. Crear un proyecto en una carpeta nueva de nombre repaso_myd2
+
+# Se ingresa a RStudio y se va a File -> New Project, se crea el proyecto en
+# un nuevo directorio con el nombre repaso_myd2
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Cargar paquetes 
+
+---
+
+## Cargar paquetes
+
+.content-box-blue[
+
+1. Cargar paquetes **tidyverse** y **rio**
+
+]
+
+--
+
+.codefont[
+```{r packages, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+library(tidyverse)
+library(rio)
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Descargar base de datos 
+
+---
+
+## Descargar base de datos
+
+.content-box-blue[
+
+1. Descargar la base de de datos **pob_demo.xlsx** de la sección de eva **Repaso primer parcial** y colocarla en la carpeta del proyecto dentro de una carpeta de nombre **data**.
+]
+
+--
+
+.codefont[
+```{r descarga, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+# Descargar la base de de datos pob_demo.xlsx de la sección de eva: 
+# Repaso primer parcial y colocarla en la carpeta del proyecto dentro 
+# de una carpeta de nombre data
+
+# Se ingresa a eva y se descarga el archivo pob_demo.xlsx.
+# Se ubica el archivo en descargas y se lo mueve hacia la carpeta data 
+# (que deberá crear previamente) dentro de la carpeta 
+# repaso_myd (donde se ubica el proyecto).
+
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Importar base de datos 
+
+---
+
+## Importar base de datos 
+
+.content-box-blue[
+
+1. Importar pob_demo.xlsx y asignarlo al objeto **pob_demo**
+]
+
+--
+
+.codefont[
+```{r import, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+pob_demo <- import("data/pob_demo.xlsx")
+
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Explorar base de datos 
+
+---
+
+## Explorar base de datos 
+
+.content-box-blue[
+
+1. Explorar la base de datos **pob_demo** utilizando las siguientes funciones:
+
+`dim()`
+`names()`
+`head()`
+`glimpse()`
+`str()`
+`summary()`
+]
+
+--
+
+.codefont[
+```{r explorar, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+dim(pob_demo)
+
+names(pob_demo)
+
+head(pob_demo)
+
+glimpse(pob_demo)
+
+str(pob_demo)
+
+summary(pob_demo)
+
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Manipular y transformar datos 
+
+---
+
+## Filtrar y seleccionar
+
+.content-box-blue[
+
+1. Filtrar la base y quedarse con los datos que correspondan al continente Sudamerica y asigrnarlas al objeto **pob_demo_sud**.
+
+2. Filtrar nuevamente la base y quedarse con los datos a partir del año 1900 en adelante.
+
+3. En el objeto objeto **pob_demo_sud**, seleccionar con asignación las variables **continente, anio, pob, pob_democracias_electorales, pob_democracias_liberales**.
+
+]
+
+---
+
+## Filtrar y seleccionar
+
+.codefont[
+```{r filtrar, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+# FILTRAR Y SLECCIONAR ----
+
+# 1. Filtrar la base y quedarse con los datos que correspondan al continente Sudamerica y asigrnarlas al objeto pob_demo_sud.
+
+pob_demo_sud <- filter(pob_demo, continente == "Sudamerica") 
+
+# 2. Filtrar nuevamente la base y quedarse con los datos a partir del año 1900 en adelante.
+
+pob_demo_sud <- filter(pob_demo_sud, anio >= 1900) 
+
+# 3. En el objeto objeto pob_demo_sud, seleccionar con asignación las variables continente, anio, pob, pob_democracias_electorales, pob_democracias_liberales.
+
+pob_demo_sud <- select(pob_demo_sud, continente, anio, pob, pob_democracias_electorales, pob_democracias_liberales) 
+
+```
+]
+
+---
+
+## Filtrar y seleccionar: Pipe
+
+.content-box-blue[
+
+1. Realizar los pasos anteriores en un sólo bloque de código utilizando el pipe %>% y asignarlo al objeto **pob_demo_sud2**.
+
+2. Verificar que **pob_demo_sud** y **pob_demo_sud2** sean idénticos.
+
+]
+
+--
+
+.codefont[
+```{r pipe, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+# PIPE ----
+
+# 1. Realizar los pasos anteriores en un sólo bloque de código utilizando el 
+# pipe %>% y asignarlo al objeto  pob_demo_sud2
+
+pob_demo_sud2 <- pob_demo %>% 
+  filter(continente == "Sudamerica") %>% 
+  filter(anio >= 1900) %>% 
+  select(continente, anio, pob, pob_democracias_electorales, pob_democracias_liberales) 
+
+# 2. Verificar que pob_demo_sud y pob_demo_sud2 sean identicos
+
+identical(pob_demo_sud, pob_demo_sud2)
+```
+]
+
+---
+
+## Crear nuevas variables: mutate
+
+.content-box-blue[
+
+1. En el objeto **pob_demo_sud**, crear una nueva variable que contenga el dato de la suma de población que vive en democracias electorales o democracias liberales en sudamerica, denominar esa variable **pob_democracias**.
+
+2. En el objeto **pob_demo_sud**, crear una nueva variable que contenga el dato del porcentaje de población que vive en democracias (electorales o liberales) en sudamerica, denominar esa variable **pob_democracias_porc**.
+
+]
+
+--
+
+.codefont[
+```{r mutate, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+#   CREAR NUEVAS VARIABLES ----
+
+# 1. En el objeto pob_demo_sud, crear una nueva variable que contenga el dato de la suma de población que vive en democracias electorales o democracias liberales en sudamerica, denominar esa variable pob_democracias.
+
+pob_demo_sud <- pob_demo_sud %>% 
+  mutate(pob_democracias = pob_democracias_electorales + pob_democracias_liberales)
+
+# 2. En el objeto pob_demo_sud, crear una nueva variable que contenga el dato del porcentaje de población que vive en democracias (electorales o liberales) en sudamerica, denominar esa variable pob_democracias_porc.
+
+pob_demo_sud <- pob_demo_sud %>% 
+  mutate(pob_democracias_por = (pob_democracias / pob)*100)
+
+```
+]
+
+
+---
+
+## Crear nuevas variables: mutate + case_when
+
+.content-box-blue[
+
+1. En el objeto **pob_demo_sud**, crear una nueva variable de nombre **cobertura_democracia** a partir de recodificar la variable **pob_democracias_por** de la siguiente manera:
+
+- Alta: mayor o igual a 75 
+- Media: entre 50 y 74
+- Baja: entre 25 y 49
+- Muy baja: menor a 25
+]
+
+--
+
+.codefont[
+```{r case_when, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+pob_demo_sud <- pob_demo_sud %>% 
+  mutate(cobertura_democracia = case_when(
+    pob_democracias_por >= 75 ~ "Alta",
+    pob_democracias_por >= 50 ~ "Media",
+    pob_democracias_por >= 25 ~ "Baja",
+    pob_democracias_por < 25 ~ "Muy baja",
+    TRUE ~ "Error"))
+
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Tablas, media y gráficos 
+
+---
+
+## Tablas
+
+.content-box-blue[
+1. A partir del objeto **pob_demo_sud**, realizar tablas de frecuencias absoluta y relativa (proporción y porcentaje) de la  variable **cobertura_democracia**: 
+
+]
+
+--
+
+.codefont[
+```{r tablas, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+# frecuencia absoluta
+tabla <- table(pob_demo_sud$cobertura_democracia)
+
+# imprimo en consola
+tabla
+
+# frecuencia relativa (proporción)
+tabla_prop <- prop.table(tabla)
+
+# imprimo en consola
+tabla_prop
+
+# frecuencia relativa (porcentaje)
+tabla_porc <- prop.table(tabla)*100
+
+# imprimo en consola
+tabla_porc
+
+```
+]
+
+---
+
+## Media
+
+.content-box-blue[
+1. A partir del objeto **pob_demo_sud**, calcular la media de la variable **pob_democracias_por**.
+
+]
+
+--
+
+.codefont[
+```{r media, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+mean(pob_demo_sud$pob_democracias_por)
+
+```
+]
+
+
+---
+
+## Gráfico
+
+.content-box-blue[
+1. A partir del objeto **pob_demo_sud**, calcular la media de la variable **pob_democracias_por**.
+
+]
+
+--
+
+.codefont[
+```{r gg, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+# 1. A partir del objeto pob_demo_sud, hacer un gráfico de dispersión de las las variables anio y pob_democracias_por
+
+plot(pob_demo_sud$anio, pob_demo_sud$pob_democracias_por,
+     main = "Porcentaje de población viviendo en democracias y año")
+
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# Exportar datos 
+
+---
+
+## Exportar datos
+
+.content-box-blue[
+1. Exportar el objeto **pob_demo_sud** en excel (.xlsx).
+
+]
+
+--
+
+.codefont[
+```{r export, echo = TRUE, results = "hide", error=TRUE, eval = FALSE, warning=FALSE}
+
+export(pob_demo_sud, "pob_demo_sud.xlsx")
+
+```
+]
+
