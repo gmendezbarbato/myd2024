@@ -1,0 +1,286 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase: Factores"
+author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
+date: "15 mayo 2024"
+output:
+  xaringan::moon_reader:
+    css:
+    - "xaringan-themer.css"
+    - estilo.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: no
+      incremental: yes
+      df_print: kable
+      smaller: yes
+      widescreen: yes
+      highlightLines: yes
+  html_document:
+    df_print: paged
+---
+
+
+class: inverse, center, middle
+
+```{r setup, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(xaringanExtra)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+```
+
+# Factores 
+
+---
+
+## ¿Para qué sirve un factor en R?
+
+
+- Un factor es un vector que contiene un número fijo  de categorías
+
+- Los vectores de caracteres guardan la información por caracter (letra por letra), mientras que los factores asignan un número a cada categoría (por eso, en realidad es un tipo de dato integer `typeof()` vs `class()`
+
+- Cada uno de estos números establece los niveles del factor
+
+- Por eso nos permite fijar un número limitado de categorías de una variables
+
+- Esto es clave para la creación, codificación o recodificación de variables nominales y ordinales
+
+- Es muy útil a la hora del análisis de la información, procesamientos estadísticos y visualización de datos
+
+- Una variables de character no agrupa automáticamente los valores de una variable pese a tener el mismo contenido (en caracteres) 
+
+---
+
+## El paquete forcats de tidyverse
+
+- Tidyverse tiene un paquete llamado `forcats` que facilita muchísimo el trabajo con factores
+
+- Permite de manera bastante sencilla crear factores, recodificarlos, reordenar los niveles (levels), cambiar las etiquetas (labels)
+
+- Además, como es del lenguaje tidyverse, les va a ser familiar la estructura de las funciones: `funcion(datos, argumentos...)`
+
+- [Acá está la descripción de forcats]( https://forcats.tidyverse.org/)
+
+- [Acá tienen una introducción a forcats](https://forcats.tidyverse.org/articles/forcats.html)
+
+.center[
+```{r, out.width = "150px"}
+knitr::include_graphics("ima/forcats.png")
+```
+]
+
+---
+
+## Algunas funciones de forcats
+
+
+- `fct_reorder()`: Reordenar un factor por otra variable.
+
+- `fct_infreq()`: Reordenar un factor por la frecuencia de valores.
+
+- `fct_relevel()`: Cambiar el orden de un factor manualmente.
+
+- `fct_lump()`: Colapsar los valores menos/más frecuentes de un factor en "otros".
+
+
+---
+
+## Crear un factor: variable categórica
+
+
+```{r f0, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+
+# creo un vector character de cinco elementos
+nominal <- c("Femenino", "Masculino", "Masculino", "Femenino", "Masculino")
+
+# convierto el vector a factor con la función as.factor()
+nominal <- as.factor(nominal)
+
+# chequeo clase de objeto
+class(nominal)
+
+# chequeo tipo de dato
+typeof(nominal)
+
+# chequeo niveles
+levels(nominal)
+
+
+```
+
+---
+
+## Manipulación básica de factores
+
+- Frecuencias
+
+```{r f1, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+
+# hago un recuento de frecuencia absoluta de cada categoría
+fct_count(nominal)
+
+# hago un recuento de frecuencia absoluta ordanada y relativa (proporción)
+fct_count(nominal, sort = TRUE, prop = TRUE)
+
+```
+
+---
+
+## Manipulación básica de factores
+
+- Modificación manual del orden de los niveles
+
+```{r f2, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+
+# modifico manualmente el orden de los factores
+nominal <- fct_relevel(nominal, c("Masculino", "Femenino"))
+
+# chequeo los niveles
+levels(nominal)
+
+```
+
+---
+
+
+## Manipulación básica de factores
+
+
+- Inviertir el orden de los niveles
+
+```{r f3, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+# invierto el orden de los factores
+
+nominal <- fct_rev(nominal)
+
+# chequeo los niveles
+levels(nominal)
+```
+
+---
+
+## Manipulación básica de factores
+
+
+- Ordeno los niveles por frecuencia 
+
+```{r f4, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+# ordeno los niveles por frecuencia (primero el más frecuente)
+
+nominal <- fct_infreq(nominal)
+
+# chequeo los niveles
+levels(nominal)
+
+```
+
+---
+
+## Manipulación básica de factores
+
+
+- Cambio el nombre de los niveles
+
+```{r f5, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+# Cambio el nombre de los niveles 
+
+nominal <- fct_recode(nominal, "F" = "Femenino", "M" = "Masculino")
+
+# chequeo los niveles
+levels(nominal)
+
+```
+
+---
+
+## Manipulación básica de factores
+
+
+- Añadir un nivel
+
+```{r f6, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+
+# chequeo los niveles 
+levels(nominal)
+
+# agrego un nivel nuevo
+nominal <- fct_expand(nominal, "Sin Dato")
+
+# chequeo los niveles
+levels(nominal)
+
+```
+
+---
+
+## Manipulación básica de factores
+
+
+- Eliminar niveles no utilizados
+
+```{r f7, echo = TRUE, error=TRUE, warning=FALSE}
+library(forcats)
+
+# chequeo los niveles 
+levels(nominal)
+
+# elimino los niveles no usados
+nominal <- fct_drop(nominal)
+
+# chequeo los niveles
+levels(nominal)
+
+```
+
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+
+*(1) Crear un factor de nombre nivel_edu, que tenga 10 elementos y que sus categorías sean "Alto", "Medio" y "Bajo"* 
+
+*(2) Crear una tabla de frecuencia con la función fct_count() de forcats* 
+
+*(3) Crear una tabla de frecuencia con la función fct_count() de forcats, qeu además ordene según frecuencia y calcule la frecuencia relativa (proporción)* 
+
+*(4) Cambiar los nombres de los niveles por "Más de 12 años", "Entre 6 y 12 años", "Menos de 6 años"). Si tiene dudas utilice foros o la documentación del paquete* 
+
+]
+
+
