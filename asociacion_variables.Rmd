@@ -1,0 +1,238 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase: Medida de asociación estadística Chi2"
+author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
+date: "22 mayo 2024"
+output:
+  xaringan::moon_reader:
+    css:
+    - "xaringan-themer.css"
+    - estilo.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: no
+      incremental: yes
+      df_print: kable
+      smaller: yes
+      widescreen: yes
+      highlightLines: yes
+  html_document:
+    df_print: paged
+---
+
+class: inverse, center, middle
+
+```{r setup, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(xaringanExtra)
+library(rio)
+library(tidyverse)
+library(forcats)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+
+```
+
+```{r, include=FALSE, warning=FALSE}
+data_lapop <- import("/Users/fabricio/Desktop/Medición y Diseño/Clases/Clase 3/causalidad_asociacion/data/md_lapop_uruguay_2019.dta") 
+```
+
+## Tabla Cruzada
+---
+
+## Tabla cruzada entre las dos variables
+
+Para analizar la relación entre ideología y preferencias por la redistribución recodifiquemos las dos variables y tiremos una tabla cruzada para tener una idea de la relación entre nuestras dos variables de interés. Ideología la vamos a recodificar en izquierda (1 a 4), centro (5 y 6) y derecha (7 a 10) y preferencias por redistribución en pro-redistribución (1 a 3), neutro (4) anti-redistribución (5 a 7).
+
+.codefont[
+```{r ch98sadddd, echo = TRUE, warning = FALSE, message=FALSE}
+data_lapop <- data_lapop %>% 
+  mutate(l1_cat = case_when(
+    l1 <= 4 ~ "Izquierda",
+    l1 %in% c(5, 6) ~ "Centro",
+    l1 >= 7 ~ "Derecha",
+  ))  %>% 
+  mutate(redist3_cat = case_when(
+    redist3 <= 3 ~ "Pro-redistribución",
+    redist3 == 4 ~ "Neutro",
+    redist3 >= 5 ~ "Anti-redistribución",
+  ))  
+
+data_lapop <-  data_lapop %>% 
+  mutate(l1_cat = as_factor(l1_cat),
+         l1_cat = fct_relevel(l1_cat, "Izquierda", "Centro", "Derecha"))
+
+data_lapop <-  data_lapop %>% 
+  mutate(redist3_cat = as_factor(redist3_cat),
+         redist3_cat = fct_relevel(redist3_cat,"Pro-redistribución","Neutro", 
+                                   "Anti-redistribución" )
+         )
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Ahora podemos crear una tabla cruzada entre las dos variables. Como quiero ver el efecto de las preferencias redsitributivas en la autoidentificación ideológica, voy a crear una tabla donde en las filas estén los valores de preferencias por redistribución y las columnas la ideología, y que la tabla esté en porcentajes a nivel de la fila. Retomando lo que vimos en el módulo 2:
+
+.codefont[
+```{r ch98sadd, echo = TRUE, warning = FALSE, message=FALSE}
+data_lapop %>% 
+  count(redist3_cat, l1_cat) %>% 
+  mutate(n = n/sum(n)*100, .by = redist3_cat) %>% 
+  spread(l1_cat, n)
+```
+]
+
+
+
+---
+## Asociaciones entre variables: Chi cuaddrado
+
+El test de Chi cuadrado es uno de los estadísticos más utilizados para el testeo básico de hipótesis con variables categóricas y es muy útil para comprender la idea de independencia estadística.
+
+La hipótesis nula del test es que las variables analizadas son estadísticamente independientes, esto es, que la distribución de las frecuencias observadas en la variable 1 no dependa de la distribución de las frecuencias observadas en V2. 
+
+La fórmula de cálculo del $Chi^{2}$ es my sencilla: 
+
+$$\chi^2 = \sum \frac {(O - E)^2}{E}$$
+$O=$ frecuencia observada 
+$E=$  frecuencia esperada
+
+La fórmula de cálculo  de la frecuencia esperada es muy simple también: 
+
+Frecuencia esperada (E) = (Total  Fila * Total Columna) / Total 
+
+---
+## Asociaciones entre variables: Chi cuaddrado
+
+.codefont[
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+
+test <- chisq.test(data_lapop$redist3_cat, data_lapop$l1_cat)
+test
+test$statistic
+test$p.value
+test$expected
+```
+]
+---
+
+## Asociaciones entre variables: Chi cuaddrado
+
+ $P-value$  muestra la probabilidad de obtener un  $Chi^{2}$ como el observado 
+ en caso de que la $H_0$ sea verdadera. 
+ 
+ $df$ son los grados de libertad y pueden entenderse como la cantidad de parametros que pueden variar libremente en la tabla. El cálculo es (n.filas-1) * (n.columnas-1). 
+ 
+El estadístico de $Chi^{2}$ sólo nos brinda información acerca de si dos varibales categóricas son independientes pero no nos brinda información acerca de la dirección de la asociación y tampoco de la magnitud de la asociación. 
+
+
+---
+
+## Chi cuadrado: Cálculo de marginales
+
+Primero creamos la tabla cruzada: 
+.codefont[
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+t1 <- data_lapop %>% 
+  count(redist3_cat, l1_cat) %>% 
+  spread(l1_cat, n)
+t1
+
+```
+]
+Ahora calculamos los marginales de filas y la frecuencia total:
+
+.codefont[
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+f_total <- rowSums(t1[,2:4])
+total <- sum(f_total)
+
+```
+]
+Ahora calculamos los marginales de columnas:
+.codefont[
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+c_total <- colSums(t1[,2:4])
+```
+]
+
+---
+
+## Chi cuadrado: Cálculo de marginales
+
+Generamos una matriz para guardar los valores y vamos calculando cada frecuencia esperada:
+
+.codefont[
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+m <- matrix(nrow = 3, ncol=3)
+
+m[1,1] <- (f_total[1])*(c_total[1])/total # fila 1 col 1
+m[2,1] <- (f_total[2])*(c_total[1])/total # fila 2 col 1
+m[3,1] <- (f_total[3])*(c_total[1])/total # fila 3 col 1
+
+m[1,2] <- (f_total[1])*(c_total[2])/total # fila 1 col 2
+m[2,2] <- (f_total[2])*(c_total[2])/total # fila 2 col 2
+m[3,2] <- (f_total[3])*(c_total[2])/total # fila 3 col 2
+
+m[1,3] <- (f_total[1])*(c_total[3])/total # fila 1 col 3
+m[2,3] <- (f_total[2])*(c_total[3])/total # fila 2 col 3
+m[3,3] <- (f_total[3])*(c_total[3])/total # fila 3 col 3
+
+m
+
+```
+]
+
+
+---
+
+
+## Chi cuadrado:Cálculo
+
+.codefont[
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+
+t1m <- t1 %>% 
+  select(-redist3_cat) %>% 
+  as.matrix() %>% 
+  unname() #tranformo en matriz y quito nombres
+
+
+# Calculo en base a la formula
+((t1m[1,1] - m[1,1])^2/m[1,1]) + ((t1m[1,2] - m[1,2])^2/m[1,2]) + ((t1m[1,3] - m[1,3])^2/m[1,3]) +
+((t1m[2, 1] - m[2,1])^2/m[2,1]) + ((t1m[2,2] - m[2,2])^2/m[2,2]) + ((t1m[2,3] - m[2,3])^2/m[2,3]) +
+((t1m[3, 1] - m[3,1])^2/m[3,1]) + ((t1m[3,2] - m[3,2])^2/m[3,2]) + ((t1m[3,3] - m[3,3])^2/m[3,3])
+
+
+```
+]
+

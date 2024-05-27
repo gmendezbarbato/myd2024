@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Medición y diseño de investigación</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez" />
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="estilo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Medición y diseño de investigación
+]
+.subtitle[
+## Clase: Medida de asociación estadística Chi2
+]
+.author[
+### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
+]
+.date[
+### 22 mayo 2024
+]
+
+---
+
+
+class: inverse, center, middle
+
+
+
+
+
+## Tabla Cruzada
+---
+
+## Tabla cruzada entre las dos variables
+
+Para analizar la relación entre ideología y preferencias por la redistribución recodifiquemos las dos variables y tiremos una tabla cruzada para tener una idea de la relación entre nuestras dos variables de interés. Ideología la vamos a recodificar en izquierda (1 a 4), centro (5 y 6) y derecha (7 a 10) y preferencias por redistribución en pro-redistribución (1 a 3), neutro (4) anti-redistribución (5 a 7).
+
+.codefont[
+
+``` r
+data_lapop &lt;- data_lapop %&gt;% 
+  mutate(l1_cat = case_when(
+    l1 &lt;= 4 ~ "Izquierda",
+    l1 %in% c(5, 6) ~ "Centro",
+    l1 &gt;= 7 ~ "Derecha",
+  ))  %&gt;% 
+  mutate(redist3_cat = case_when(
+    redist3 &lt;= 3 ~ "Pro-redistribución",
+    redist3 == 4 ~ "Neutro",
+    redist3 &gt;= 5 ~ "Anti-redistribución",
+  ))  
+
+data_lapop &lt;-  data_lapop %&gt;% 
+  mutate(l1_cat = as_factor(l1_cat),
+         l1_cat = fct_relevel(l1_cat, "Izquierda", "Centro", "Derecha"))
+
+data_lapop &lt;-  data_lapop %&gt;% 
+  mutate(redist3_cat = as_factor(redist3_cat),
+         redist3_cat = fct_relevel(redist3_cat,"Pro-redistribución","Neutro", 
+                                   "Anti-redistribución" )
+         )
+```
+]
+
+---
+
+## Tabla cruzada entre las dos variables
+
+Ahora podemos crear una tabla cruzada entre las dos variables. Como quiero ver el efecto de las preferencias redsitributivas en la autoidentificación ideológica, voy a crear una tabla donde en las filas estén los valores de preferencias por redistribución y las columnas la ideología, y que la tabla esté en porcentajes a nivel de la fila. Retomando lo que vimos en el módulo 2:
+
+.codefont[
+
+``` r
+data_lapop %&gt;% 
+  count(redist3_cat, l1_cat) %&gt;% 
+  mutate(n = n/sum(n)*100, .by = redist3_cat) %&gt;% 
+  spread(l1_cat, n)
+```
+
+```
+##           redist3_cat Izquierda   Centro  Derecha
+## 1  Pro-redistribución  33.75000 33.90625 32.34375
+## 2              Neutro  41.50943 32.54717 25.94340
+## 3 Anti-redistribución  34.56790 28.80658 36.62551
+```
+]
+
+
+
+---
+## Asociaciones entre variables: Chi cuaddrado
+
+El test de Chi cuadrado es uno de los estadísticos más utilizados para el testeo básico de hipótesis con variables categóricas y es muy útil para comprender la idea de independencia estadística.
+
+La hipótesis nula del test es que las variables analizadas son estadísticamente independientes, esto es, que la distribución de las frecuencias observadas en la variable 1 no dependa de la distribución de las frecuencias observadas en V2. 
+
+La fórmula de cálculo del `\(Chi^{2}\)` es my sencilla: 
+
+`$$\chi^2 = \sum \frac {(O - E)^2}{E}$$`
+`\(O=\)` frecuencia observada 
+`\(E=\)`  frecuencia esperada
+
+La fórmula de cálculo  de la frecuencia esperada es muy simple también: 
+
+Frecuencia esperada (E) = (Total  Fila * Total Columna) / Total 
+
+---
+## Asociaciones entre variables: Chi cuaddrado
+
+.codefont[
+
+``` r
+test &lt;- chisq.test(data_lapop$redist3_cat, data_lapop$l1_cat)
+test
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  data_lapop$redist3_cat and data_lapop$l1_cat
+## X-squared = 11.799, df = 4, p-value = 0.01891
+```
+
+``` r
+test$statistic
+```
+
+```
+## X-squared 
+##  11.79886
+```
+
+``` r
+test$p.value
+```
+
+```
+## [1] 0.01891135
+```
+
+``` r
+test$expected
+```
+
+```
+##                       data_lapop$l1_cat
+## data_lapop$redist3_cat Izquierda   Centro   Derecha
+##    Pro-redistribución  225.07274 200.7843 214.14295
+##    Neutro               74.55534  66.5098  70.93485
+##    Anti-redistribución 256.37192 228.7059 243.92220
+```
+]
+---
+
+## Asociaciones entre variables: Chi cuaddrado
+
+ `\(P-value\)`  muestra la probabilidad de obtener un  `\(Chi^{2}\)` como el observado 
+ en caso de que la `\(H_0\)` sea verdadera. 
+ 
+ `\(df\)` son los grados de libertad y pueden entenderse como la cantidad de parametros que pueden variar libremente en la tabla. El cálculo es (n.filas-1) * (n.columnas-1). 
+ 
+El estadístico de `\(Chi^{2}\)` sólo nos brinda información acerca de si dos varibales categóricas son independientes pero no nos brinda información acerca de la dirección de la asociación y tampoco de la magnitud de la asociación. 
+
+
+---
+
+## Chi cuadrado: Cálculo de marginales
+
+Primero creamos la tabla cruzada: 
+.codefont[
+
+``` r
+t1 &lt;- data_lapop %&gt;% 
+  count(redist3_cat, l1_cat) %&gt;% 
+  spread(l1_cat, n)
+t1
+```
+
+```
+##           redist3_cat Izquierda Centro Derecha
+## 1  Pro-redistribución       216    217     207
+## 2              Neutro        88     69      55
+## 3 Anti-redistribución       252    210     267
+```
+]
+Ahora calculamos los marginales de filas y la frecuencia total:
+
+.codefont[
+
+``` r
+f_total &lt;- rowSums(t1[,2:4])
+total &lt;- sum(f_total)
+```
+]
+Ahora calculamos los marginales de columnas:
+.codefont[
+
+``` r
+c_total &lt;- colSums(t1[,2:4])
+```
+]
+
+---
+
+## Chi cuadrado: Cálculo de marginales
+
+Generamos una matriz para guardar los valores y vamos calculando cada frecuencia esperada:
+
+.codefont[
+
+``` r
+m &lt;- matrix(nrow = 3, ncol=3)
+
+m[1,1] &lt;- (f_total[1])*(c_total[1])/total # fila 1 col 1
+m[2,1] &lt;- (f_total[2])*(c_total[1])/total # fila 2 col 1
+m[3,1] &lt;- (f_total[3])*(c_total[1])/total # fila 3 col 1
+
+m[1,2] &lt;- (f_total[1])*(c_total[2])/total # fila 1 col 2
+m[2,2] &lt;- (f_total[2])*(c_total[2])/total # fila 2 col 2
+m[3,2] &lt;- (f_total[3])*(c_total[2])/total # fila 3 col 2
+
+m[1,3] &lt;- (f_total[1])*(c_total[3])/total # fila 1 col 3
+m[2,3] &lt;- (f_total[2])*(c_total[3])/total # fila 2 col 3
+m[3,3] &lt;- (f_total[3])*(c_total[3])/total # fila 3 col 3
+
+m
+```
+
+```
+##           [,1]     [,2]      [,3]
+## [1,] 225.07274 200.7843 214.14295
+## [2,]  74.55534  66.5098  70.93485
+## [3,] 256.37192 228.7059 243.92220
+```
+]
+
+
+---
+
+
+## Chi cuadrado:Cálculo
+
+.codefont[
+
+
+``` r
+t1m &lt;- t1 %&gt;% 
+  select(-redist3_cat) %&gt;% 
+  as.matrix() %&gt;% 
+  unname() #tranformo en matriz y quito nombres
+
+
+# Calculo en base a la formula
+((t1m[1,1] - m[1,1])^2/m[1,1]) + ((t1m[1,2] - m[1,2])^2/m[1,2]) + ((t1m[1,3] - m[1,3])^2/m[1,3]) +
+((t1m[2, 1] - m[2,1])^2/m[2,1]) + ((t1m[2,2] - m[2,2])^2/m[2,2]) + ((t1m[2,3] - m[2,3])^2/m[2,3]) +
+((t1m[3, 1] - m[3,1])^2/m[3,1]) + ((t1m[3,2] - m[3,2])^2/m[3,2]) + ((t1m[3,3] - m[3,3])^2/m[3,3])
+```
+
+```
+## [1] 11.79886
+```
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"incremental": true,
+"df_print": "kable",
+"smaller": true,
+"widescreen": true,
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
