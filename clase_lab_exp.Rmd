@@ -1,0 +1,81 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase: Laboratorio Experimentos"
+author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
+date: "29 mayo 2024"
+output:
+  xaringan::moon_reader:
+    css:
+    - "xaringan-themer.css"
+    - estilo.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: no
+      incremental: yes
+      df_print: kable
+      smaller: yes
+      widescreen: yes
+      highlightLines: yes
+  html_document:
+    df_print: paged
+---
+
+class: inverse, center, middle
+
+```{r setup, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(xaringanExtra)
+library(rio)
+library(tidyverse)
+library(forcats)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+
+```
+
+# Laboratorio Experimentos
+
+---
+
+## Ejercicio
+
+**Piense el diseño de un experimento estableciendo:**
+
+.content-box-blue[
+1. Variable independiente y variable dependiente  
+
+2. Hipótesis  
+
+3. Tipo de experimento (laboratorio, natural, de campo, de política pública)  
+
+4. Forma de selección de grupos de tratamiento y control (justificando su equivalencia) y manera en que se manipula/controla la variable independiente  
+
+5. Número de grupos y mediciones a realizar (pre-test, post-test, en todos los grupos, en algunos)  
+
+6. Descripción breve de cómo se desarrollaría el experimento  
+]
