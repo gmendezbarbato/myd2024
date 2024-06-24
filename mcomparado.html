@@ -54,7 +54,6 @@ class: inverse, center, middle
 ## Plan para hoy
 
 &lt;br/&gt;
-&lt;br/&gt;
 
 
 **1. Discusión del texto de Albala **
@@ -66,11 +65,14 @@ class: inverse, center, middle
 **3. Ejercicios en R con paquetes SetMethods y QCA**
 
 &lt;br/&gt;
-&lt;br/&gt;
 
-Consejo: Cree un proyecto y descargue dentro el contenido de la **carpeta de eva Laboratorio_comparado**
+--
+
+Consejo: Cree un proyecto y descargue dentro el contenido de la carpeta de eva **Laboratorio metodo comparado**
 
 El código de la presentación (livecoding) está en el script **codigo_5.R**
+
+El código de los ejrcicios y solución está en los script **ejercicios_5.R** y **sol_ejercicios_5.R**
 
 Las bases de datos que utilizaremos son: **ej_pl.xlsx** y **data_ej_comparado.xlsx** (ojo que tienen varias hojas, usar el argumento `which()` de **rio::import** para seleccionar la que corresponda)
 
@@ -84,7 +86,13 @@ class: inverse, center, middle
 
 ## Discusión del texto de Albala
 
-Albala, A. (2016). Presidencialismo y coaliciones de gobierno en América Latina: Un análisis del papel de las instituciones. Revista de ciencia política (Santiago), 36(2), 459-479.
+&lt;br/&gt;
+&lt;br/&gt;
+
+&gt; Albala, A. (2016). Presidencialismo y coaliciones de gobierno en América Latina: Un análisis del papel de las instituciones. Revista de ciencia política (Santiago), 36(2), 459-479.
+
+&lt;br/&gt;
+&lt;br/&gt;
 
 ---
 
@@ -92,19 +100,310 @@ Albala, A. (2016). Presidencialismo y coaliciones de gobierno en América Latina
 
 1. ¿Cuál es el objetivo del trabajo?
 
-2. ¿Cómo selecciona los casos?
+2. ¿Cuál es la variable dependiente?
 
-3. ¿Cuál es su universo poblacional?
+3. ¿Cuáles son las variables independientes?
 
-4. ¿Cuál es su muestra?
+4. ¿Cuáles son las hipótesis?
 
-5. ¿Identifica algún problema de sesgo de selección?
+5. ¿Cuál es su universo poblacional?
 
-6. ¿Cuál es la variable dependiente?
+6. ¿Cuál es su muestra?
 
-7. ¿Cuáles son la variables independientes?
+7. ¿Cómo selecciona los casos?
 
-8. ¿Cuáles son los resultados?
+8. ¿Identifica algún problema de sesgo de selección?
+
+9. ¿Cómo operacionaliza las variables?
+
+10. ¿Qué estrategia sigue al utilizar el QCA?
+
+11. ¿Cuáles son los principales resultados?
+
+
+---
+
+## Preguntas al texto de Albala
+
+**1. ¿Cuál es el objetivo del trabajo?**
+
+--
+
+&lt;br/&gt;
+
+- El objetivo de este artículo consiste en realizar una actualización y un testeo de las principales hipótesis inspiradas por la corriente neoinstitucionalista, y su impacto en las coaliciones de gobierno. 
+
+&lt;br/&gt;
+
+- Mediante un enfoque configuracional de los gobiernos de coalición en América Latina desde la vuelta a la democracia, procuraremos sistematizar las principales hipótesis en boga que busquen evidenciar relaciones causales automáticas, por no decir “mecánicas”, del marco institucional por sobre el desempeño de los gobiernos de coalición latinoamericanos.
+
+
+---
+
+## Preguntas al texto de Albala
+
+**2. ¿Cuál es la variable dependiente?**
+
+--
+
+- Coaliciones de gobierno en regímenes presidencialistas
+
+&gt; Definición gobierno de coalición bajo régimen presidencial: _"una alianza de partidos con el fin de una acción gubernamental común, alrededor de un “formador” presidencial, contando con una convergencia de los recursos organizacionales y financieros de cada uno de los participantes, y que desemboca en una repartición de las carteras ministeriales entre los mismos participantes."_ (p. 463)
+
+&lt;br/&gt;
+
+- La divide en dos variables dependientes
+
+1. Formación de coaliciones de gobierno en regímenes presidencialistas
+
+2. Supervivencia de coaliciones de gobierno en regímenes presidencialistas
+
+
+---
+
+## Preguntas al texto de Albala
+
+**3. ¿Cuáles son las variables independientes?**
+
+--
+
+- Tres tipos de variables institucionales:
+
+&lt;br/&gt;
+	
+1. Sistema electoral
+
+2. Sistema de partidos y su organización
+
+3. Sistema político y grado de equilibrio de poderes
+
+---
+
+## Preguntas al texto de Albala
+
+**4. ¿Cuáles son las hipótesis?**
+
+--
+
+- Formación de coaliciones de gobierno en regímenes presidencialistas 
+
+&gt; H1: La posibilidad de balotaje para la elección presidencial y la simultaneidad de las elecciones presidenciales y parlamentarias serían elementos fuertemente incitativos a la formación de coaliciones.
+
+&gt; H2: Cuanto más alto es el número de partidos, más alta es la probabilidad de casos de presidencialismos minoritarios, y por ende más alta es la probabilidad de formarse gobiernos de coalición “por necesidad”. Por oposición, cuanto más bajo el número de partidos, más alta es la probabilidad para el Presidente de contar con una mayoría parlamentaria y, por tanto, más baja es la necesidad de formar coaliciones. 
+
+&gt; H3: Cuanto más elevados son los poderes del Presidente, más alta es la tentación de gobernar solo (sin formar coaliciones). La posibilidad de gobernar por decreto desincentivaría la negociación. Por oposición cuanto menos autónomo del Parlamento más alta es la necesidad de formar coaliciones.
+
+---
+
+## Preguntas al texto de Albala
+
+**4. ¿Cuáles son las hipótesis?**
+
+
+- Supervivencia de coaliciones de gobierno en regímenes presidencialistas 
+
+&gt; H4: La ausencia de posibilidad de reelección aumenta la probabilidad de quiebre de las coaliciones gubernamentales.
+
+&gt; H5: El no poseer una mayoría “confortable” (&gt;55%) en la Cámara de Diputados, aumenta la probabilidad de quiebre precoz de la coalición de gobierno.
+
+&gt; H6: Cuanto más socios, más alta es la probabilidad de quiebre.
+
+&gt; H7: El ocaso de elecciones intermedias “relevantes” (parlamentarias/ gobernadores) aumenta la probabilidad de quiebre de las coaliciones.
+
+---
+
+## Preguntas al texto de Albala
+
+**5. ¿Cuál es su universo poblacional?**
+
+--
+
+Regímenes presidencialistas
+
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+--
+
+**6. ¿Cuál es su muestra?**
+
+--
+
+- Formación de coaliciones:
+
+Regímenes presidencialistas sudamericanos entre 1980-2013 + México y Costa Rica (la unidad de análisis no es país, sino el régimen y sus características institucionales)  
+
+
+- Supervivencia de coaliciones:
+
+Toma sólo los casos de presencia de coalición de la muestra anterior
+
+---
+
+## Preguntas al texto de Albala
+
+**7. ¿Cómo selecciona los casos?**
+
+--
+
+El testeo de las variables se realiza a partir de los casos sudamericanos a los que sumamos el caso costarricense. Colocamos a México como caso ilustrativo. 
+
+&lt;br/&gt;
+
+--
+
+**8. ¿Identifica algún problema de sesgo de selección?**
+
+--
+
+1. No establece un mecanismo explícito, pero sus criterios son período temporal (1980-2013) y zona geográfica (América Latina).
+
+2. Al testear las hipótesis toma casos sudamericanos (más México y Costa Rica)
+
+
+---
+
+## Preguntas al texto de Albala
+
+**9. ¿Cómo operacionaliza las variables?**
+
+
+Formación de coaliciones
+
+--
+
+.small-text[
+
+- La **variable SEF**, por “Sistema Electoral Facilitador”, remite a la primera hipótesis. La ordenaremos en tres grados de valoración, en función de cuán “incitador” es la ley electoral para la formación de coaliciones, y la operacionalizamos de la forma siguiente: “2”, cuando la ley electoral prevé la simultaneidad total o parcial entre elecciones presidencial y legislativa, cumulando esto con la posibilidad de balotaje; “1”, cuando la ley electoral prevé una de estas dos posibilidades; “0”, cuando la ley electoral no prevé ninguna de esas posibilidades.
+
+- La **variable NPR**, por “Número de Partidos Relevantes” en el sistema de partidos, donde “0” supone un sistema de partido con un NPR inferior o igual a 3, condición mínima para que haya racionalmente “necesidad” de armar alianzas; y “1” supone un NPR superior a 3. Fundamos la valorización de una media ponderada a partir de los trabajos de Alcántara (2003), Crespo Martínez y Garrido (2008) y Chasquetti (2008).
+
+
+- La **variable PWP**, por “Poderes del Presidente”, elaborada a partir de las atribuciones proactivas y reactivas de Presidente, y organizada en función de su carácter incitativo, según la teoría: “0” cuando los poderes del Presidente son elevados; “1” cuando las atribuciones del Presidente parecen “débiles”. Nos fundaremos a partir de los indicadores de Shugart y Carey (1992), Zovatto y Orozco (2008), y del BID (2006, 2010).
+
+
+- Al resultado o “variable dependiente”, **RESULT**, se le asigna un “1” cuando el caso conoció al menos un gobierno de coalición, y un “0” cuando nunca se experimentará esta forma de gobierno. Desdoblamos los casos (marcados I y II), cuando un cambio constitucional relevante viniera afectar fuertemente alguna de las variables que acabamos de presentar.
+]
+
+---
+
+## Preguntas al texto de Albala
+
+**9. ¿Cómo operacionaliza las variables?**
+
+Supervivencia de coaliciones
+
+--
+
+.small-text[
+
+- La variable **REELEC** remite a la posibilidad constitucional de reelección directa del Presidente en ejercicio. O sea, más allá de la reelección per se, consideraremos la posibilidad del Presidente en ejercicio de volverse a presentar, pues todas las constituciones que prevén la reelección directa la permiten una vez seguida. Por lo que asignaremos con un “1” los casos en que el Presidente pueda volver a presentarse; y con “0” casos en que no pudiera, o no pudiera más representarse (en el caso en que estuviera al final de su segundo mandato seguido).
+
+- La variable **LARGE** trata del contingente legislativo del Presidente en la Cámara Baja, exprimida en el caso en que la coalición contara con una “mayoría confortable” (&gt;55%), asignada por “1”; de lo contrario le atribuimos un valor “0”.
+
+- La variable **PART** se estima en función de la composición de la coalición. Cuanto menos socios, se supone que menos problemas potenciales, por lo que “1” representaría el número mínimo de socios (2); y “0” supone un número de socios superior a dos.
+
+- La variable **INTERM** considera la existencia de elecciones relevantes (legislativas/ gobernadores) intermedias, tipo midterms, como potenciales elementos debilitantes de cohesión interna. Con valor “1” en caso de que ocurrencia de elecciones intermedias durante el mandato; y “0” su ausencia. Precisamos que las elecciones “casi simultáneas”, o sea, donde una elección parlamentaria ocurriera con unos pocos meses de atraso/ anticipación respecto de elecciones presidenciales, como en el caso colombiano, por ejemplo, no son consideradas como intermediarias.
+
+]
+
+---
+
+## Preguntas al texto de Albala
+
+**9. ¿Cómo operacionaliza las variables?**
+
+Supervivencia de coaliciones
+
+--
+
+.small-text[
+
+- La variable de control **ECO** sirve para mostrar si el contexto económico fue desfavorable, con la ocurrencia o importación de una crisis socioeconómica, que notaremos con “1”; o si el contexto fue “normal”, caso notado “0”. Por lógica habría de esperarse que dificultades económicas conducirían a un debilitamiento del gobierno e incentivarían a la implosión de la coalición, ya que los socios no querrán ser castigados, o lo menos posible, por el (mal) desempeño del gobierno.
+
+- La variable dependiente **RESULT**, como resultado de supervivencia (1) o disolución (0) de la coalición de gobierno, a partir de la repartición de los socios en el gabinete el día de la asunción del Presidente. Consideraremos asimismo como “disueltas” (0) las coaliciones que no consiguieron mantenerse estables durante la totalidad del mandato, ya sea mediante una implosión de la coalición o la salida de un elemento relevante. Por oposición, consideraremos como “conservada” (1) toda coalición que haya conseguido mantenerse estable durante todo el mandato presidencial. Adicionalmente, no consideraremos como casos de disolución de coalición los recambios ministeriales, ni las salidas de partidos marginales, cuya salida no generase una pérdida de mayoría ni un cambio de orientación política.
+
+]
+
+---
+
+## Preguntas al texto de Albala
+
+**10. ¿Qué estrategia sigue al utilizar el QCA?**
+
+--
+
+- No realiza un análisis de QCA completo. Se concentra en testear las hipótesis que se derivan de la literatura institucionalista, con el objetivo de falsearlas.
+
+--
+
+- Formación de coaliciones
+
+&gt; SEF(2)\*NPR(1)\*PWP(1) ⇒ 1
+
+.small-text[
+
+Léase: si un sistema electoral muy facilitador (SEF=2)
+combinase con un número de partidos elevado (NPR=1) y unos poderes presidenciales
+débiles (PWP=1), entonces habría de notarse una condición positiva para la formación
+de coaliciones (RESULT=1).
+
+]
+
+--
+
+- Supervivencia de coaliciones
+
+&gt; REELEC(1)\*LARGE(1)\*PART(1)\*INTERM(0)\*ECO(0) ⇒ 1
+
+.small-text[
+Léase, en caso en que exista la reelección presidencial (REELEC=1), combinada con un contingente parlamentario importante (LARGE=1), un número mínimo de socios en el gobierno (PART=1), la ausencia de elecciones intermediarias (INTERM=0) y un contexto económico “normal” (ECO=0), entonces las coaliciones tenderían a “sobrevivir” (RESULT=1).
+]
+
+---
+
+## Preguntas al texto de Albala
+
+.center[
+&lt;img src="ima/albala1.png" width="400px" height="500px" /&gt;
+]
+
+---
+
+## Preguntas al texto de Albala
+
+.center[
+&lt;img src="ima/albala2.png" width="400px" height="500px" /&gt;
+]
+
+---
+
+## Preguntas al texto de Albala
+
+.center[
+&lt;img src="ima/albala3.png" width="400px" height="500px" /&gt;
+]
+
+---
+
+## Preguntas al texto de Albala
+
+.center[
+&lt;img src="ima/albala4.png" width="400px" height="500px" /&gt;
+]
+
+---
+
+## Preguntas al texto de Albala
+
+
+**11. ¿Cuáles son los principales resultados?**
+
+--
+
+
+&gt; Las variables institucionales no pueden considerarse condiciones necesarias ni suficientes para la emregencia ni supervivencia de coaliciones de gobierno en regímenes preseidencialistas.
 
 ---
 
@@ -1029,6 +1328,8 @@ P3. Identifique las configuraciones causales suficientes, las no suficientes (di
 P4. ¿Qué alternativas sugiere para el tratamiento de los contrafácticos?
 
 P5. ¿Puede realizarse una minimización lógica para lograr una explicación más parsimoniosa? 
+
+P6. ¿Cuál es el resultado del análisis en términos sustantivos?
 
 Extra realice el mismo ejercicio con los datos de la hoja 4 del archivo "data_ej_comparado.xlsx"
 ]

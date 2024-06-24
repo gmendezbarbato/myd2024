@@ -76,3 +76,7 @@ a, a > code {
 .content-box-yellow .remark-inline-code { 
   background: none;
 }
+
+.small-text {
+    font-size: 0.8em;
+  }
