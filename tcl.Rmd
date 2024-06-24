@@ -1,0 +1,170 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Teorema central del límite"
+author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
+date: "12 junio 2024"
+output:
+  xaringan::moon_reader:
+    css:
+    - "xaringan-themer.css"
+    - estilo.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: no
+      incremental: yes
+      df_print: kable
+      smaller: yes
+      widescreen: yes
+      highlightLines: yes
+  html_document:
+    df_print: paged
+---
+
+class: inverse, center, middle
+
+```{r setup, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(xaringanExtra)
+library(rio)
+library(tidyverse)
+library(forcats)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+
+```
+
+# Teorema central del límite: Ejemplo práctico
+
+---
+
+## Paso 1. Población y parámtro poblacional
+
+Creamos una población de 100000 casos y un parámetro poblacional de una variable con distribución uniforme cuyo rango es de 0 a 100 (podría ser porcentaje de personas que piensa votar en las internas).
+
+.codefont[
+```{r ej1, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+### CON DISTRIBUCION NOMRAL
+
+# Configuración
+set.seed(123) # Para reproducibilidad
+
+# Paso 1: Crear una población con distribución normal
+media_poblacional <- 50
+desviacion_estandar_poblacional <- 10
+poblacion <- rnorm(10000, mean = media_poblacional, sd = desviacion_estandar_poblacional) # Distribución normal
+
+# Graficar la distribución de la población
+g1 <- hist(poblacion, probability = TRUE, main = "Distribución normal de la Población",
+     xlab = "Valores", col = "skyblue", breaks = 30)
+
+# Curva normal
+g1 <- curve(dnorm(x, mean = media_poblacional, sd = desviacion_estandar_poblacional), 
+      col = "red", lwd = 2, add = TRUE)
+g1 <- abline(v = mean(poblacion), col = "blue", lwd = 2, lty = 2) # Media de la población
+# Añadir una leyenda
+g1 <- legend("topright", legend = c("Curva Normal", "Media Poblacional"), col = c("red", "blue"), lwd = 2, lty = c(1, 2))
+
+g1 <- text(x = media_poblacional, y = 0.03, labels = paste("Media =", media_poblacional), col = "blue", pos = 4)
+```
+]
+
+---
+
+## Paso 1. Población y parámtro poblacional
+
+Creamos una población de 100000 casos y un parámetro poblacional de una variable con distribución uniforme cuyo rango es de 0 a 100 (podría ser porcentaje de personas que piensa votar en las internas).
+
+.codefont[
+```{r ej1b, echo=FALSE, message=FALSE, warning=FALSE}
+### CON DISTRIBUCION NOMRAL
+
+# Configuración
+set.seed(123) # Para reproducibilidad
+
+# Paso 1: Crear una población con distribución normal
+media_poblacional <- 50
+desviacion_estandar_poblacional <- 10
+poblacion <- rnorm(10000, mean = media_poblacional, sd = desviacion_estandar_poblacional) # Distribución normal
+
+# Graficar la distribución de la población
+g1 <- hist(poblacion, probability = TRUE, main = "Distribución normal de la Población",
+     xlab = "Valores", col = "skyblue", breaks = 30)
+
+# Curva normal
+g1 <- curve(dnorm(x, mean = media_poblacional, sd = desviacion_estandar_poblacional), 
+      col = "red", lwd = 2, add = TRUE)
+g1 <- abline(v = mean(poblacion), col = "blue", lwd = 2, lty = 2) # Media de la población
+# Añadir una leyenda
+g1 <- legend("topright", legend = c("Curva Normal", "Media Poblacional"), col = c("red", "blue"), lwd = 2, lty = c(1, 2))
+
+g1 <- text(x = media_poblacional, y = 0.03, labels = paste("Media =", media_poblacional), col = "blue", pos = 4)
+```
+]
+
+---
+
+## Paso 2. Muestras
+
+Sacamos múltiples muestras y calculamos las medias.
+Luego hacemos el histograma de esas medias.
+Luego comparamos medias muestrales y poblacional
+
+.codefont[
+```{r ej1c, echo = TRUE, warning = FALSE, message=FALSE}
+# Parámetros
+n_muestras <- 2000  # Número de muestras
+tamano_muestra <- 100  # Tamaño de cada muestra
+
+medias_muestrales <- numeric(n_muestras) # Vector para almacenar las medias muestrales
+
+for (i in 1:n_muestras) {
+  muestra <- sample(poblacion, tamano_muestra, replace = TRUE)
+  medias_muestrales[i] <- mean(muestra)
+}
+
+
+# Paso 3: Graficar la distribución de las medias muestrales
+hist(medias_muestrales, breaks = 30, probability = TRUE, 
+     main = "Distribución de las Medias Muestrales", 
+     xlab = "Medias Muestrales", col = "skyblue")
+
+# Superponer una curva normal teórica
+curve(dnorm(x, mean = mean(medias_muestrales), sd = sd(medias_muestrales)), 
+      col = "red", lwd = 2, add = TRUE)
+
+# Mostrar la media de la población y la media de las medias muestrales
+abline(v = mean(poblacion), col = "blue", lwd = 2, lty = 2) # Media de la población
+abline(v = mean(medias_muestrales), col = "green", lwd = 2, lty = 2) # Media de las medias muestrales
+
+legend("topright", legend = c("Curva Normal Teórica", "Media Poblacional", "Media de Medias Muestrales"),
+       col = c("red", "blue", "green"), lty = c(1, 2, 2), lwd = 2)
+```
+]
+
+
+

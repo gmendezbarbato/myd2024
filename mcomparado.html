@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Medición y diseño de investigación</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez" />
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <link href="libs/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link href="libs/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="estilo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Medición y diseño de investigación
+]
+.subtitle[
+## Laboratorio método comparado
+]
+.author[
+### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
+]
+.date[
+### 24 junio 2024
+]
+
+---
+
+
+class: inverse, center, middle
+
+
+
+# Plan para hoy
+
+---
+
+## Plan para hoy
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+
+**1. Discusión del texto de Albala **
+
+
+**2. Ejemplos del texto de Pérez-Liñan (2010) en R**
+
+
+**3. Ejercicios en R con paquetes SetMethods y QCA**
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+Consejo: Cree un proyecto y descargue dentro el contenido de la **carpeta de eva Laboratorio_comparado**
+
+El código de la presentación (livecoding) está en el script **codigo_5.R**
+
+Las bases de datos que utilizaremos son: **ej_pl.xlsx** y **data_ej_comparado.xlsx** (ojo que tienen varias hojas, usar el argumento `which()` de **rio::import** para seleccionar la que corresponda)
+
+---
+
+class: inverse, center, middle
+
+# 1. Discusión del texto de Albala
+
+---
+
+## Discusión del texto de Albala
+
+Albala, A. (2016). Presidencialismo y coaliciones de gobierno en América Latina: Un análisis del papel de las instituciones. Revista de ciencia política (Santiago), 36(2), 459-479.
+
+---
+
+## Preguntas al texto de Albala
+
+1. ¿Cuál es el objetivo del trabajo?
+
+2. ¿Cómo selecciona los casos?
+
+3. ¿Cuál es su universo poblacional?
+
+4. ¿Cuál es su muestra?
+
+5. ¿Identifica algún problema de sesgo de selección?
+
+6. ¿Cuál es la variable dependiente?
+
+7. ¿Cuáles son la variables independientes?
+
+8. ¿Cuáles son los resultados?
+
+---
+
+class: inverse, center, middle
+
+# 2. Ejemplos del texto de Pérez-Liñan (2010) en R 
+
+---
+
+## Paquetes necesarios
+
+- [**SetMethods**](https://cran.r-project.org/web/packages/SetMethods/index.html)
+
+- [**QCA**](https://cran.r-project.org/web/packages/QCA/index.html)
+
+- **tidyverse** y **rio**
+
+&lt;br/&gt;
+
+Instalaciones necesarias:
+
+.codefont[
+
+```r
+install.packages("SetMethods")
+install.packages("QCA")
+```
+]
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+El livecoding de esta clase está en el script `clase_5.R` disponible en eva Laboratorio Método comparado
+
+---
+
+## ¿Qué vamos a hacer?
+
+Reproducir en R los ejemplos que plantea Pérez-Liñan (2010):
+
+&lt;br/&gt;
+
+1. Método de la similitud (Tabla 1)
+
+2. Problemas de la tabla de similitud (Tabla 2)
+
+3. Método de la diferencia indirecta (Tabla 3)
+
+4. Análisis configuracional (Tabla 6)
+
+5. Minimización lógica
+
+
+---
+
+## 1. Método de la similitud (Tabla 1)
+
+
+.center[
+&lt;img src="ima/t1.png" width="1000px" /&gt;
+]
+
+---
+
+## 1. Método de la similitud (Tabla 1)
+
+.codefontmaschico[
+
+```r
+library(rio)
+library(tidyverse)
+library(SetMethods)
+library(QCA)
+
+# importo la base
+data_1 &lt;- rio::import("ej_pl.xlsx", which = 1)
+
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_1 &lt;- data_1 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_1, data_1$Y, necessity = TRUE)
+
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_1 &lt;- as.data.frame(QCAfit(data_1, data_1$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_1) 
+
+# preparo data para análisis de suficiencia
+data_analisis_suf_1 &lt;- data_1 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X1
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_1 &lt;- ifelse(nrow(data_analisis_suf_1) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+]
+
+--
+
+- Estructura de `ifelse()`: 
+
+.codefontchico[
+
+```r
+ifelse(condicion, operación_si_TRUE, operación_si_FALSE)
+```
+]
+
+---
+
+## 1. Método de la similitud (Tabla 1)
+
+.codefontchico[
+
+```r
+library(rio)
+library(tidyverse)
+library(SetMethods)
+library(QCA)
+
+# importo la base
+data_1 &lt;- rio::import("ej_pl.xlsx", which = 1)
+
+data_1
+```
+
+```
+##   caso Y X1 X2
+## 1    A 1  1  1
+## 2    B 1  1  1
+## 3    C 1  1  0
+## 4    D 1  1  0
+```
+
+```r
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_1 &lt;- data_1 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+data_1
+```
+
+```
+##   Y X1 X2
+## A 1  1  1
+## B 1  1  1
+## C 1  1  0
+## D 1  1  0
+```
+]
+
+
+---
+
+## 1. Método de la similitud (Tabla 1)
+
+.codefontchico[
+
+```r
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_1, data_1$Y, necessity = TRUE)
+```
+
+```
+##     Cons.Nec Cov.Nec RoN
+## Y        1.0       1 NaN
+## X1       1.0       1 NaN
+## X2       0.5       1   1
+## ~Y       0.0     NaN   1
+## ~X1      0.0     NaN   1
+## ~X2      0.5       1   1
+```
+
+```r
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_1 &lt;- as.data.frame(QCAfit(data_1, data_1$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_1) 
+```
+
+```
+##    Cons.Nec
+## X1        1
+```
+]
+
+
+---
+
+## 1. Método de la similitud (Tabla 1)
+
+.codefontchico[
+
+```r
+# preparo data para análisis de suficiencia
+data_analisis_suf_1 &lt;- data_1 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X1
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_1 &lt;- ifelse(nrow(data_analisis_suf_1) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+
+```
+## [1] "Suficiente"
+```
+]
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+--
+
+**¿Cuál es el problema?**
+
+
+
+---
+
+## 2. Problema Método de la similitud (Tabla 2)
+
+.center[
+&lt;img src="ima/t2.png" width="550px" height="400px" /&gt;
+]
+
+---
+
+## 2. Problema Método de la similitud (Tabla 2)
+
+.codefontmaschico[
+
+```r
+# importo la base
+data_2 &lt;- rio::import("ej_pl.xlsx", which = 2)
+
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_2 &lt;- data_2 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_2, data_2$Y, necessity = TRUE)
+
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_2 &lt;- as.data.frame(QCAfit(data_2, data_2$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_2) 
+
+# preparo data para análisis de suficiencia
+data_analisis_suf_2 &lt;- data_2 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_2 &lt;- ifelse(nrow(data_analisis_suf_2) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+]
+
+---
+
+## 2. Problema Método de la similitud (Tabla 2)
+
+.codefontchico[
+
+```r
+# importo la base
+data_2 &lt;- rio::import("ej_pl.xlsx", which = 2)
+
+data_2
+```
+
+```
+##   caso Y X1 X2
+## 1    A 1  1  1
+## 2    B 1  1  1
+## 3    C 1  1  0
+## 4    D 1  1  0
+## 5    E 0  1  0
+```
+
+```r
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_2 &lt;- data_2 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+data_2
+```
+
+```
+##   Y X1 X2
+## A 1  1  1
+## B 1  1  1
+## C 1  1  0
+## D 1  1  0
+## E 0  1  0
+```
+]
+
+---
+
+## 2. Problema Método de la similitud (Tabla 2)
+
+.codefontchico[
+
+```r
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_2, data_2$Y, necessity = TRUE)
+```
+
+```
+##     Cons.Nec Cov.Nec   RoN
+## Y        1.0   1.000 1.000
+## X1       1.0   0.800 0.000
+## X2       0.5   1.000 1.000
+## ~Y       0.0   0.000 0.800
+## ~X1      0.0     NaN 1.000
+## ~X2      0.5   0.667 0.667
+```
+
+```r
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_2 &lt;- as.data.frame(QCAfit(data_2, data_2$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_2) 
+```
+
+```
+##    Cons.Nec
+## X1        1
+```
+]
+
+---
+
+## 2. Problema Método de la similitud (Tabla 2)
+
+.codefontchico[
+
+```r
+# importo la base
+# preparo data para análisis de suficiencia
+data_analisis_suf_2 &lt;- data_2 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_2 &lt;- ifelse(nrow(data_analisis_suf_2) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+
+```
+## [1] "No suficiente"
+```
+]
+
+
+---
+
+## 3. Método de la diferencia indirecta (Tabla 3)
+
+.center[
+&lt;img src="ima/t3.png" width="556" /&gt;
+]
+
+
+---
+
+## 3. Método de la diferencia indirecta (Tabla 3)
+
+.codefontmaschico[
+
+```r
+# importo la base
+data_3 &lt;- rio::import("ej_pl.xlsx", which = 3)
+
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_3 &lt;- data_3 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_3, data_3$Y, necessity = TRUE)
+
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_3 &lt;- as.data.frame(QCAfit(data_3, data_3$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_3) 
+
+# preparo data para análisis de suficiencia X1
+data_analisis_suf_3 &lt;- data_3 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_3 &lt;- ifelse(nrow(data_analisis_suf_3) &gt; 0, print("No suficiente"), print("Suficiente"))
+
+# preparo data para análisis de suficiencia no X3
+data_analisis_suf_3b &lt;- data_3 %&gt;% 
+  filter(X3 == 0) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X3)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_3b &lt;- ifelse(nrow(data_analisis_suf_3b) &gt; 0, print("No suficiente"), print("Suficiente"))
+
+# En resumen: por un lado, X1 y ~X3 (No X3) son condiciones necesarias; por otro, sólo ~X3 es suficiente. ¿?
+# Es necesario un análisis configuracional
+```
+]
+
+---
+
+## 3. Método de la diferencia indirecta (Tabla 3)
+
+.codefontchico[
+
+```r
+# importo la base
+data_3 &lt;- rio::import("ej_pl.xlsx", which = 3)
+
+data_3
+```
+
+```
+##   caso Y X1 X2 X3
+## 1    A 1  1  1  0
+## 2    B 1  1  1  0
+## 3    C 1  1  0  0
+## 4    D 1  1  0  0
+## 5    E 0  1  0  1
+## 6    F 0  1  0  1
+```
+
+```r
+# pongo la variable caso como nombre de filas, para que no la cuente como variable
+data_3 &lt;- data_3 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+data_3
+```
+
+```
+##   Y X1 X2 X3
+## A 1  1  1  0
+## B 1  1  1  0
+## C 1  1  0  0
+## D 1  1  0  0
+## E 0  1  0  1
+## F 0  1  0  1
+```
+]
+
+---
+
+## 3. Método de la diferencia indirecta (Tabla 3)
+
+.codefontchico[
+
+```r
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_3, data_3$Y, necessity = TRUE)
+```
+
+```
+##     Cons.Nec Cov.Nec   RoN
+## Y        1.0   1.000 1.000
+## X1       1.0   0.667 0.000
+## X2       0.5   1.000 1.000
+## X3       0.0   0.000 0.667
+## ~Y       0.0   0.000 0.667
+## ~X1      0.0     NaN 1.000
+## ~X2      0.5   0.500 0.500
+## ~X3      1.0   1.000 1.000
+```
+
+```r
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_3 &lt;- as.data.frame(QCAfit(data_3, data_3$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_3) 
+```
+
+```
+##     Cons.Nec
+## X1         1
+## ~X3        1
+```
+]
+
+---
+
+## 3. Método de la diferencia indirecta (Tabla 3)
+
+.codefontmaschico[
+
+```r
+# preparo data para análisis de suficiencia X1
+data_analisis_suf_3 &lt;- data_3 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_3 &lt;- ifelse(nrow(data_analisis_suf_3) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+
+```
+## [1] "No suficiente"
+```
+
+```r
+# preparo data para análisis de suficiencia no X3
+data_analisis_suf_3b &lt;- data_3 %&gt;% 
+  filter(X3 == 0) %&gt;% # selecciono las filas con X1 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X1)
+  select(Y, X3)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X1 = 1
+analisis_suf_3b &lt;- ifelse(nrow(data_analisis_suf_3b) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+
+```
+## [1] "Suficiente"
+```
+]
+
+--
+
+
+- Análisis de necesidad: X1 y ~X3 son condiciones necesarias; 
+- Análisis de suficiencia: ~X3 es suficiente.
+- No hay forma de decidir si ~X3 es una condición necesaria y suficiente por sí sola o bien si la presencia x1 y ~X3 son conjuntamente una configuración necesaria y suficiente. 
+- El  problema del método de la diferencia indirecta es que no puede lidiar con la equifinalidad.
+- ¿Qué hacer? Un análisis configuracional
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+Tabla de datos
+
+.center[
+&lt;img src="ima/t6.png" width="550px" height="400px" /&gt;
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+Tabla de verdad
+
+.center[
+&lt;img src="ima/t7.png" width="1000px" /&gt;
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+Tabla de verdad con alternativas de tratamiento de contrafácticos
+
+.center[
+&lt;img src="ima/t8.png" width="1000px" /&gt;
+]
+
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+.codefontmaschico[
+
+```r
+# importo la base, con argumento which puedo seleccionar diferentes hojas del excel
+data_4 &lt;- rio::import("ej_pl.xlsx", which = 4)
+
+data_4 &lt;- data_4 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_4, data_4$Y, necessity = TRUE)
+
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_4 &lt;- as.data.frame(QCAfit(data_4, data_4$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_4)
+
+# preparo data para análisis de suficiencia
+data_analisis_suf_4 &lt;- data_4 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X3 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X3)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X3 = 1
+analisis_suf_4 &lt;- ifelse(nrow(data_analisis_suf_4) &gt; 0, print("No suficiente"), print("Suficiente"))
+
+
+library(QCA)
+
+# Tabla de verdad para analizar configuraciones causales paquete QCA
+
+tabla_de_verdad &lt;- truthTable(data_pl, outcome = "Y", show.cases = TRUE, complete = TRUE)
+print(tabla_de_verdad)
+
+# minimizacion lógica tratando residuos como falsos (Solucion Compleja)
+min_sc &lt;- minimize(tabla_de_verdad, details=TRUE, show.cases=TRUE)
+print(min_sc)
+
+# minimizacion lógica tratando residuos como verdaderos (Solucion Parsimoniosa)
+min_sp &lt;- minimize(tabla_de_verdad, include="?", details=TRUE, show.cases=TRUE)
+print(min_sp)
+```
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+.codefontmaschico[
+
+```r
+# importo la base, con argumento which puedo seleccionar diferentes hojas del excel
+data_4 &lt;- rio::import("ej_pl.xlsx", which = 4)
+
+data_4
+```
+
+```
+##    caso Y X1 X2 X3
+## 1     A 1  1  1  0
+## 2     B 1  1  1  0
+## 3     C 1  1  0  0
+## 4     D 1  1  0  0
+## 5     E 0  1  0  1
+## 6     F 0  1  0  1
+## 7     G 0  0  0  1
+## 8     H 1  1  1  0
+## 9     I 1  1  1  1
+## 10    J 1  1  0  1
+```
+
+```r
+data_4 &lt;- data_4 %&gt;% 
+  remove_rownames %&gt;% 
+  column_to_rownames(var="caso") 
+
+data_4
+```
+
+```
+##   Y X1 X2 X3
+## A 1  1  1  0
+## B 1  1  1  0
+## C 1  1  0  0
+## D 1  1  0  0
+## E 0  1  0  1
+## F 0  1  0  1
+## G 0  0  0  1
+## H 1  1  1  0
+## I 1  1  1  1
+## J 1  1  0  1
+```
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+.codefontmaschico[
+
+```r
+# hago un análisis de necesidad con la función QCAfit del paquete SetMethods
+# Pasos:
+# LLamar a la función, data, variable dependiente (Y), necessity = TRUE
+QCAfit(data_4, data_4$Y, necessity = TRUE)
+```
+
+```
+##     Cons.Nec Cov.Nec   RoN
+## Y      1.000   1.000 1.000
+## X1     1.000   0.778 0.333
+## X2     0.571   1.000 1.000
+## X3     0.286   0.400 0.625
+## ~Y     0.000   0.000 0.700
+## ~X1    0.000   0.000 0.900
+## ~X2    0.429   0.500 0.571
+## ~X3    0.714   1.000 1.000
+```
+
+```r
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+# Si quiero guardar el resultado en un data frame, me quedo sólo con la columna 1
+analisis_nec_4 &lt;- as.data.frame(QCAfit(data_4, data_4$Y, necessity = TRUE)) %&gt;% 
+  select(Cons.Nec) %&gt;% # selecciono la columna del análisis de necesidad
+  filter(Cons.Nec == 1) %&gt;% # filtro las cons. Nec. consistentes = 1 "Verdaderas"
+  filter(row.names(.) != "Y") # elimino de la tabla la variable Y (dep)
+
+print(analisis_nec_4)
+```
+
+```
+##    Cons.Nec
+## X1        1
+```
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+.codefontmaschico[
+
+```r
+# preparo data para análisis de suficiencia
+data_analisis_suf_4 &lt;- data_4 %&gt;% 
+  filter(X1 == 1) %&gt;% # selecciono las filas con X3 = 1 (presunta variable necesaria)
+  filter(Y == 0) %&gt;% # selecciono las filas con Y = 0 (para identificar casos de ausencia de Y, con presencia de X3)
+  select(Y, X1)  # selecciono únicamente las variables Y y X3
+
+# testeo una condición con ifelse para saber si hay casos que tengan Y = 0 y X3 = 1
+analisis_suf_4 &lt;- ifelse(nrow(data_analisis_suf_4) &gt; 0, print("No suficiente"), print("Suficiente"))
+```
+
+```
+## [1] "No suficiente"
+```
+]
+
+---
+
+## 4. Análisis configuracional con QCA (Tabla 6)
+
+.codefontchico[
+
+```r
+library(QCA)
+
+# Tabla de verdad para analizar configuraciones causales paquete QCA
+
+tabla_de_verdad &lt;- truthTable(data_4, outcome = "Y", show.cases = TRUE, complete = TRUE)
+print(tabla_de_verdad)
+```
+
+```
+## 
+##   OUT: output value
+##     n: number of cases in configuration
+##  incl: sufficiency inclusion score
+##   PRI: proportional reduction in inconsistency
+## 
+##     X1 X2 X3   OUT    n  incl  PRI   cases
+## 1   0  0  0     ?     0    -     -        
+## 2   0  0  1     0     1  0.000 0.000 G    
+## 3   0  1  0     ?     0    -     -        
+## 4   0  1  1     ?     0    -     -        
+## 5   1  0  0     1     2  1.000 1.000 C,D  
+## 6   1  0  1     0     3  0.333 0.333 E,F,J
+## 7   1  1  0     1     3  1.000 1.000 A,B,H
+## 8   1  1  1     1     1  1.000 1.000 I
+```
+]
+
+--
+
+- Configuración 1 (8): La reelección esta permitida, su gestión es buena, y la oposición es fuerte. **(X1 ∗ X2 ∗ X3 =&gt; Y) **.
+
+- Configuración 2 (7): La reelección esta permitida, su gestión es buena, y la oposición no es fuerte. **(X1 ∗ X2 ∗ ¬X3 =&gt; Y)**.
+
+- Configuración 4 (5): La reelección esta permitida, su gestión no es buena, y la oposición no es fuerte. **(X1 ∗ ¬X2 ∗ ¬X3 =&gt; Y)**
+
+---
+
+## 5. Minimización lógica
+
+.codefontchico[
+
+```r
+# minimizacion lógica tratando residuos como falsos (Solucion Compleja)
+min_sc &lt;- minimize(tabla_de_verdad, details=TRUE, show.cases=TRUE)
+print(min_sc)
+```
+
+```
+## 
+## M1: X1*X2 + X1*~X3 -&gt; Y
+## 
+##            inclS   PRI   covS   covU   cases 
+## ------------------------------------------------- 
+## 1   X1*X2  1.000  1.000  0.571  0.143  A,B,H; I 
+## 2  X1*~X3  1.000  1.000  0.714  0.286  C,D; A,B,H 
+## ------------------------------------------------- 
+##        M1  1.000  1.000  0.857
+```
+
+```r
+# minimizacion lógica tratando residuos como verdaderos (Solucion Parsimoniosa)
+min_sp &lt;- minimize(tabla_de_verdad, include="?", details=TRUE, show.cases=TRUE)
+print(min_sp)
+```
+
+```
+## 
+## M1: X2 + ~X3 -&gt; Y
+## 
+##         inclS   PRI   covS   covU   cases 
+## ---------------------------------------------- 
+## 1   X2  1.000  1.000  0.571  0.143  A,B,H; I 
+## 2  ~X3  1.000  1.000  0.714  0.286  C,D; A,B,H 
+## ---------------------------------------------- 
+##     M1  1.000  1.000  0.857
+```
+]
+
+---
+
+class: inverse, center, middle
+
+# 3. Ejercicios en R con paquetes SetMethods y QCA
+
+---
+
+## 3. Ejercicios en R con paquetes SetMethods y QCA
+
+Diccionario de variables de las bases de datos para los ejercicios 
+
+- **Y = Democracia** = 1 Si; 0 No
+- **X1 = Desigualdad económica** = 1 baja; 0 alta
+- **X2 = Nivel de fragmentación cultural** = 1 baja; 0 alta
+- **X3 = PBI per cápita mayor a USD 6.000** = 1 Si; 0 No
+- **X4 = Economía dependiente del petroleo** = 1 Si; 0 No
+- **X5 = Mayoría de las elites políticas prefieren la democracia como forma de gobierno** = 1 Si; 0 No
+
+---
+
+## Ejercicio 1: Método de la similitud y de la diferencia
+
+.content-box-blue[
+
+a.
+
+Importar en R la hoja 1 del archivo "data_ej_comparado.xlsx"
+
+P1. Identifique el método
+
+P2.  Realice un análisis de necesidad y suficiencia
+
+P3. ¿Cuál es la principal dificultad de este método?
+
+&lt;br/&gt;
+
+b.
+
+Importar en R la hoja 2 del archivo "data_ej_comparado.xlsx"
+
+P1. Identifique el método
+
+P2.  Realice un análisis de necesidad y suficiencia
+
+P3. ¿Cuál es la principal dificultad de este método?
+]
+
+---
+
+## Ejercicio 2: Análisis configuracional con QCA (csQCA)
+
+.content-box-blue[
+
+Importar en R la hoja 3 del archivo "data_ej_comparado.xlsx"
+
+
+P1. Realice un análisis de necesidad
+
+P2. Construya una tabla de verdad
+
+P3. Identifique las configuraciones causales suficientes, las no suficientes (distinguiendo las contradictorias) y los contrafácticos.
+
+P4. ¿Qué alternativas sugiere para el tratamiento de los contrafácticos?
+
+P5. ¿Puede realizarse una minimización lógica para lograr una explicación más parsimoniosa? 
+
+Extra realice el mismo ejercicio con los datos de la hoja 4 del archivo "data_ej_comparado.xlsx"
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"incremental": true,
+"df_print": "kable",
+"smaller": true,
+"widescreen": true,
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
