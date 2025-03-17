@@ -4,7 +4,7 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez" />
-    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
@@ -41,7 +41,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
 ]
 .date[
-### 1 abril 2024
+### marzo 2025
 ]
 
 ---
@@ -54,7 +54,7 @@ class: inverse, center, middle
 ---
 ## Introducción a R y RStudio
 
-- **Tres clases**
+- **Tres objetivos**
 
 --
 
@@ -398,7 +398,7 @@ class: inverse, center, middle
 - Los scripts nos dan la posibilidad de incluir comentarios, lo que es muy útil:
 
 
-```r
+``` r
 ## Esta línea es una anotación. 
 
 ## R ignora todo lo que está acá adentro (tiene que empezar con #)
@@ -429,7 +429,7 @@ class: inverse, center, middle
 ## Ayuda
 
 
-```r
+``` r
 help(mean)
 ```
 
@@ -451,7 +451,7 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 
 .codefont[
 
-```r
+``` r
 # Operaciones sencillas
 2 + 2  
 ```
@@ -460,7 +460,7 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 ## [1] 4
 ```
 
-```r
+``` r
 20 - 10
 ```
 
@@ -468,7 +468,7 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 ## [1] 10
 ```
 
-```r
+``` r
 10 / 2
 ```
 
@@ -476,7 +476,7 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 ## [1] 5
 ```
 
-```r
+``` r
 10 * 10
 ```
 
@@ -495,7 +495,7 @@ Para empezar, R sirve como calculadora. Se pueden realizar operaciones matemáti
 En muchos programas estadísticos solemos solamente "imprimir" resultados (lo que llamamos expresiones). En R podemos utilizar este enfoque:
 
 
-```r
+``` r
 # Una operación sencilla:
 17*17*7 # Se imprime el resultado
 ```
@@ -507,14 +507,14 @@ En muchos programas estadísticos solemos solamente "imprimir" resultados (lo qu
 Sin embargo, en R también podemos almacenar los resultados en objetos. Creamos los objetos mediante asignaciones (`&lt;-`). En este caso, guardemos el valor (a diferencia de imprimirlo). 
 
 
-```r
+``` r
 anio &lt;- 17*17*7 # Se crea un objeto
 ```
 
 Si a esto lo ponemos entre paréntesis combinamos ambos enfoques: se guarda el objeto y se imprime el resultado
 
 
-```r
+``` r
 (anio &lt;- 17*17*7) # Se crea un objeto y se imprime
 ```
 
@@ -531,7 +531,7 @@ Si a esto lo ponemos entre paréntesis combinamos ambos enfoques: se guarda el o
 
 .codefont[
 
-```r
+``` r
 anio &lt;- 17*17*7 # Se crea un objeto
 
 anio # Imprime el objeto anio
@@ -541,7 +541,7 @@ anio # Imprime el objeto anio
 ## [1] 2023
 ```
 
-```r
+``` r
 print(anio) # Imprime el objeto anio
 ```
 
@@ -555,7 +555,7 @@ print(anio) # Imprime el objeto anio
 ## Algunas funciones básicas
 
 
-```r
+``` r
 ls() # Lista los objetos en el ambiente
 
 rm(year) # Borra objeto del ambiente
@@ -671,7 +671,7 @@ R tiene funciones que nos permiten identificar la clase, el tipo, la estructura 
 Supongamos que creamos un objeto con el valor 10, al que luego le sumaremos otro objeto con el valor 20. 
 
 
-```r
+``` r
 obj_1 &lt;- "10"
 
 typeof(obj_1)
@@ -681,7 +681,7 @@ typeof(obj_1)
 ## [1] "character"
 ```
 
-```r
+``` r
 obj_1 + 20 # Da error
 ```
 
@@ -695,7 +695,7 @@ obj_1 + 20 # Da error
 En cambio, si creamos el objeto de tipo númerico:
 
 
-```r
+``` r
 obj_1 &lt;- 10
 
 typeof(obj_1)
@@ -705,7 +705,7 @@ typeof(obj_1)
 ## [1] "double"
 ```
 
-```r
+``` r
 obj_1 + 20 # Funciona
 ```
 
@@ -718,7 +718,7 @@ obj_1 + 20 # Funciona
 ## ¿Por qué importan los tipos y clases? 
 Normalmente no trabajamos con objetos de un solo valor, y reescribirlos no es una opción. Para ellos tenemos coercionadores `as.logical()`, `as.integer()`, `as.double()`, o `as.character()`: funciones que transforman un objeto de un tipo a otro. En este caso:
 
-```r
+``` r
 obj_1 &lt;- "10"
 
 typeof(obj_1)
@@ -728,7 +728,7 @@ typeof(obj_1)
 ## [1] "character"
 ```
 
-```r
+``` r
 obj_1 &lt;- as.numeric(obj_1)
 typeof(obj_1)
 ```
@@ -737,7 +737,7 @@ typeof(obj_1)
 ## [1] "double"
 ```
 
-```r
+``` r
 is.numeric(obj_1) # Podemos verificarlo directamente también
 ```
 
@@ -756,7 +756,7 @@ class: inverse, center, middle
 Un vector es una colección de elementos. Hay 4 tipos de vectores: lógicos, character, integer y double (estos dos últimos son numéricos). Los elementos determinarán el tipo del objeto. Crear un vector es muy sencillo mediante la función `c()`:
 
 
-```r
+``` r
 mi_primer_vector &lt;- c(1, 3, 5, 7, 143) 
 print(mi_primer_vector)
 ```
@@ -769,7 +769,7 @@ Otras formas de crear vectores con `:` y `seq()`
 
 .codefont[
 
-```r
+``` r
 v1 &lt;- c(1:5) # Todos los números de 1 a 5
 v1
 ```
@@ -778,7 +778,7 @@ v1
 ## [1] 1 2 3 4 5
 ```
 
-```r
+``` r
 v2 &lt;- seq(0, 50, 10) # De 0 a 50 de a 10 números
 v2
 ```
@@ -794,7 +794,7 @@ v2
 ## Indexación 
 Cuando queremos referirnos a uno o varios elementos dentro de un vector utilizamos `[]` (lo que se llama indexación).
 
-```r
+``` r
 ## Indexación:
 mi_primer_vector
 ```
@@ -803,7 +803,7 @@ mi_primer_vector
 ## [1]   1   3   5   7 143
 ```
 
-```r
+``` r
 mi_primer_vector[1] # El primer elemento dentro del vector 
 ```
 
@@ -811,7 +811,7 @@ mi_primer_vector[1] # El primer elemento dentro del vector
 ## [1] 1
 ```
 
-```r
+``` r
 # Nos sirve por ejemplo para extraer partes del vector:
 v3 &lt;- mi_primer_vector[1:3] # Creo nuevo vector con los elementos del 1 al 3
 v3
@@ -881,7 +881,7 @@ Supongamos que queremos estructurar los resultados de una encuesta muy corta:
 
 .codefont[
 
-```r
+``` r
 # Usamos la función data.frame
 encuesta &lt;- data.frame(edad = c(18,24,80,40,76), 
                        ideologia = c("Izquierda", "Izquierda", "Derecha", 
@@ -895,7 +895,7 @@ class(encuesta)
 ## [1] "data.frame"
 ```
 
-```r
+``` r
 encuesta
 ```
 
@@ -916,7 +916,7 @@ De forma similar a los vectores, la indexación `[]` nos permite acceder a datos
 
 .codefont[
 
-```r
+``` r
 # Valor de fila 1 y columna 1
 encuesta[1, 1]
 ```
@@ -925,7 +925,7 @@ encuesta[1, 1]
 ## [1] 18
 ```
 
-```r
+``` r
 # Valor de toda la columna 1 (no fijamos filas entonces nos devuelve todas)
 encuesta[, 1]
 ```
@@ -934,7 +934,7 @@ encuesta[, 1]
 ## [1] 18 24 80 40 76
 ```
 
-```r
+``` r
  # Valor de toda la fila 1 (no fijamos columnas entonces nos devuelve todas)
 encuesta[1, ]
 ```
@@ -952,7 +952,7 @@ Una segunda manera para referirnos a datos dentro un dataframe es el usando el s
 
 .codefont[
 
-```r
+``` r
 # Primero escribimos el nombre del dataframe, seguido por el símbolo $ y 
 # el nombre de la variable (sin comillas)
 encuesta$edad # Esto imprime todos los valores de esa variable
@@ -962,7 +962,7 @@ encuesta$edad # Esto imprime todos los valores de esa variable
 ## [1] 18 24 80 40 76
 ```
 
-```r
+``` r
 # En un dataframe cada variable es un vector y podemos fijarnos su clase
 class(encuesta$edad) 
 ```
@@ -971,7 +971,7 @@ class(encuesta$edad)
 ## [1] "numeric"
 ```
 
-```r
+``` r
 mean(encuesta$edad) # Podemos aplicarle funciones (la media en este caso)
 ```
 
@@ -1038,7 +1038,7 @@ Fuente: El Traductor de Ingeniería [https://www.youtube.com/@eltraductor_ok](ht
 ## Funciones (ejemplo) 
 
 
-```r
+``` r
 # Supongamos que queremos calcular la media de: 12,24,36,48,60 
 (12 + 24 + 36 + 48 + 60)/5 # Calculo directamente la media
 ```
@@ -1047,7 +1047,7 @@ Fuente: El Traductor de Ingeniería [https://www.youtube.com/@eltraductor_ok](ht
 ## [1] 36
 ```
 
-```r
+``` r
 data_ej &lt;- c(12, 24, 36, 48, 60) # Genero el vector con los 5 números 
 sum(data_ej) / length(data_ej) # Calculo con dos funciones su media
 ```
@@ -1056,7 +1056,7 @@ sum(data_ej) / length(data_ej) # Calculo con dos funciones su media
 ## [1] 36
 ```
 
-```r
+``` r
 mean(data_ej) # Calculo la media directamente con la función mean()
 ```
 
@@ -1064,7 +1064,7 @@ mean(data_ej) # Calculo la media directamente con la función mean()
 ## [1] 36
 ```
 
-```r
+``` r
 # También se puede ingresar data directamente en el argumento x
 mean(c(12, 24, 36, 48, 60)) 
 ```
@@ -1091,7 +1091,7 @@ mean(c(12, 24, 36, 48, 60))
 - La mayoría de las funciones cuentan con el argumento "x" que suele ser el objeto al que le pasaremos la función. Al ser la mayoría de las veces el primer argumento, muchas veces no se explicita: 
 
 
-```r
+``` r
 media_fun &lt;- mean(data_ej) # Sin explicitar argumento x
 
 media_fun_x &lt;- mean(x = data_ej) # Explicitando argumento x
@@ -1116,7 +1116,7 @@ identical(media_fun, media_fun_x) # El mismo resultado
 
 .codefont[
 
-```r
+``` r
 # Dos maneras de aplicar la función
 identical(media_fun, media_fun_x) # por posición
 ```
@@ -1125,7 +1125,7 @@ identical(media_fun, media_fun_x) # por posición
 ## [1] TRUE
 ```
 
-```r
+``` r
 identical(x = media_fun, y = media_fun_x) # por especificación
 ```
 
@@ -1143,7 +1143,7 @@ identical(x = media_fun, y = media_fun_x) # por especificación
 
 .codefont[
 
-```r
+``` r
 # Dataframe con el resultado de Uruguuay en los últimos 6 mundiales
 uru_mundial &lt;- data.frame(year = c(2002, 2006, 2010, 2014, 2018, 2022),
                           posicion = c(26, NA, 4, 12, 5, 20))
@@ -1155,7 +1155,7 @@ mean(uru_mundial$posicion)
 ## [1] NA
 ```
 
-```r
+``` r
 # Como tenemos un dato perdido, la función nos devuelve NA
 
 # Si especificamos el argumento na.rm (no tener en cuenta los datos perdidos):
@@ -1179,7 +1179,7 @@ mean(uru_mundial$posicion, na.rm = TRUE)
 ## Funciones: argumentos 
 
 
-```r
+``` r
 help(mean)
 ```
 
@@ -1241,7 +1241,7 @@ Dado que R es libre, cualquier persona puede crear y publicar un paquete (public
 - La primera vez que queremos utilizar un paquete tenemos que descargarlo con el siguiente comando:
 
 
-```r
+``` r
 # Para descargar paquetes de CRAN, utilizamos la siguiente función:
 install.packages("nombre_del_paquete")
 install.packages("dplyr") # Ejemplo
@@ -1258,7 +1258,7 @@ install.packages("dplyr") # Ejemplo
 
 - Esto lo debemos realizar en cada sesión de R que vayamos a utilizar (cada vez que abrimos R). 
 
-```r
+``` r
 library(nombre_del_paquete)
 library(dplyr) # Ejemplo
 ```
@@ -1275,7 +1275,7 @@ library(dplyr) # Ejemplo
 
 
 
-```r
+``` r
 data
 ```
 
@@ -1303,7 +1303,7 @@ data
 ]
 
 
-```r
+``` r
 as.data.frame(t(sapply(X = split(
   x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
            which(colnames(data) %in% c("pbi", "inflacion"))],
@@ -1320,7 +1320,7 @@ as.data.frame(t(sapply(X = split(
 ]
 
 
-```r
+``` r
 data_dt &lt;- data 
 setDT(data_dt) 
 data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
@@ -1336,7 +1336,7 @@ data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
 ]
 
 
-```r
+``` r
 data %&gt;%
   filter(presidente %in% c("Vázquez", "Sanguinetti")) %&gt;% 
   select(presidente, pbi, inflacion) %&gt;%
@@ -1352,7 +1352,7 @@ data %&gt;%
 ]
 
 
-```r
+``` r
 as.data.frame(t(sapply(X = split(
   x = data[which(data$presidente %in% c("Vázquez", "Sanguinetti")),
            which(colnames(data) %in% c("pbi", "inflacion"))],
@@ -1375,7 +1375,7 @@ as.data.frame(t(sapply(X = split(
 ]
 
 
-```r
+``` r
 data_dt &lt;- data 
 setDT(data_dt) 
 data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
@@ -1398,7 +1398,7 @@ data_dt[presidente %in% c("Vázquez", "Sanguinetti"),
 ]
 
 
-```r
+``` r
 data %&gt;%
   filter(presidente %in% c("Vázquez", "Sanguinetti")) %&gt;% 
   select(presidente, pbi, inflacion) %&gt;%
@@ -1442,7 +1442,7 @@ Tidyverse cuenta con varios paquetes que sirven para distintos tipos de tareas e
 
 .codefont[
 
-```r
+``` r
 install.packages("tidyverse")
 library(tidyverse)
 

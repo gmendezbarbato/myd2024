@@ -2,7 +2,7 @@
 title: "Medición y diseño de investigación"
 subtitle: "Introducción a R y RStudio"
 author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
-date: '1 abril 2024'
+date: 'marzo 2025'
 output:
   xaringan::moon_reader:
     css: ["xaringan-themer.css", "estilo.css"]
@@ -54,7 +54,7 @@ use_extra_styles(
 ---
 ## Introducción a R y RStudio
 
-- **Tres clases**
+- **Tres objetivos**
 
 --
 
