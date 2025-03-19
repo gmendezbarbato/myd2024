@@ -2,7 +2,7 @@
 title: "Medición y diseño de investigación"
 subtitle: "Clase 2: Manipulación de datos"
 author: "FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez"
-date: '10 de abril 2024'
+date: 'abril 2025'
 # date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
   xaringan::moon_reader:
@@ -723,7 +723,6 @@ print(gapminder_07_america)
 No es recomendable usar el pipeline cuando hay más de un objeto o si las funciones tienen múltiples entradas y salidas
 
 
----
 
 ---
 ## Otras funciones de dplyr muy útiles

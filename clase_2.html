@@ -4,7 +4,7 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez" />
-    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
@@ -41,7 +41,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Fabricio Carneiro y Gustavo Méndez
 ]
 .date[
-### 10 de abril 2024
+### abril 2025
 ]
 
 ---
@@ -85,7 +85,7 @@ class: inverse, center, middle
 
 .codefont[
 
-```r
+``` r
 # Puedo fijar el directorio de trabajo con la función setwd()
 # Fijar la carpeta donde vamos a importar y exportar los archivos:
 setwd("micompu/micarpeta") # ojo con la / no es \
@@ -95,7 +95,7 @@ getwd() # Con está función puedo consultar el directorio
 
 .codefont[
 
-```r
+``` r
 # Ahora, si quiero leer un archivo que esté en "micompu/micarpeta" simplemente 
 # escribo su nombre dentro de la función, en el lugar del "path".
 
@@ -149,14 +149,14 @@ Al comienzo de cada script **deben** especificar el directorio donde está su ca
 En este caso, por ejemplo, creé la carpeta "carpeta_del_curso" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
 
 
-```r
+``` r
 setwd("C:/Usuario/User/Desktop/myd2024/carpeta_del_curso") 
 ```
 
 De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.xlsx" que está guardada en la carpeta data dentro de la carpeta laboratorio, simplemente tenemos que especificar la siguiente dirección (porque R ya lo va a buscar dentro de la carpeta laboratorio)
 
 
-```r
+``` r
 datauru &lt;- read_excel("data/datauru.xlsx") 
 ```
 
@@ -238,7 +238,7 @@ Distintas funciones nos sirven para importar datos a R desde distintos formatos.
 
 .codefont[
 
-```r
+``` r
 # Con la función read_csv() del paquete readr importamos archivos .csv
 library(tidyverse)
 gapminder_csv &lt;- read_csv("data/gapminder.csv")
@@ -251,7 +251,7 @@ gapminder_excel &lt;- read_excel("data/gapminder.xlsx")
 
 .codefont[
 
-```r
+``` r
 # Vemos que los dataframes son iguales, tienen la mismas filas y columnas
 dim(gapminder_csv)
 ```
@@ -260,7 +260,7 @@ dim(gapminder_csv)
 ## [1] 1704    6
 ```
 
-```r
+``` r
 dim(gapminder_excel)
 ```
 
@@ -273,7 +273,7 @@ dim(gapminder_excel)
 ## Importar datos
 Algunos paquetes incluyen datos, por ejemplo, gapminder. En la documentación del paquete se encuentra el nombre de los datos. Con una simple asignación los podemos cargar 
 
-```r
+``` r
 #install.packages("gapminder")
 library(gapminder)
 
@@ -300,7 +300,7 @@ También es posible importar datos guardados en los formatos de otros softwares 
 
 .codefont[
 
-```r
+``` r
 library(haven)
 
 # SPSS
@@ -315,7 +315,7 @@ O podríamos llamar a la función y paquete dado que generalmente solo utilizamo
 
 .codefont[
 
-```r
+``` r
 # SPSS
 gapminder_spss &lt;- haven::read_spss("data/gapminder.sav") 
 
@@ -333,7 +333,7 @@ Este enfoque es poco práctico si queremos usar los datos almacenados en otro pr
 
 .codefont[
 
-```r
+``` r
 # Para esto no necesitamos cargar paquetes. 
 # Guardar un objeto como .rds:
 saveRDS(object = data_gapminder,
@@ -362,7 +362,7 @@ load("resultados/dos_dataframes.Rdata")
 
 .codefont[
 
-```r
+``` r
 # Guardar .csv
 library(gapminder)
 data_gapminder &lt;- gapminder
@@ -413,7 +413,7 @@ class: inverse, center, middle
 **Varios paquetes**
 .codefont[
 
-```r
+``` r
 # Importar csv
 # Con la función read_csv() del paquete readr importamos archivos .csv
 library(tidyverse) # carga readr
@@ -434,7 +434,7 @@ gapminder_spss &lt;- read_spss("data/gapminder.sav")
 **rio**
 .codefont[
 
-```r
+``` r
 # Con la función import() de rio importamos, csv, excel, SPSS y más...
 library(rio)
 # Importar csv
@@ -453,7 +453,7 @@ gapminder_spss &lt;- import("data/gapminder.sav")
 **Varios paquetes**
 .codefont[
 
-```r
+``` r
 # Guardar .csv
 # Con la función write_excel_csv del paquete readr exportamos archivos csv
 write_excel_csv(gapminder_csv, "resultados/gapminder.csv")
@@ -473,7 +473,7 @@ write_sav(gapminder_spss, "resultados/gapminder.dta")
 **rio**
 .codefont[
 
-```r
+``` r
 # Con la función export() de rio exportamos, csv, excel, SPSS y más...
 library(rio)
 # Exportar (guardar) csv
@@ -496,7 +496,7 @@ class: inverse, center, middle
 
 .codefont[
 
-```r
+``` r
 # R tiene un visor para datos. Pueden dar click en el dataframe en el ambiente o:
 view(data_gapminder)
 ```
@@ -504,7 +504,7 @@ view(data_gapminder)
 
 .codefont[
 
-```r
+``` r
 dim(data_gapminder) # Número de filas y columnas
 ```
 
@@ -512,7 +512,7 @@ dim(data_gapminder) # Número de filas y columnas
 ## [1] 1704    6
 ```
 
-```r
+``` r
 names(data_gapminder) # Nombre de variables
 ```
 
@@ -520,7 +520,7 @@ names(data_gapminder) # Nombre de variables
 ## [1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
 ```
 
-```r
+``` r
 head(data_gapminder, 3) # Imprime primeras filas (3 en este caso)
 ```
 
@@ -542,7 +542,7 @@ Una de las funciones más útiles para resumir un dataframe es `glimpse()` del p
 
 .codefont[
 
-```r
+``` r
 # Resumen visual más completo:
 glimpse(gapminder) 
 ```
@@ -566,7 +566,7 @@ En R Base la función para obtener frecuencias es `table()` junto con `prop.tabl
 
 .codefontchico[
 
-```r
+``` r
 # Para obtener una tabla de frecuencias de una variable usamos la función
 # table() de R Base
 tabla_1 &lt;- table(data_gapminder$continent) # Frecuencia simple
@@ -579,7 +579,7 @@ tabla_1
 ##      624      300      396      360       24
 ```
 
-```r
+``` r
 prop.table(tabla_1) # Proporciones
 ```
 
@@ -589,7 +589,7 @@ prop.table(tabla_1) # Proporciones
 ## 0.36619718 0.17605634 0.23239437 0.21126761 0.01408451
 ```
 
-```r
+``` r
 addmargins(tabla_1) # Totales
 ```
 
@@ -599,7 +599,7 @@ addmargins(tabla_1) # Totales
 ##      624      300      396      360       24     1704
 ```
 
-```r
+``` r
 addmargins(prop.table(tabla_1)) # Proporciones y totales
 ```
 
@@ -622,7 +622,7 @@ class: inverse, center, middle
 
 .codefont[
 
-```r
+``` r
 mean(data_gapminder$lifeExp) # Media
 ```
 
@@ -630,7 +630,7 @@ mean(data_gapminder$lifeExp) # Media
 ## [1] 59.47444
 ```
 
-```r
+``` r
 median(data_gapminder$lifeExp) # Mediana
 ```
 
@@ -638,7 +638,7 @@ median(data_gapminder$lifeExp) # Mediana
 ## [1] 60.7125
 ```
 
-```r
+``` r
 sd(data_gapminder$lifeExp) # Desvío estandar
 ```
 
@@ -652,7 +652,7 @@ sd(data_gapminder$lifeExp) # Desvío estandar
 ## Rangos 
 
 
-```r
+``` r
 range(data_gapminder$lifeExp) # Rango
 ```
 
@@ -660,7 +660,7 @@ range(data_gapminder$lifeExp) # Rango
 ## [1] 23.599 82.603
 ```
 
-```r
+``` r
 max(data_gapminder$lifeExp)
 ```
 
@@ -668,7 +668,7 @@ max(data_gapminder$lifeExp)
 ## [1] 82.603
 ```
 
-```r
+``` r
 min(data_gapminder$lifeExp)
 ```
 
@@ -684,7 +684,7 @@ También podemos graficar los datos rápidamente. Por ejemplo, un histograma:
 .center[
 .codefont[
 
-```r
+``` r
 hist(data_gapminder$lifeExp,
      main = "Distribución de expectativa de vida (Gapminder)")
 ```
@@ -698,7 +698,7 @@ hist(data_gapminder$lifeExp,
 
 .center[
 
-```r
+``` r
 plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
      main = "Relación entre expectativa de vida y PBI per cápita")
 ```
@@ -756,7 +756,7 @@ Una de las tareas más comunes en el análisis de datos es filtrar observaciones
 
 .codefont[
 
-```r
+``` r
 # Tenemos datos de muchos años:
 table(gapminder$year)
 ```
@@ -767,7 +767,7 @@ table(gapminder$year)
 ##  142  142  142  142  142  142  142  142  142  142  142  142
 ```
 
-```r
+``` r
 # Filtremos para con los datos a partir de 2007
 gapminder_07 &lt;- filter(gapminder, year == 2007)
 table(gapminder_07$year)
@@ -922,7 +922,7 @@ table(gapminder_07$year)
 Utilizando operadores lógicos podemos filtrar de formas más complejas:
 
 
-```r
+``` r
 # Todas los años menos 2007
 gapminder_pre07 &lt;- filter(gapminder, year != 2007)
 table(gapminder_pre07$year)
@@ -934,7 +934,7 @@ table(gapminder_pre07$year)
 ##  142  142  142  142  142  142  142  142  142  142  142
 ```
 
-```r
+``` r
 # Solo los siguientes años: 1952, 1992 y 2007
 anios_especificos &lt;- c(1952, 1992, 2007)
 gapminder_esp &lt;- filter(gapminder, year %in% anios_especificos)
@@ -953,7 +953,7 @@ table(gapminder_esp$year)
 Con `select()` podemos seleccionar las variables (columnas) que queremos mantener en un dataframe. Podemos nombrarlas, seleccionar cuáles queremos eliminar y referirnos por su orden:
 
 
-```r
+``` r
 # Selccionar un conjunto de variables (país, año, población)
 select(gapminder, country, year, pop)
 
@@ -987,7 +987,7 @@ Cuando queremos realizar más de una operación a un dataframe podemos utilizar 
 
 .codefont[
 
-```r
+``` r
 gapminder_07_america &lt;- gapminder %&gt;% 
   filter(year == 2007 &amp; continent == "Americas") %&gt;% 
   select(-continent)
@@ -1016,7 +1016,6 @@ print(gapminder_07_america)
 No es recomendable usar el pipeline cuando hay más de un objeto o si las funciones tienen múltiples entradas y salidas
 
 
----
 
 ---
 ## Otras funciones de dplyr muy útiles
@@ -1046,7 +1045,7 @@ El paquete [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf) cont
 
 .codefont[
 
-```r
+``` r
 data_gapminder &lt;- gapminder
 
 # Variable de caracteres
@@ -1066,7 +1065,7 @@ head(data_gapminder, 3)
 ## 3 Afghanistan Asia       1962    32.0 10267083      853. Valor fijo     7
 ```
 
-```r
+``` r
 ## Podemos escribir lo mismo de distinta manera:
 data_gapminder &lt;- mutate(data_gapminder, var1 = "Valor fijo",
                                          var2 = 7)
@@ -1079,7 +1078,7 @@ data_gapminder &lt;- mutate(data_gapminder, var1 = "Valor fijo",
 .codefont[
 Con `mutate()` también podemos realizar operaciones sobre variables ya existentes:
 
-```r
+``` r
 ## Podemos recodificar usando variables y operadores aritméticos
 # Calculemos el pbi total (pbi per capita * población)
 d_gap &lt;- mutate(gapminder, gdp = gdpPercap * pop)
@@ -1095,7 +1094,7 @@ head(d_gap, 3)
 ## 3 Afghanistan Asia       1962    32.0 10267083      853. 8758855797.
 ```
 
-```r
+``` r
 # Podemos calcular el logaritmo 
 d_gap &lt;- mutate(d_gap, gdp_log = log(gdp))
 head(d_gap, 2)
@@ -1120,7 +1119,7 @@ Al igual que hacíamos con los vectores, podemos tranformar el tipo de una varia
 
 .codefont[
 
-```r
+``` r
 # Exploro tipo de variables
 glimpse(d_gap)
 ```
@@ -1133,7 +1132,7 @@ glimpse(d_gap)
 ## $ lifeExp   &lt;dbl&gt; 28.801, 30.332, 31.997, 34.020, 36.088, 38.438, 39.854, 40.8…
 ```
 
-```r
+``` r
 # Variable continente a caracteres y año a factor
 d_gap &lt;- d_gap %&gt;% 
   mutate(continent = as.character(continent),
@@ -1176,7 +1175,7 @@ Cuando trabajmos con dataframes `case_when()` se utiliza dentro de `mutate()`. `
 
 
 
-```r
+``` r
 data %&gt;% 
   mutate(var_nueva = case_when(var_original == "Valor 1" ~ "Valor A",
                                var_original == "Valor 2" ~ "Valor B",
@@ -1189,7 +1188,7 @@ data %&gt;%
 
 
 
-```r
+``` r
 d_gap &lt;- gapminder
 
 # Creemos una variable que indique si el país es Uruguay o no
@@ -1216,7 +1215,7 @@ Podemos establecer varias condiciones fácilmente:
 
 .codefont[
 
-```r
+``` r
 d_gap &lt;- gapminder
 
 d_gap &lt;- d_gap %&gt;% 
@@ -1244,7 +1243,7 @@ También podríamos usar operadores para simplificar esto:
 
 .codefont[
 
-```r
+``` r
 d_gap &lt;- d_gap %&gt;% 
   mutate(mercosur = case_when(
   country %in% c("Argentina", "Paraguay", "Brazil", "Uruguay") ~ 1,
@@ -1274,7 +1273,7 @@ Recodificación con valores numéricos. Supongamos que queremos crear una nueva 
 
 .codefont[
 
-```r
+``` r
 d_gap &lt;- d_gap %&gt;% 
   mutate(pob_rec = case_when(
     pop &gt;= 20000000 ~ "Grande",
@@ -1304,7 +1303,7 @@ Supongamos que queremos una variable que indique los países-año con expectativ
 
 .codefont[
 
-```r
+``` r
 d_gap &lt;- d_gap %&gt;% 
   mutate(var1 = case_when(gdpPercap &gt; 20000 ~ 1,
                           lifeExp &gt; 75 ~ 1,
@@ -1327,7 +1326,7 @@ table(d_gap$var1)
 *(1) Abran un script nuevo y tomen el dataframe de gapminder (importarlo de la carpeta data o descargarlo desde el paquete gapminder como debajo, y filtrar para la base para quedarnos solamente con las observaciones América y Oceania*
 
 
-```r
+``` r
 library(gapminder)
 gapminder &lt;- gapminder
 ```

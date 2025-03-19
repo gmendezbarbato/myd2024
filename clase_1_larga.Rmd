@@ -258,11 +258,87 @@ knitr::include_graphics("ima/rstudio.png")
 
 
 ---
+## Bibliografía
+
+
+-	Llaudet, E., & Imai, K. (2022). *Data analysis for social science: A friendly and practical introduction.* Princeton University Press. Introducción.
+  - [Enlace](https://eva.fcs.udelar.edu.uy/pluginfile.php/227512/mod_folder/content/0/3.%20Data%20Analysis%20for%20Social%20Science%20%28Elena%20Llaudet%2C%20Kosuke%20Imai%29.pdf)
+
+
+-	Wickham, H., Çetinkaya-Rundel, M., & Grolemund, G. (2023). *R for data science.* O'Reilly Media, Inc. 
+  - [Enlace inglés](https://r4ds.had.co.nz/) 
+  - [Enlace español](https://es.r4ds.hadley.nz/)
+
+---
+## Bibliografía
+
+### Data analysis for social science...
+
+--
+
+Van a encontrar una explicación sencilla y código para el inicio:
+.small[
+- Qué es R
+- Cómo se instala R y RStudio
+- Comandos básicos iniciales
+  - Usar R como calculadora
+  - Crear objetos
+  - Aplicar funciones
+  - Setear directorio
+  - Cargar bases de datos
+  - Etc.
+- Estructura típica de base de datos (dataframes)
+- Tipos de variables
+- Ejercicios
+- Cuadros resumen de síntesis (cheatshhet)
+  -	Términos
+  - Símbolos
+  - Funciones
+]
+
+---
+
+## Bibliografía
+
+### Data analysis for social science...
+
+#### [Ventajas]
+- Hadley Wickham y Tidyverse
+- Está en español (no es una traducción automatizada)
+- Está orientado al uso y las explicaciones son sencillas ("no la complica")
+- Es un libro online (hecho con R y blogdown) y tiene una interfaz muy amigable para recorrerlo
+
+--
+
+#### [Desventajas]
+-	Los ejemplos tienen poca relación con ciencias sociales
+-	La estructura no responde a la lógica de la investigación científica
+
+
+
+---
+
+## Bibliografía
+
+### R para ciencia de datos
+
+#### [Ventajas]
+- Libro aplicado a Ciencias Sociales (dejamos en bibliografía el texto completo).
+- Seguramente se utilice en cursos futuros del vector
+- Utiliza mayoritariamente código de R base.
+
+--
+
+#### [Desventajas]
+- Está en inglés
+- Está escaneado (no funcionan los links ni se puede copiar texto y código)
+
+---
+
 ## Recursos complementarios
 
 La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos recursos para aprender de forma independiente y resolver problemas cuando nos estancamos:
 
-- Libro "R for Data Science". Es muy completo y referencia en la mayoría de los cursos de R, pueden acceder a la versión online [original](https://r4ds.had.co.nz/) y a una [traducción](https://es.r4ds.hadley.nz/)
 
 - [R Bloggers](https://www.r-bloggers.com/) y [rpubs](https://rpubs.com/) publican miles de tutoriales para temas específicos 
 
@@ -273,94 +349,96 @@ La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos
 - [AnalizaR](https://arcruz0.github.io/libroadp/index.html) es un libro sobre análisis de datos en R con énfasis en Ciencia Política 
 
 ---
-class: inverse, center, middle
 
-
-# Cuatro consejos (Nicolás Schmidt - IntRo R)
-
----
-
-## 1. Potencial  
-
---
-
-**Mostrar la mejor versión de R**
-
---
-
-  → Estadística: frecuentista y bayesiana
-  
-  → Gráficos de alta calidad: estáticos, animados e interactivos.  
-  
-  → Crear una pagina web  
-  
-  → Git  
-  
-  → Escribir un libro: markdown, LATEX  
-  
-  → Hacer presentaciones: markdown, LATEX  
-  
-  → Escribir un paper  
-  
-  → Gestionar y mandar mails  
-  
-  → Crear gif  
-  
-  → Jugar: packman, prince...  
-  
-  → Ver videos de YouTube  
-
----
-
-## 2. Sinceridad
-
---
-
-**No es fácil aprender R y generar un mínimo de autonomía.**
-
---
-
-  → Continentar al estudiante en relación a los errores.  
-  
-  → Dedicarle mucho tiempo a los mecanismos para obtener ayuda, los recursos disponibles y la mayor cantidad de atajos posibles para controlar la frustración.  
-
----
-
-## 3. Emular
-
---
-
-**Emular y estimular con el curso el uso frecuente de R**
-
---
-
-  → Uso de Git   
-  
-  → Descarga de versiones de paquetes   
-  
-  → Tener que usar R para todo lo relativo a un curso   
-
-
----
-
-## 4. Fundamentos
-
---
-
-**No iniciar con aplicaciones!**
-
---
-
-  → La persona que se inicia en R va a querer aplicar la herramienta a sus  problemas: leer datos, hacer descriptivos, hacer un gráfico...  
-  
-  → Hacer eso es evadir la frustración!  
-  
-  → R ES un lenguaje de programación. Problemas complejos soluciones complejas.  
-
----
 class: inverse, center, middle
 
 # Primeros pasos
+
+<!-- --- -->
+<!-- class: inverse, center, middle -->
+
+
+<!-- # Cuatro consejos (Nicolás Schmidt - IntRo R) -->
+
+<!-- --- -->
+
+<!-- ## 1. Potencial   -->
+
+<!-- -- -->
+
+<!-- **Mostrar la mejor versión de R** -->
+
+<!-- -- -->
+
+<!--   → Estadística: frecuentista y bayesiana -->
+
+<!--   → Gráficos de alta calidad: estáticos, animados e interactivos.   -->
+
+<!--   → Crear una pagina web   -->
+
+<!--   → Git   -->
+
+<!--   → Escribir un libro: markdown, LATEX   -->
+
+<!--   → Hacer presentaciones: markdown, LATEX   -->
+
+<!--   → Escribir un paper   -->
+
+<!--   → Gestionar y mandar mails   -->
+
+<!--   → Crear gif   -->
+
+<!--   → Jugar: packman, prince...   -->
+
+<!--   → Ver videos de YouTube   -->
+
+<!-- --- -->
+
+<!-- ## 2. Sinceridad -->
+
+<!-- -- -->
+
+<!-- **No es fácil aprender R y generar un mínimo de autonomía.** -->
+
+<!-- -- -->
+
+<!--   → Continentar al estudiante en relación a los errores.   -->
+
+<!--   → Dedicarle mucho tiempo a los mecanismos para obtener ayuda, los recursos disponibles y la mayor cantidad de atajos posibles para controlar la frustración.   -->
+
+<!-- --- -->
+
+<!-- ## 3. Emular -->
+
+<!-- -- -->
+
+<!-- **Emular y estimular con el curso el uso frecuente de R** -->
+
+<!-- -- -->
+
+<!--   → Uso de Git    -->
+
+<!--   → Descarga de versiones de paquetes    -->
+
+<!--   → Tener que usar R para todo lo relativo a un curso    -->
+
+
+<!-- --- -->
+
+<!-- ## 4. Fundamentos -->
+
+<!-- -- -->
+
+<!-- **No iniciar con aplicaciones!** -->
+
+<!-- -- -->
+
+<!--   → La persona que se inicia en R va a querer aplicar la herramienta a sus  problemas: leer datos, hacer descriptivos, hacer un gráfico...   -->
+
+<!--   → Hacer eso es evadir la frustración!   -->
+
+<!--   → R ES un lenguaje de programación. Problemas complejos soluciones complejas.   -->
+
 
 ---
 
